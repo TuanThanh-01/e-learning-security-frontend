@@ -167,11 +167,9 @@ function LoginPage() {
             </div>
           </div>
           <div className='footer'>
-            <p className='text-center font-weight-light mb-1'>
-              Học Viện Công Nghệ Bưu Chính Viễn Thông
-            </p>
             <p className='text-center font-weight-light'>
-              &copy; 2023 Produced by PTIT
+              Học Viện Công Nghệ Bưu Chính Viễn Thông &copy; 2023 Produced by
+              PTIT
             </p>
           </div>
         </Spin>

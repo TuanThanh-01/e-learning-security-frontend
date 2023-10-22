@@ -4,9 +4,10 @@ import './SignUp.css';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { Button, Spin, message } from 'antd';
+import { Button, Spin, message, Layout } from 'antd';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+const { Header, Content, Footer } = Layout;
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const SignUp = () => {
       style={{
         padding: 0,
         margin: 0,
-        height: '100%',
+        height: '100vh',
         width: '100%',
         backgroundImage: `url(${background})`,
       }}
@@ -96,7 +97,7 @@ const SignUp = () => {
               </p>
               <hr
                 style={{ border: '2px solid red', width: '10rem' }}
-                className='mb-5'
+                className='mb-3'
               />
               <div className='d-flex justify-content-center mt-3'>
                 <form
@@ -132,9 +133,23 @@ const SignUp = () => {
                           required: 'Hãy điền tên của bạn',
                         })}
                       />
+                      <small style={{ color: '#ED2B2A' }}>
+                        {errors.firstname?.message}
+                      </small>
                     </div>
+                  </div>
+                  <div className='form-group'>
+                    <label htmlFor='studentIdentity'>Mã sinh viên</label>
+                    <input
+                      type='text'
+                      className='form-control'
+                      id='studentIdentity'
+                      {...register('studentIdentity', {
+                        required: 'Mã sinh viên không được bỏ trống',
+                      })}
+                    />
                     <small style={{ color: '#ED2B2A' }}>
-                      {errors.firstname?.message}
+                      {errors.email?.message}
                     </small>
                   </div>
                   <div className='form-group'>
@@ -213,11 +228,9 @@ const SignUp = () => {
             </div>
           </div>
           <div className='footer'>
-            <p className='text-center font-weight-light mb-1'>
-              Học Viện Công Nghệ Bưu Chính Viễn Thông
-            </p>
             <p className='text-center font-weight-light'>
-              &copy; 2023 Produced by PTIT
+              Học Viện Công Nghệ Bưu Chính Viễn Thông &copy; 2023 Produced by
+              PTIT
             </p>
           </div>
         </Spin>
