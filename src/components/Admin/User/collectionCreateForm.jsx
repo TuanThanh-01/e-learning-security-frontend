@@ -6,8 +6,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
 
   useEffect(() => {
     if (item !== null) {
-      form.setFieldValue('categoryName', item.category_name);
-      form.setFieldValue('description', item.description);
+      form.setFieldValue('name', item.name);
     } else {
       form.resetFields();
     }
@@ -16,7 +15,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
   return (
     <Modal
       open={open}
-      title='Tạo mới Danh Mục Bài Học'
+      title='Tạo mới User'
       okText='Thêm mới'
       cancelText='Hủy'
       onCancel={onCancel}
@@ -41,28 +40,16 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         }}
       >
         <Form.Item
-          name='categoryName'
-          label='Tên Danh Mục Bài Học'
+          name='name'
+          label='Tên Topic'
           rules={[
             {
               required: true,
-              message: 'Hãy điền tên danh mục bài học!',
+              message: 'Hãy điền tên topic!',
             },
           ]}
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          name='description'
-          label='Mô tả'
-          rules={[
-            {
-              required: true,
-              message: 'Hãy điền mô tả danh mục bài học!',
-            },
-          ]}
-        >
-          <Input type='textarea' />
         </Form.Item>
       </Form>
     </Modal>

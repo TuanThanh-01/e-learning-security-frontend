@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Spin, Table, message } from 'antd';
+import { Button, Spin, Table, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
-import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 const CategoryLesson = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categoryLessonData, setCategoryLessonData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [refreshTable, setRefreshTable] = useState(0);
+  const [item, setItem] = useState({});
+
   const getCategoryLessonData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:8082/api/v1/category-lesson/all`
       );
       setCategoryLessonData(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -29,40 +30,21 @@ const CategoryLesson = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
-  }, [refreshTable]);
-
-  const data = [];
-  for (let i = 0; i < categoryLessonData.length; i++) {
-    data.push({
-      key: i,
-      id: categoryLessonData[i].id,
-      category_name: categoryLessonData[i].category_name,
-      description: categoryLessonData[i].description,
-      created_at: convertISOToCustomFormat(categoryLessonData[i].created_at),
-      updated_at: categoryLessonData[i].updated_at,
-    });
-  }
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  const hasSelected = selectedRowKeys.length > 0;
+  }, []);
 
   const handleCreateCategory = () => {
+    setItem(null);
     setOpenModal(true);
   };
 
   const sendDataCreateCategoryLesson = async (data) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         `http://localhost:8082/api/v1/category-lesson/create`,
         data
       );
+      await getCategoryLessonData();
       message.success('Thêm mới danh mục bài học thành công!', 3);
       return true;
     } catch (error) {
@@ -71,10 +53,29 @@ const CategoryLesson = () => {
     }
   };
 
+  const sendUpdateTopic = async (data, id) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.put(
+        `http://localhost:8082/api/v1/category-lesson/update/${id}`,
+        data
+      );
+      await getCategoryLessonData();
+      message.success('Cập nhật danh mục bài học thành công!', 3);
+      return true;
+    } catch (error) {
+      message.error('Có lỗi xảy ra!');
+      setIsLoading(false);
+      return false;
+    }
+  };
+
   const onCreate = (values) => {
-    if (sendDataCreateCategoryLesson(values)) {
-      setIsLoading(true);
-      setRefreshTable((oldKey) => oldKey + 1);
+    console.log(values);
+    if (item === null) {
+      sendDataCreateCategoryLesson(values);
+    } else {
+      sendUpdateTopic(values, item.id);
     }
     setOpenModal(false);
   };
@@ -84,6 +85,7 @@ const CategoryLesson = () => {
       const response = await axios.delete(
         `http://localhost:8082/api/v1/category-lesson/delete/${id}`
       );
+      await getCategoryLessonData();
       message.success('Xóa danh mục bài học thành công', 3);
       return true;
     } catch (error) {
@@ -95,8 +97,12 @@ const CategoryLesson = () => {
   const handleDeleteCategoryLessonById = (categoryLessonId) => {
     if (deleteCategoryLessonById(categoryLessonId)) {
       setIsLoading(true);
-      setRefreshTable((oldKey) => oldKey + 1);
     }
+  };
+
+  const handleUpdateCategoryLesson = (record) => {
+    setOpenModal(true);
+    setItem(record);
   };
 
   return (
@@ -131,31 +137,27 @@ const CategoryLesson = () => {
             />
 
             <div>
-              <span className='mr-3'>
-                {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-              </span>
               <Button
                 className='mr-3'
                 type='primary'
-                style={{ background: '#008170' }}
+                style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateCategory}
               >
                 Thêm
-              </Button>
-              <Button type='primary' danger>
-                Xóa
               </Button>
             </div>
           </div>
           <CollectionCreateForm
             open={openModal}
+            item={item}
             onCreate={onCreate}
             onCancel={() => {
+              setItem(null);
               setOpenModal(false);
             }}
           ></CollectionCreateForm>
           <Table
-            rowSelection={rowSelection}
+            rowKey={(record) => record.id}
             columns={[
               { title: 'ID', dataIndex: 'id' },
               {
@@ -191,14 +193,16 @@ const CategoryLesson = () => {
                       size='small'
                       icon={<EditOutlined />}
                       className='mr-2'
+                      onClick={() => {
+                        handleUpdateCategoryLesson(record);
+                      }}
                     />
                     <Button
                       type='primary'
                       size='small'
                       danger
                       icon={<DeleteOutlined />}
-                      onClick={(e) => {
-                        e.preventDefault();
+                      onClick={() => {
                         handleDeleteCategoryLessonById(record.id);
                       }}
                     />
@@ -206,7 +210,7 @@ const CategoryLesson = () => {
                 ),
               },
             ]}
-            dataSource={data}
+            dataSource={categoryLessonData}
           />
         </div>
       )}
