@@ -45,10 +45,10 @@ const CategoryLesson = () => {
         data
       );
       await getCategoryLessonData();
-      message.success('Thêm mới danh mục bài học thành công!', 3);
+      message.success('Create new category lesson success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
@@ -61,10 +61,10 @@ const CategoryLesson = () => {
         data
       );
       await getCategoryLessonData();
-      message.success('Cập nhật danh mục bài học thành công!', 3);
+      message.success('Update category lesson success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       setIsLoading(false);
       return false;
     }
@@ -86,10 +86,10 @@ const CategoryLesson = () => {
         `http://localhost:8082/api/v1/category-lesson/delete/${id}`
       );
       await getCategoryLessonData();
-      message.success('Xóa danh mục bài học thành công', 3);
+      message.success('Delete category lesson success', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
@@ -125,7 +125,7 @@ const CategoryLesson = () => {
             }}
           >
             <Search
-              placeholder='Nhập tên category lesson'
+              placeholder='Enter category lesson name'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -143,7 +143,7 @@ const CategoryLesson = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateCategory}
               >
-                Thêm
+                Add
               </Button>
             </div>
           </div>

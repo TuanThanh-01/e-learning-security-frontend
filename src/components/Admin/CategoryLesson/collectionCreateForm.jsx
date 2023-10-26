@@ -16,9 +16,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
   return (
     <Modal
       open={open}
-      title='Tạo mới Danh Mục Bài Học'
-      okText='Thêm mới'
-      cancelText='Hủy'
+      title={
+        item === null ? 'Create New Category Lesson' : 'Update Category Lesson'
+      }
+      okText={item === null ? 'Add' : 'Update'}
+      cancelText='Cancel'
       onCancel={onCancel}
       onOk={() => {
         form
@@ -42,11 +44,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
       >
         <Form.Item
           name='categoryName'
-          label='Tên Danh Mục Bài Học'
+          label='Category Name'
           rules={[
             {
               required: true,
-              message: 'Hãy điền tên danh mục bài học!',
+              message: 'Please enter category name!',
             },
           ]}
         >
@@ -54,11 +56,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         </Form.Item>
         <Form.Item
           name='description'
-          label='Mô tả'
+          label='Description'
           rules={[
             {
               required: true,
-              message: 'Hãy điền mô tả danh mục bài học!',
+              message: 'Please enter description!',
             },
           ]}
         >

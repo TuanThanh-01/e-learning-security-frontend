@@ -45,10 +45,10 @@ const Topic = () => {
         data
       );
       await getTopicData();
-      message.success('Thêm mới Topic thành công!', 3);
+      message.success('Create topic success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
@@ -61,10 +61,10 @@ const Topic = () => {
         data
       );
       await getTopicData();
-      message.success('Cập nhật Topic thành công!', 3);
+      message.success('Update topic success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       setIsLoading(false);
       return false;
     }
@@ -86,10 +86,10 @@ const Topic = () => {
         `http://localhost:8082/api/v1/topic/${id}`
       );
       await getTopicData();
-      message.success('Xóa Topic thành công', 3);
+      message.success('Delete topic success', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
@@ -125,7 +125,7 @@ const Topic = () => {
             }}
           >
             <Search
-              placeholder='Nhập tên topic'
+              placeholder='Enter topic name'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -143,7 +143,7 @@ const Topic = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateTopic}
               >
-                Thêm
+                Add
               </Button>
             </div>
           </div>

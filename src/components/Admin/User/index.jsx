@@ -3,22 +3,20 @@ import { Avatar, Button, Spin, Table, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
 import CollectionCreateForm from './collectionCreateForm';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 
 const User = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [topicData, setTopicData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [item, setItem] = useState({});
 
-  const getTopicData = async () => {
+  const getUserData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8082/api/v1/topic/all`
-      );
-      setTopicData(response.data);
+      const response = await axios.get(`http://localhost:8082/api/v1/user/all`);
+      setUserData(response.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -26,81 +24,104 @@ const User = () => {
   };
 
   useEffect(() => {
-    getTopicData();
+    getUserData();
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
   }, []);
 
-  const handleCreateTopic = () => {
+  const handleCreateUser = () => {
     setItem(null);
     setOpenModal(true);
   };
 
-  const sendDataCreateTopic = async (data) => {
+  const sendDataCreateUser = async (data) => {
+    const formData = new FormData();
+    formData.append('firstname', data.firstname);
+    formData.append('lastname', data.lastname);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('studentIdentity', data.studentIdentity);
+    formData.append('image', data.image);
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:8082/api/v1/topic/create`,
-        data
+        `http://localhost:8082/api/v1/user/create`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
-      await getTopicData();
-      message.success('Thêm mới Topic thành công!', 3);
+      await getUserData();
+      message.success('Create user success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
 
-  const sendUpdateTopic = async (data, id) => {
+  const sendUpdateUser = async (data, id) => {
+    const formData = new FormData();
+    formData.append('firstname', data.firstname);
+    formData.append('lastname', data.lastname);
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('studentIdentity', data.studentIdentity);
+    if (data.image !== undefined) {
+      formData.append('image', data.image);
+    }
     setIsLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:8082/api/v1/topic/update/${id}`,
-        data
+        `http://localhost:8082/api/v1/user/update/${id}`,
+        formData
       );
-      await getTopicData();
-      message.success('Cập nhật Topic thành công!', 3);
+      await getUserData();
+      message.success('Update user success!', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       setIsLoading(false);
       return false;
     }
   };
 
   const onCreate = (values) => {
-    console.log(values);
+    if (values.image !== undefined) {
+      values.image = values.image[0].originFileObj;
+    }
     if (item === null) {
-      sendDataCreateTopic(values);
+      sendDataCreateUser(values);
     } else {
-      sendUpdateTopic(values, item.id);
+      sendUpdateUser(values, item.id);
     }
     setOpenModal(false);
   };
 
-  const deleteTopicById = async (id) => {
+  const deleteUserById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/topic/${id}`
+        `http://localhost:8082/api/v1/user/${id}`
       );
-      await getTopicData();
-      message.success('Xóa Topic thành công', 3);
+      await getUserData();
+      message.success('Delete user success', 3);
       return true;
     } catch (error) {
-      message.error('Có lỗi xảy ra!');
+      message.error('An error occur!');
       return false;
     }
   };
 
-  const handleDeleteTopicById = (topicId) => {
-    if (deleteTopicById(topicId)) {
+  const handleDeleteUserById = (topicId) => {
+    if (deleteUserById(topicId)) {
       setIsLoading(true);
     }
   };
 
-  const handleUpdateTopic = (record) => {
+  const handleUpdateUser = (record) => {
     setOpenModal(true);
     setItem(record);
   };
@@ -125,7 +146,7 @@ const User = () => {
             }}
           >
             <Search
-              placeholder='Nhập tên topic'
+              placeholder='Enter firstname, lastname, email, student identity'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -141,9 +162,9 @@ const User = () => {
                 className='mr-3'
                 type='primary'
                 style={{ background: '#008170', width: '8rem' }}
-                onClick={handleCreateTopic}
+                onClick={handleCreateUser}
               >
-                Thêm
+                Add
               </Button>
             </div>
           </div>
@@ -163,11 +184,12 @@ const User = () => {
               {
                 title: 'Avatar',
                 dataIndex: 'avatar',
-                render: () => (
+                render: (imageUrl) => (
                   <Avatar
                     shape='square'
                     size='large'
-                    src={`https://images.unsplash.com/photo-1608848461950-0fe51dfc41cb?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D`}
+                    src={`http://localhost:8082${imageUrl}`}
+                    icon
                   />
                 ),
               },
@@ -176,40 +198,33 @@ const User = () => {
                 dataIndex: 'firstname',
                 filteredValue: [searchedText],
                 onFilter: (value, record) => {
-                  return String(record.name)
-                    .toLocaleLowerCase()
-                    .includes(value.toLocaleLowerCase());
+                  return (
+                    String(record.firstname)
+                      .toLocaleLowerCase()
+                      .includes(value.toLocaleLowerCase()) ||
+                    String(record.lastname)
+                      .toLocaleLowerCase()
+                      .includes(value.toLocaleLowerCase()) ||
+                    String(record.student_identity)
+                      .toLocaleLowerCase()
+                      .includes(value.toLocaleLowerCase()) ||
+                    String(record.email)
+                      .toLocaleLowerCase()
+                      .includes(value.toLocaleLowerCase())
+                  );
                 },
               },
               {
                 title: 'Last Name',
                 dataIndex: 'lastname',
-                filteredValue: [searchedText],
-                onFilter: (value, record) => {
-                  return String(record.name)
-                    .toLocaleLowerCase()
-                    .includes(value.toLocaleLowerCase());
-                },
               },
               {
                 title: 'Student Identity',
-                dataIndex: 'studentIdentity',
-                filteredValue: [searchedText],
-                onFilter: (value, record) => {
-                  return String(record.name)
-                    .toLocaleLowerCase()
-                    .includes(value.toLocaleLowerCase());
-                },
+                dataIndex: 'student_identity',
               },
               {
                 title: 'Email',
                 dataIndex: 'email',
-                filteredValue: [searchedText],
-                onFilter: (value, record) => {
-                  return String(record.name)
-                    .toLocaleLowerCase()
-                    .includes(value.toLocaleLowerCase());
-                },
               },
 
               {
@@ -232,7 +247,7 @@ const User = () => {
                       icon={<EditOutlined />}
                       className='mr-2'
                       onClick={() => {
-                        handleUpdateTopic(record);
+                        handleUpdateUser(record);
                       }}
                     />
                     <Button
@@ -241,14 +256,14 @@ const User = () => {
                       danger
                       icon={<DeleteOutlined />}
                       onClick={() => {
-                        handleDeleteTopicById(record.id);
+                        handleDeleteUserById(record.id);
                       }}
                     />
                   </div>
                 ),
               },
             ]}
-            dataSource={topicData}
+            dataSource={userData}
           />
         </div>
       )}
