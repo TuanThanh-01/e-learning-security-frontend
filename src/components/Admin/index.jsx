@@ -15,6 +15,7 @@ import Quiz from './Quiz';
 import Score from './Score';
 import Topic from './Topic';
 import User from './User';
+import ChallengeCTF from './ChallengeCTF';
 import _ from 'lodash';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -38,6 +39,7 @@ const items = [
   getItem('Score', '7', <UnorderedListOutlined />),
   getItem('Topic Post', '8', <UnorderedListOutlined />),
   getItem('User', '9', <UnorderedListOutlined />),
+  getItem('ChallengeCTF', 10, <UnorderedListOutlined />),
 ];
 
 const AdminHomePage = () => {
@@ -78,6 +80,9 @@ const AdminHomePage = () => {
     if (e.key === 'user') {
       setItemSelect('user');
     }
+    if (e.key === 'challenge-ctf') {
+      setItemSelect('challenge-ctf');
+    }
   };
 
   return (
@@ -107,6 +112,9 @@ const AdminHomePage = () => {
         >
           <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
             Category Lesson
+          </Menu.Item>
+          <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
+            Challenge CTF
           </Menu.Item>
           <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
             Lesson
@@ -168,6 +176,7 @@ const AdminHomePage = () => {
             }}
           >
             {itemSelect === 'category-lesson' ? <CategoryLesson /> : <></>}
+            {itemSelect === 'challenge-ctf' ? <ChallengeCTF /> : <></>}
             {itemSelect === 'lesson' ? <Lesson /> : <></>}
             {itemSelect === 'post' ? <Post /> : <></>}
             {itemSelect === 'progress' ? <Progress /> : <></>}

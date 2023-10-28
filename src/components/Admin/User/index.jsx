@@ -127,7 +127,7 @@ const User = () => {
   };
 
   return (
-    <div style={{ height: '100vh' }}>
+    <div style={{ height: '100%' }}>
       {isLoading ? (
         <Spin
           style={{
