@@ -4,11 +4,15 @@ import {
   FlagOutlined,
   FireOutlined,
   TagOutlined,
+  CalendarOutlined,
+  FileOutlined,
 } from '@ant-design/icons';
-import { Button, Col, List, Row, Spin, Tag } from 'antd';
+import { Button, Col, List, Row, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CollectionCreateForm from './collectionCreateForm';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
+import axios from 'axios';
 
 const ChallengeCTF = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,62 +21,78 @@ const ChallengeCTF = () => {
   const [openModal, setOpenModal] = useState(false);
   const [item, setItem] = useState({});
 
+  const getChallengeCTFData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        'http://localhost:8082/api/v1/challenge-ctf/all'
+      );
+      setChallengeCTFData(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      message.error('An error occur!');
+    }
+  };
+
+  const sendDataCreateChallengeCTF = async (data) => {
+    console.log(data);
+    const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('content', data.content);
+    formData.append('level', data.level);
+    formData.append('tag', data.tag);
+    formData.append('hint', data.hint);
+    formData.append('flag', data.flag);
+    formData.append('point', data.point);
+    formData.append('file', data.file);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        'http://localhost:8082/api/v1/challenge-ctf/create',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      console.log(response);
+      await getChallengeCTFData();
+      message.success('Create challenge ctf success!', 3);
+      return true;
+    } catch (error) {
+      message.error('An error occur!');
+      setIsLoading(false);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    getChallengeCTFData();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
+
   const handleCreateChallenge = () => {
     setItem(null);
     setOpenModal(true);
   };
 
-  const onCreate = () => {};
+  const onCreate = (values) => {
+    if (values.file !== undefined) {
+      values.file = values.file[0].originFileObj;
+    }
+    if (item === null) {
+      sendDataCreateChallengeCTF(values);
+    } else {
+      // sendUpdateChallengeCTF(values, item.id);
+    }
+    setOpenModal(false);
+  };
 
-  const data = [
-    {
-      id: 1,
-      title: 'Title 1',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      level: 'easy',
-      tag: 'web',
-      hint: 'A basic card containing a title, content and an extra corner content. ',
-      flag: 'randomFlag',
-      totalSolve: 4,
-      point: 30,
-      totalSolve: 15,
-      createdAt: '10/10/2023',
-      updatedAt: '12/10/2023',
-    },
-    {
-      id: 1,
-      title: 'Title 1',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-      level: 'medium',
-      tag: 'web',
-      hint: 'A basic card containing a title, content and an extra corner content.',
-      flag: 'randomFlag',
-      point: 30,
-      totalSolve: 15,
-      totalSolve: 4,
-      createdAt: '10/10/2023',
-      updatedAt: '12/10/2023',
-    },
-    {
-      id: 1,
-      title: 'Title 1',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently. ',
-      level: 'hard',
-      tag: 'web',
-      hint: 'A basic card containing a title, content and an extra corner content. ',
-      flag: 'randomFlag',
-      point: 30,
-      totalSolve: 4,
-      totalSolve: 15,
-      createdAt: '10/10/2023',
-      updatedAt: '12/10/2023',
-    },
-  ];
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100vh' }}>
       {isLoading ? (
         <Spin
           style={{
@@ -131,9 +151,9 @@ const ChallengeCTF = () => {
               },
               pageSize: 3,
             }}
-            dataSource={data}
+            dataSource={challengeCTFData}
             renderItem={(item) => (
-              <List.Item key={item.title} itemID={item.id}>
+              <List.Item key={item.title} itemID={item.id} className='mt-3'>
                 <List.Item.Meta title={<a href={item.href}>{item.title}</a>} />
                 <Row>
                   <Col span={18}>
@@ -199,7 +219,35 @@ const ChallengeCTF = () => {
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
                           Total Solved:{' '}
                         </p>
-                        {item.totalSolve}
+                        {item.total_solve}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div>
+                        <CalendarOutlined style={{ color: '#706233' }} />
+                        <p className='d-inline ml-1 mr-1 font-weight-bold'>
+                          Created At:{' '}
+                        </p>
+                        {convertISOToCustomFormat(item.created_at)}
+                      </div>
+                      <div>
+                        <CalendarOutlined style={{ color: '#706233' }} />
+                        <p className='d-inline ml-1 mr-1 font-weight-bold'>
+                          Updated At:{' '}
+                        </p>
+                        {item.updated_at}
+                      </div>
+                      <div>
+                        <FileOutlined style={{ color: '#1A5D1A' }} />
+                        <p className='d-inline ml-1 mr-1 font-weight-bold'>
+                          File Name:{' '}
+                        </p>
+                        {item.url_file}
                       </div>
                     </div>
                     <div>
@@ -210,7 +258,10 @@ const ChallengeCTF = () => {
                       {item.hint}
                     </div>
                   </Col>
-                  <Col span={6} className='pl-5'>
+                  <Col
+                    span={6}
+                    style={{ display: 'flex', justifyContent: 'center' }}
+                  >
                     <Button
                       className='mr-2'
                       type='primary'

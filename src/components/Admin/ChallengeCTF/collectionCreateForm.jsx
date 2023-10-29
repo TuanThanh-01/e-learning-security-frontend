@@ -147,7 +147,6 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
             <InputNumber
               min={10}
               max={100}
-              defaultValue={10}
               style={{ width: '100%' }}
               addonBefore={<FireOutlined style={{ color: '#C70039' }} />}
             />
@@ -157,9 +156,21 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
           label='File'
           valuePropName='fileList'
           name='file'
+          getValueFromEvent={(event) => {
+            return event?.fileList;
+          }}
           rules={[{ required: false }]}
         >
-          <Upload maxCount={1}>
+          <Upload
+            maxCount={1}
+            beforeUpload={(file) => {
+              if (file.size > 9000000) {
+                reject('File size exceeded');
+              } else {
+                resolve('Success');
+              }
+            }}
+          >
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
         </Form.Item>
