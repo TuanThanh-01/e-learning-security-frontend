@@ -16,7 +16,8 @@ import Score from './Score';
 import Topic from './Topic';
 import User from './User';
 import ChallengeCTF from './ChallengeCTF';
-import _ from 'lodash';
+import getCurrentDateFormatVietnamese from '../../utils/GetCurrentDateFormatVietnamese';
+import './style.css';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -47,10 +48,6 @@ const AdminHomePage = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const now = _.join(
-    _.slice(_.split(new Date().toUTCString(), ' '), 0, 4),
-    ' '
-  );
 
   const handleClickMenu = (e) => {
     if (e.key === 'category-lesson') {
@@ -156,7 +153,9 @@ const AdminHomePage = () => {
               style={{ fontSize: '2rem', color: '#AEDEFC' }}
               className='mr-3'
             />
-            <p style={{ fontWeight: '700' }}>{now}</p>
+            <p style={{ fontWeight: '700' }}>
+              {getCurrentDateFormatVietnamese()}
+            </p>
           </div>
           <div className='mr-4'>
             <b className='mr-3'>Xin chào, Administrator</b>
@@ -169,10 +168,12 @@ const AdminHomePage = () => {
           }}
         >
           <div
+            className='main-container'
             style={{
               padding: 24,
-              minHeight: '100%',
+              height: '100%',
               background: colorBgContainer,
+              overflowY: 'auto',
             }}
           >
             {itemSelect === 'category-lesson' ? <CategoryLesson /> : <></>}

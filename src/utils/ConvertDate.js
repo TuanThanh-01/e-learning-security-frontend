@@ -6,13 +6,12 @@ const convertISOToCustomFormat = (isoDateString) => {
   const hours = isoDate.getHours();
   const minutes = isoDate.getMinutes();
   const seconds = isoDate.getSeconds();
-  const milliseconds = isoDate.getMilliseconds();
 
   const formattedDate = `${addLeadingZero(day)}/${addLeadingZero(
     month
   )}/${year} ${addLeadingZero(hours)}:${addLeadingZero(
     minutes
-  )}:${addLeadingZero(seconds)}.${addLeadingZero(milliseconds, 3)}`;
+  )}:${addLeadingZero(seconds)}`;
 
   return formattedDate;
 };

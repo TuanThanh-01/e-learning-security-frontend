@@ -19,9 +19,9 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
   return (
     <Modal
       open={open}
-      title={item === null ? 'Create New User' : 'Update User'}
-      okText={item === null ? 'Add' : 'Update'}
-      cancelText='Cancel'
+      title={item === null ? 'Tạo mới người dùng' : 'Cập nhật người dùng'}
+      okText={item === null ? 'Tạo mới' : 'Cập nhật'}
+      cancelText='Hủy'
       onCancel={onCancel}
       onOk={() => {
         form
@@ -45,11 +45,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
       >
         <Form.Item
           name='firstname'
-          label='First Name'
+          label='Tên'
           rules={[
             {
               required: true,
-              message: 'Please enter first name!',
+              message: 'Hãy nhập tên!',
             },
           ]}
         >
@@ -57,11 +57,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         </Form.Item>
         <Form.Item
           name='lastname'
-          label='Last Name'
+          label='Họ'
           rules={[
             {
               required: true,
-              message: 'Please enter Last Name!',
+              message: 'Hãy nhập họ!',
             },
           ]}
         >
@@ -69,11 +69,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         </Form.Item>
         <Form.Item
           name='studentIdentity'
-          label='Student Identity'
+          label='Mã sinh viên'
           rules={[
             {
               required: true,
-              message: 'Please enter student identity!',
+              message: 'Hãy nhập mã sinh viên!',
             },
           ]}
         >
@@ -82,11 +82,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         {item === null ? (
           <Form.Item
             name='password'
-            label='Password'
+            label='Mật khẩu'
             rules={[
               {
                 required: true,
-                message: 'Please enter password!',
+                message: 'Hãy nhập mật khẩu',
               },
             ]}
           >
@@ -101,18 +101,18 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
           rules={[
             {
               required: true,
-              message: 'Please enter email!',
+              message: 'Hãy nhập email!',
             },
             {
               type: 'email',
-              message: 'Email not valid',
+              message: 'Email không hợp lệ',
             },
           ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label='Avatar'
+          label='Ảnh đại diện'
           valuePropName='fileList'
           name='image'
           getValueFromEvent={(event) => {
@@ -134,7 +134,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
           >
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload Avatar</div>
+              <div style={{ marginTop: 8 }}>Tải ảnh đại diện</div>
             </div>
           </Upload>
         </Form.Item>

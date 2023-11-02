@@ -4,6 +4,7 @@ import Search from 'antd/es/input/Search';
 import axios from 'axios';
 import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
 const Topic = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +19,14 @@ const Topic = () => {
       const response = await axios.get(
         `http://localhost:8082/api/v1/topic/all`
       );
+      response.data.forEach((topic) => {
+        if (topic.created_at !== null) {
+          topic.created_at = convertISOToCustomFormat(topic.created_at);
+        }
+        if (topic.updated_at !== null) {
+          topic.updated_at = convertISOToCustomFormat(topic.updated_at);
+        }
+      });
       setTopicData(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -45,10 +54,10 @@ const Topic = () => {
         data
       );
       await getTopicData();
-      message.success('Create topic success!', 3);
+      message.success('Tạo chủ đề thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
@@ -61,10 +70,10 @@ const Topic = () => {
         data
       );
       await getTopicData();
-      message.success('Update topic success!', 3);
+      message.success('Cập nhật chủ đề thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       setIsLoading(false);
       return false;
     }
@@ -86,10 +95,10 @@ const Topic = () => {
         `http://localhost:8082/api/v1/topic/${id}`
       );
       await getTopicData();
-      message.success('Delete topic success', 3);
+      message.success('Xóa chủ đề thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
@@ -125,7 +134,7 @@ const Topic = () => {
             }}
           >
             <Search
-              placeholder='Enter topic name'
+              placeholder='Nhập tên chủ đề'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -143,7 +152,7 @@ const Topic = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateTopic}
               >
-                Add
+                Thêm mới
               </Button>
             </div>
           </div>
@@ -161,7 +170,7 @@ const Topic = () => {
             columns={[
               { title: 'ID', dataIndex: 'id' },
               {
-                title: 'Topic Name',
+                title: 'Tên chủ đề',
                 dataIndex: 'name',
                 filteredValue: [searchedText],
                 onFilter: (value, record) => {
@@ -171,15 +180,15 @@ const Topic = () => {
                 },
               },
               {
-                title: 'Created At',
+                title: 'Thời gian tạo',
                 dataIndex: 'created_at',
               },
               {
-                title: 'Updated At',
+                title: 'Thời gian cập nhật',
                 dataIndex: 'updated_at',
               },
               {
-                title: 'Action',
+                title: '',
                 dataIndex: '',
                 key: 'x',
                 render: (record) => (

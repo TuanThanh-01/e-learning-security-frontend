@@ -15,9 +15,9 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
   return (
     <Modal
       open={open}
-      title={item === null ? 'Create New Topic' : 'Update Topic'}
-      okText={item === null ? 'Add' : 'Update'}
-      cancelText='Cancel'
+      title={item === null ? 'Tạo chủ đề mới' : 'Cập nhật chủ đề'}
+      okText={item === null ? 'Thêm mới' : 'Cập nhật'}
+      cancelText='Hủy'
       onCancel={onCancel}
       onOk={() => {
         form
@@ -41,11 +41,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
       >
         <Form.Item
           name='name'
-          label='Topic Name'
+          label='Tên chủ đề'
           rules={[
             {
               required: true,
-              message: 'Please enter topic name!',
+              message: 'Hãy nhập tên chủ đề!',
             },
           ]}
         >

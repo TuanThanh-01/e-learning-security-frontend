@@ -23,11 +23,9 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
   return (
     <Modal
       open={open}
-      title={
-        item === null ? 'Create New Challenge CTF' : 'Update Challenge CTF'
-      }
-      okText={item === null ? 'Add' : 'Update'}
-      cancelText='Cancel'
+      title={item === null ? 'Tạo mới thử thách CTF' : 'Cập nhật thử thách CTF'}
+      okText={item === null ? 'Thêm mới' : 'Cập nhật'}
+      cancelText='Hủy'
       onCancel={onCancel}
       onOk={() => {
         form
@@ -51,11 +49,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
       >
         <Form.Item
           name='title'
-          label='Title'
+          label='Tiêu đề'
           rules={[
             {
               required: true,
-              message: 'Please enter title',
+              message: 'Hãy nhập tiêu đề!',
             },
           ]}
         >
@@ -63,11 +61,11 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
         </Form.Item>
         <Form.Item
           name='content'
-          label='Content'
+          label='Nội dung'
           rules={[
             {
               required: true,
-              message: 'Please enter content!',
+              message: 'Hãy nhập nội dung!',
             },
           ]}
         >
@@ -77,18 +75,18 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
           <Form.Item
             style={{ width: '45%' }}
             name='level'
-            label='Level'
+            label='Mức độ'
             rules={[
               {
                 required: true,
-                message: 'Please choose level!',
+                message: 'Hãy chọn mức độ!',
               },
             ]}
           >
             <Select>
-              <Select.Option value='easy'>Easy</Select.Option>
-              <Select.Option value='medium'>Medium</Select.Option>
-              <Select.Option value='hard'>Hard</Select.Option>
+              <Select.Option value='easy'>Dễ</Select.Option>
+              <Select.Option value='medium'>Trung bình</Select.Option>
+              <Select.Option value='hard'>Khó</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -98,7 +96,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
             rules={[
               {
                 required: true,
-                message: 'Please choose tag!',
+                message: 'Hãy chọn chủ đề!',
               },
             ]}
           >
@@ -125,7 +123,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
             rules={[
               {
                 required: true,
-                message: 'Please enter flag',
+                message: 'Hãy nhập cờ!',
               },
             ]}
           >
@@ -135,12 +133,12 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
           </Form.Item>
           <Form.Item
             name='point'
-            label='Point'
+            label='Điểm'
             style={{ width: '45%' }}
             rules={[
               {
                 required: true,
-                message: 'Please enter point',
+                message: 'Hãy nhập điểm!',
               },
             ]}
           >
@@ -171,7 +169,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
               }
             }}
           >
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            <Button icon={<UploadOutlined />}>Tải file</Button>
           </Upload>
         </Form.Item>
       </Form>

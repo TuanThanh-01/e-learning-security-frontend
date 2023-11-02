@@ -4,6 +4,7 @@ import Search from 'antd/es/input/Search';
 import axios from 'axios';
 import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
 const CategoryLesson = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +19,18 @@ const CategoryLesson = () => {
       const response = await axios.get(
         `http://localhost:8082/api/v1/category-lesson/all`
       );
+      response.data.forEach((categoryLesson) => {
+        if (categoryLesson.created_at !== null) {
+          categoryLesson.created_at = convertISOToCustomFormat(
+            categoryLesson.created_at
+          );
+        }
+        if (categoryLesson.updated_at !== null) {
+          categoryLesson.updated_at = convertISOToCustomFormat(
+            categoryLesson.updated_at
+          );
+        }
+      });
       setCategoryLessonData(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -45,10 +58,10 @@ const CategoryLesson = () => {
         data
       );
       await getCategoryLessonData();
-      message.success('Create new category lesson success!', 3);
+      message.success('Tạo mới danh mục bài học thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
@@ -61,10 +74,10 @@ const CategoryLesson = () => {
         data
       );
       await getCategoryLessonData();
-      message.success('Update category lesson success!', 3);
+      message.success('Cập nhật danh mục bài học thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       setIsLoading(false);
       return false;
     }
@@ -86,10 +99,10 @@ const CategoryLesson = () => {
         `http://localhost:8082/api/v1/category-lesson/delete/${id}`
       );
       await getCategoryLessonData();
-      message.success('Delete category lesson success', 3);
+      message.success('Xóa danh mục bài học thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
@@ -125,7 +138,7 @@ const CategoryLesson = () => {
             }}
           >
             <Search
-              placeholder='Enter category lesson name'
+              placeholder='Nhập tên danh mục bài học'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -143,7 +156,7 @@ const CategoryLesson = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateCategory}
               >
-                Add
+                Thêm mới
               </Button>
             </div>
           </div>
@@ -161,7 +174,7 @@ const CategoryLesson = () => {
             columns={[
               { title: 'ID', dataIndex: 'id' },
               {
-                title: 'Category Name',
+                title: 'Tên danh mục',
                 dataIndex: 'category_name',
                 filteredValue: [searchedText],
                 onFilter: (value, record) => {
@@ -171,19 +184,19 @@ const CategoryLesson = () => {
                 },
               },
               {
-                title: 'Description',
+                title: 'Mô tả',
                 dataIndex: 'description',
               },
               {
-                title: 'Created At',
+                title: 'Thời gian tạo',
                 dataIndex: 'created_at',
               },
               {
-                title: 'Updated At',
+                title: 'Thời gian cập nhật',
                 dataIndex: 'updated_at',
               },
               {
-                title: 'Action',
+                title: '',
                 dataIndex: '',
                 key: 'x',
                 render: (record) => (

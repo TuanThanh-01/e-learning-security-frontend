@@ -3,7 +3,8 @@ import { Avatar, Button, Spin, Table, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
 import CollectionCreateForm from './collectionCreateForm';
-import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
 const User = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +17,14 @@ const User = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`http://localhost:8082/api/v1/user/all`);
+      response.data.forEach((user) => {
+        if (user.created_at !== null) {
+          user.created_at = convertISOToCustomFormat(user.created_at);
+        }
+        if (user.updated_at !== null) {
+          user.updated_at = convertISOToCustomFormat(user.updated_at);
+        }
+      });
       setUserData(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -55,10 +64,10 @@ const User = () => {
         }
       );
       await getUserData();
-      message.success('Create user success!', 3);
+      message.success('Tạo mới người dùng thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
@@ -80,10 +89,10 @@ const User = () => {
         formData
       );
       await getUserData();
-      message.success('Update user success!', 3);
+      message.success('Cập nhật người dùng thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       setIsLoading(false);
       return false;
     }
@@ -107,16 +116,16 @@ const User = () => {
         `http://localhost:8082/api/v1/user/${id}`
       );
       await getUserData();
-      message.success('Delete user success', 3);
+      message.success('Xóa người dùng thành công', 3);
       return true;
     } catch (error) {
-      message.error('An error occur!');
+      message.error('Có lỗi xảy ra');
       return false;
     }
   };
 
-  const handleDeleteUserById = (topicId) => {
-    if (deleteUserById(topicId)) {
+  const handleDeleteUserById = (userId) => {
+    if (deleteUserById(userId)) {
       setIsLoading(true);
     }
   };
@@ -146,7 +155,7 @@ const User = () => {
             }}
           >
             <Search
-              placeholder='Enter firstname, lastname, email, student identity'
+              placeholder='Nhập tên, họ, email hoặc mã sinh viên'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -164,7 +173,7 @@ const User = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateUser}
               >
-                Add
+                Thêm mới
               </Button>
             </div>
           </div>
@@ -182,7 +191,7 @@ const User = () => {
             columns={[
               { title: 'ID', dataIndex: 'id' },
               {
-                title: 'Avatar',
+                title: 'Ảnh đại diện',
                 dataIndex: 'avatar',
                 render: (imageUrl) => (
                   <Avatar
@@ -194,7 +203,7 @@ const User = () => {
                 ),
               },
               {
-                title: 'First Name',
+                title: 'Tên',
                 dataIndex: 'firstname',
                 filteredValue: [searchedText],
                 onFilter: (value, record) => {
@@ -215,11 +224,11 @@ const User = () => {
                 },
               },
               {
-                title: 'Last Name',
+                title: 'Họ',
                 dataIndex: 'lastname',
               },
               {
-                title: 'Student Identity',
+                title: 'Mã sinh viên',
                 dataIndex: 'student_identity',
               },
               {
@@ -228,15 +237,15 @@ const User = () => {
               },
 
               {
-                title: 'Created At',
+                title: 'Thời gian tạo',
                 dataIndex: 'created_at',
               },
               {
-                title: 'Updated At',
+                title: 'Thời gian cập nhật',
                 dataIndex: 'updated_at',
               },
               {
-                title: 'Action',
+                title: '',
                 dataIndex: '',
                 key: 'x',
                 render: (record) => (
