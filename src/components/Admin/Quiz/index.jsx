@@ -1,4 +1,8 @@
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { Avatar, Button, Card, Col, List, Row, Spin } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
@@ -17,70 +21,91 @@ const Quiz = () => {
     {
       id: 1,
       title: 'Title 1',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
-      id: 1,
+      id: 2,
       title: 'Title 2',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
-      id: 1,
+      id: 3,
       title: 'Title 3',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 4,
       title: 'Title 4',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 5,
       title: 'Title 5',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 6,
       title: 'Title 6',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 7,
       title: 'Title 7',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 8,
       title: 'Title 8',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 9,
       title: 'Title 9',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 10,
       title: 'Title 10',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 11,
       title: 'Title 11',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
     {
+      id: 12,
       title: 'Title 12',
-      content:
-        'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+      description: 'We supply a series of design principles',
+      imageCover:
+        'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
     },
   ];
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ height: '100vh' }}>
       {isLoading ? (
         <Spin
           style={{
@@ -92,14 +117,14 @@ const Quiz = () => {
       ) : (
         <div>
           <div
+            className='mb-5'
             style={{
-              marginBottom: 16,
               display: 'flex',
               justifyContent: 'space-between',
             }}
           >
             <Search
-              placeholder='Enter quiz name'
+              placeholder='Nhập tên bài trắc nghiệm'
               allowClear
               style={{ width: '20rem' }}
               onSearch={(value) => {
@@ -117,34 +142,40 @@ const Quiz = () => {
                 style={{ background: '#008170', width: '8rem' }}
                 onClick={handleCreateQuiz}
               >
-                Add
+                Thêm mới
               </Button>
             </div>
           </div>
           <List
             itemLayout='vertical'
             size='large'
+            grid={{
+              gutter: 16,
+              xs: 1,
+              sm: 2,
+              md: 2,
+              lg: 3,
+              xl: 3,
+              xxl: 3,
+            }}
             pagination={{
-              onChange: (page) => {
-                console.log(page);
-              },
-              pageSize: 3,
+              pageSize: 6,
             }}
             dataSource={data}
             renderItem={(item) => (
-              <List.Item
-                key={item.title}
-                itemID={item.id}
-                extra={
-                  <img
-                    width={272}
-                    alt='logo'
-                    src='https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-                  />
-                }
-              >
-                <List.Item.Meta title={<a href={item.href}>{item.title}</a>} />
-                {item.content}
+              <List.Item key={item.title} itemID={item.id}>
+                <Card
+                  cover={<img src={item.imageCover} />}
+                  actions={[
+                    <Button
+                      type='primary'
+                      icon={<EditOutlined key='edit' />}
+                    />,
+                    <Button danger icon={<DeleteOutlined key='delete' />} />,
+                  ]}
+                >
+                  <Meta title={item.title} description={item.description} />
+                </Card>
               </List.Item>
             )}
           />

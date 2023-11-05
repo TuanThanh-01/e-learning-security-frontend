@@ -328,7 +328,7 @@ const ChallengeCTF = () => {
                       <div>
                         <CheckOutlined style={{ color: '#1A5D1A' }} />
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
-                          Đã nộp :{' '}
+                          Đã làm :{' '}
                         </p>
                         {item.total_solve}
                       </div>

@@ -108,34 +108,34 @@ const AdminHomePage = () => {
           defaultSelectedKeys={['category-lesson']}
         >
           <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
-            Category Lesson
+            Danh mục bài học
           </Menu.Item>
           <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
-            Challenge CTF
+            Thử thách CTF
           </Menu.Item>
           <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
-            Lesson
+            Bài học
           </Menu.Item>
           <Menu.Item key='post' icon={<UnorderedListOutlined />}>
-            Post
+            Bài viết
           </Menu.Item>{' '}
           <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
-            Progress
+            Tiến độ bài học
           </Menu.Item>
           <Menu.Item key='question' icon={<UnorderedListOutlined />}>
-            Question
+            Danh mục câu hỏi
           </Menu.Item>
           <Menu.Item key='quiz' icon={<UnorderedListOutlined />}>
-            Quiz
+            Bài Trắc nghiệm
           </Menu.Item>
           <Menu.Item key='score' icon={<UnorderedListOutlined />}>
-            Score
+            Quản lý điểm
           </Menu.Item>
           <Menu.Item key='topic' icon={<UnorderedListOutlined />}>
-            Topic
+            Chủ đề
           </Menu.Item>
           <Menu.Item key='user' icon={<UnorderedListOutlined />}>
-            User
+            Người dùng
           </Menu.Item>
         </Menu>
       </Sider>
@@ -157,6 +157,7 @@ const AdminHomePage = () => {
               {getCurrentDateFormatVietnamese()}
             </p>
           </div>
+
           <div className='mr-4'>
             <b className='mr-3'>Xin chào, Administrator</b>
             <Avatar size='large' icon={<UserOutlined />} className='' />
