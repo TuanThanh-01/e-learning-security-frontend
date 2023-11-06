@@ -74,6 +74,7 @@ const Lesson = () => {
                   key={item.id}
                   extra={<img src={item.conver_image} width={272} />}
                   style={{ position: 'relative' }}
+                  className='shadow-sm mb-3'
                 >
                   <List.Item.Meta
                     title={item.title}
@@ -85,11 +86,11 @@ const Lesson = () => {
                         className='mr-2'
                         style={{ color: '#068FFF', fontSize: '1rem' }}
                       />
-                      <p
-                        className='d-inline font-italic'
-                        style={{ fontSize: '13px' }}
-                      >
-                        {item.created_at}
+                      <p className='d-inline' style={{ fontSize: '13px' }}>
+                        Đăng vào{' '}
+                        <span className='font-weight-bold'>
+                          {item.created_at}
+                        </span>
                       </p>
                     </div>
                   </div>
