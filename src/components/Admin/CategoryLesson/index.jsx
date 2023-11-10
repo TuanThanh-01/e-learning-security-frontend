@@ -66,7 +66,7 @@ const CategoryLesson = () => {
     }
   };
 
-  const sendUpdateTopic = async (data, id) => {
+  const sendUpdateCategoryLesson = async (data, id) => {
     setIsLoading(true);
     try {
       const response = await axios.put(
@@ -88,7 +88,7 @@ const CategoryLesson = () => {
     if (item === null) {
       sendDataCreateCategoryLesson(values);
     } else {
-      sendUpdateTopic(values, item.id);
+      sendUpdateCategoryLesson(values, item.id);
     }
     setOpenModal(false);
   };
