@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Avatar, Button, Spin, Table, message } from 'antd';
+import { Avatar, Button, Select, Spin, Table, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ const Question = () => {
   const [questionData, setQuestionData] = useState([]);
   const [quizNameData, setQuizNameData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
+  const [selectData, setSelectData] = useState('');
   const [item, setItem] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [openModalFormFile, setOpenModalFormFile] = useState(false);
@@ -138,6 +139,9 @@ const Question = () => {
     setItem(null);
     setOpenModal(true);
   };
+  const handleChange = (value) => {
+    setSelectData(value);
+  };
 
   const onCreate = (value) => {
     const questionRequest = {
@@ -160,6 +164,7 @@ const Question = () => {
   const onCreateFormFile = (value) => {
     value.file = value.file[0].originFileObj;
     sendDataCreateQuestionFile(value);
+    setOpenModalFormFile(false);
   };
 
   return (
@@ -181,18 +186,25 @@ const Question = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Search
-              placeholder='Nhập tên câu hỏi'
-              allowClear
-              style={{ width: '20rem' }}
-              onSearch={(value) => {
-                setSearchedText(value);
-              }}
-              onChange={(e) => {
-                setSearchedText(e.target.value);
-              }}
+            <div>
+              <Search
+                placeholder='Nhập tên câu hỏi'
+                allowClear
+                style={{ width: '12rem' }}
+                onSearch={(value) => {
+                  setSearchedText(value);
+                }}
+                onChange={(e) => {
+                  setSearchedText(e.target.value);
+                }}
+              />
+            </div>
+            <Select
+              placeholder='Chọn tên bài trắc nghiệm'
+              style={{ width: '15rem' }}
+              options={quizNameData}
+              onChange={handleChange}
             />
-
             <div>
               <Button
                 className='mr-3'
@@ -220,7 +232,7 @@ const Question = () => {
               setItem(null);
               setOpenModal(false);
             }}
-          ></CollectionCreateForm>
+          />
           <CollectionCreateFormFile
             open={openModalFormFile}
             quizData={quizNameData}
@@ -228,7 +240,7 @@ const Question = () => {
             onCancel={() => {
               setOpenModalFormFile(false);
             }}
-          ></CollectionCreateFormFile>
+          />
           <Table
             rowKey={(record) => record.id}
             columns={[
@@ -275,6 +287,14 @@ const Question = () => {
               {
                 title: 'Tên bài trắc nghiệm',
                 dataIndex: 'quizTitle',
+                filteredValue: [selectData],
+                onFilter: (value, record) => {
+                  console.log(record.quizTitle);
+                  console.log(value);
+                  return String(record.quizTitle)
+                    .toLocaleLowerCase()
+                    .includes(value.toLocaleLowerCase());
+                },
               },
               {
                 title: '',

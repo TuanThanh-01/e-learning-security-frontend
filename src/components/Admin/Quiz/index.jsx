@@ -1,16 +1,12 @@
-import {
-  EditOutlined,
-  DeleteOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Avatar, Button, Card, Col, List, Row, Spin, message } from 'antd';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Card, List, Spin, message } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
-import React, { useEffect, useState } from 'react';
-import CollectionCreateForm from './collectionCreateForm';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
+import CollectionCreateForm from './collectionCreateForm';
 
 const Quiz = () => {
   const [isLoading, setIsLoading] = useState(false);
