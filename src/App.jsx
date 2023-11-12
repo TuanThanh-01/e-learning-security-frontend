@@ -8,6 +8,7 @@ import Lesson from './components/Lesson';
 import ChallengeCTF from './components/ChallengeCTF';
 import Discuss from './components/Discuss';
 import Quiz from './components/Quiz';
+import CreateLesson from './components/Admin/Lesson/createLesson';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/admin' element={<AdminHomePage />} />
+        <Route path='/admin/create-lesson' element={<CreateLesson />} />
         <Route element={<HomePage />}>
           <Route path='/lesson' element={<Lesson />} />
           <Route path='/quiz' element={<Quiz />} />

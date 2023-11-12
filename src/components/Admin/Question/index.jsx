@@ -200,9 +200,9 @@ const Question = () => {
               />
             </div>
             <Select
-              placeholder='Chọn tên bài trắc nghiệm'
+              defaultValue=''
               style={{ width: '15rem' }}
-              options={quizNameData}
+              options={[{ value: '', label: '---Tất cả---' }, ...quizNameData]}
               onChange={handleChange}
             />
             <div>

@@ -1,20 +1,19 @@
 import {
   BulbOutlined,
-  CheckOutlined,
-  FlagOutlined,
-  FireOutlined,
-  TagOutlined,
   CalendarOutlined,
-  FileOutlined,
+  CheckOutlined,
   DownloadOutlined,
-  FilterOutlined,
+  FileOutlined,
+  FireOutlined,
+  FlagOutlined,
+  TagOutlined,
 } from '@ant-design/icons';
 import { Button, Col, List, Row, Select, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
-import React, { useEffect, useMemo, useState } from 'react';
-import CollectionCreateForm from './collectionCreateForm';
-import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import axios from 'axios';
+import React, { useEffect, useMemo, useState } from 'react';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
+import CollectionCreateForm from './collectionCreateForm';
 
 const ChallengeCTF = () => {
   const [isLoading, setIsLoading] = useState(false);

@@ -66,7 +66,7 @@ const HeaderHomePage = () => {
         }}
       />
       <div className='mr-4'>
-        <b className='mr-3'>Xin chào, Administrator</b>
+        <b className='mr-3'>Xin chào, Nguyễn Tuấn Thành</b>
         <Avatar size='large' icon={<UserOutlined />} />
       </div>
     </Header>
