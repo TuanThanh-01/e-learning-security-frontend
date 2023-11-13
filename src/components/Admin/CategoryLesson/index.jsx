@@ -84,7 +84,6 @@ const CategoryLesson = () => {
   };
 
   const onCreate = (values) => {
-    console.log(values);
     if (item === null) {
       sendDataCreateCategoryLesson(values);
     } else {

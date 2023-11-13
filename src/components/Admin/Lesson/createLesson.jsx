@@ -1,60 +1,26 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, Modal, Row, Select, Upload } from 'antd';
+import { Col, Form, Input, Modal, Row, Select, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React, { useRef, useState } from 'react';
-import './createLessonStyle.css';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
-const modules = {
-  toolbar: {
-    container: [
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ font: [] }],
-      [{ size: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' },
-      ],
-      ['link', 'image', 'video'],
-      ['code-block'],
-      ['clean'],
-    ],
-  },
-  clipboard: {
-    matchVisual: false,
-  },
-};
-
-const format = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-  'video',
-  'code-block',
-];
+import './createLessonStyle.css';
 
 const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState('');
   const reactQuillRef = useRef < ReactQuill > null;
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+  console.log(item);
+  useEffect(() => {
+    if (item !== null) {
+      console.log('hadfas');
+      form.setFieldValue('title', item.title);
+      form.setFieldValue('description', item.description);
+      form.setFieldValue('lstCategoryLessonName', item.category_lesson);
+      // setValue(item.content);
+      // form.setFieldValue('content', item.content);
+    }
+  });
 
   return (
     <Modal
@@ -128,7 +94,6 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
                     mode='multiple'
                     style={{ width: '90%' }}
                     allowClear
-                    onChange={handleChange}
                     options={categoryLesson}
                   />
                 </Form.Item>
@@ -137,12 +102,16 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
                 <Form.Item
                   label='Ảnh bìa'
                   name='coverImage'
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Hãy chọn danh mục cho bài học',
-                    },
-                  ]}
+                  rules={
+                    item === null
+                      ? [
+                          {
+                            required: true,
+                            message: 'Hãy chọn ảnh bìa',
+                          },
+                        ]
+                      : [{ required: false }]
+                  }
                 >
                   <Upload
                     maxCount={1}
@@ -179,19 +148,59 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
                 theme='snow'
                 style={{ height: '40rem' }}
                 className='mb-4'
-                modules={modules}
-                formats={format}
+                modules={{
+                  toolbar: {
+                    container: [
+                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                      [{ font: [] }],
+                      [{ size: [] }],
+                      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                      [
+                        { list: 'ordered' },
+                        { list: 'bullet' },
+                        { indent: '-1' },
+                        { indent: '+1' },
+                      ],
+                      ['link', 'image', 'video'],
+                      ['code-block'],
+                      ['clean'],
+                    ],
+                  },
+                  clipboard: {
+                    matchVisual: false,
+                  },
+                }}
+                formats={[
+                  'header',
+                  'font',
+                  'size',
+                  'bold',
+                  'italic',
+                  'underline',
+                  'strike',
+                  'blockquote',
+                  'list',
+                  'bullet',
+                  'indent',
+                  'link',
+                  'image',
+                  'video',
+                  'code-block',
+                ]}
                 value={value}
                 onChange={setValue}
               />
             </Form.Item>
           </Form>
         </Col>
-        <Col
-          span={12}
-          dangerouslySetInnerHTML={{ __html: value }}
-          className='container border-left border-dark'
-        ></Col>
+        <Col span={12} className='container border-left border-dark'>
+          <div className='ql-snow'>
+            <div
+              className='ql-editor'
+              dangerouslySetInnerHTML={{ __html: value }}
+            ></div>
+          </div>
+        </Col>
       </Row>
     </Modal>
   );

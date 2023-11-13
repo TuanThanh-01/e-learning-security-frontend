@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { dataLesson } from '../../../utils/data';
-import { Button, List, Spin, Tag } from 'antd';
+import { Button, List, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import { CalendarOutlined } from '@ant-design/icons';
 import CreateLesson from './createLesson';
+import { convertDateVnCustom } from '../../../utils/ConvertDateVn';
 import axios from 'axios';
 
 const Lesson = () => {
@@ -41,11 +41,36 @@ const Lesson = () => {
     }
   };
 
+  const sendDataCreateLesson = async (values) => {
+    const formData = new FormData();
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('content', values.content);
+    formData.append('coverImage', values.coverImage);
+    formData.append('lstCategoryLessonName', values.lstCategoryLessonName);
+    try {
+      const response = await axios.post(
+        'http://localhost:8082/api/v1/lesson/create',
+        formData
+      );
+      await getLessonData();
+      message.success('Tạo mới bài học thành công');
+    } catch (error) {
+      setIsLoading(false);
+      message.error('Có lỗi xảy ra');
+    }
+  };
+
   const handleSearch = () => {};
 
   const handleCreateLesson = () => {
     setItem(null);
     setOpenModal(true);
+  };
+
+  const handleUpdateLesson = (item) => {
+    setOpenModal(true);
+    setItem(item);
   };
 
   useEffect(() => {
@@ -57,7 +82,14 @@ const Lesson = () => {
   }, []);
 
   const onCreate = (values) => {
-    console.log(values);
+    console.log(values.coverImage.file);
+    values.coverImage = values.coverImage.file;
+    if (item === null) {
+      sendDataCreateLesson(values);
+    } else {
+      // sendDataUpdateLesson(values, item.id);
+    }
+    setOpenModal(false);
   };
 
   return (
@@ -120,13 +152,18 @@ const Lesson = () => {
               itemLayout='vertical'
               size='large'
               pagination={{ pageSize: 4 }}
-              dataSource={dataLesson}
+              dataSource={lessonData}
               renderItem={(item) => (
                 <List.Item
                   key={item.id}
-                  extra={<img src={item.conver_image} width={272} />}
+                  extra={
+                    <img
+                      src={`http://localhost:8082${item.cover_image}`}
+                      width={272}
+                    />
+                  }
                   style={{ position: 'relative' }}
-                  className='shadow-sm mb-3'
+                  className='shadow mb-3'
                 >
                   <List.Item.Meta
                     title={item.title}
@@ -139,9 +176,11 @@ const Lesson = () => {
                         style={{ color: '#068FFF', fontSize: '1rem' }}
                       />
                       <p className='d-inline' style={{ fontSize: '13px' }}>
-                        Đăng vào{' '}
+                        Cập nhật vào{' '}
                         <span className='font-weight-bold'>
-                          {item.created_at}
+                          {item.updated_at !== null
+                            ? convertDateVnCustom(item.updated_at)
+                            : convertDateVnCustom(item.created_at)}
                         </span>
                       </p>
                     </div>
@@ -163,7 +202,13 @@ const Lesson = () => {
                       ))}
                     </div>
                     <div>
-                      <Tag color='#2db7f5' style={{ cursor: 'pointer' }}>
+                      <Tag
+                        color='#2db7f5'
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          handleUpdateLesson(item);
+                        }}
+                      >
                         Chỉnh sửa bài học
                       </Tag>
                       <Tag color='red-inverse' style={{ cursor: 'pointer' }}>
