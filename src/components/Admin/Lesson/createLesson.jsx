@@ -10,8 +10,8 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState('');
   const reactQuillRef = useRef < ReactQuill > null;
-  console.log(item);
   useEffect(() => {
+    setValue('');
     if (item !== null) {
       console.log('hadfas');
       form.setFieldValue('title', item.title);
@@ -19,8 +19,11 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
       form.setFieldValue('lstCategoryLessonName', item.category_lesson);
       // setValue(item.content);
       // form.setFieldValue('content', item.content);
+    } else {
+      console.log('call reset field');
+      form.resetFields();
     }
-  });
+  }, [open]);
 
   return (
     <Modal
