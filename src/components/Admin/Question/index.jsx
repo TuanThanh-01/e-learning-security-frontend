@@ -289,8 +289,6 @@ const Question = () => {
                 dataIndex: 'quizTitle',
                 filteredValue: [selectData],
                 onFilter: (value, record) => {
-                  console.log(record.quizTitle);
-                  console.log(value);
                   return String(record.quizTitle)
                     .toLocaleLowerCase()
                     .includes(value.toLocaleLowerCase());

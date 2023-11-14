@@ -144,7 +144,7 @@ const ChallengeCTF = () => {
                         )}
                       </div>
                     }
-                    className='shadow mb-5 border border-dark'
+                    className='shadow mb-5 border'
                   >
                     <div
                       style={{

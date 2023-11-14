@@ -105,7 +105,7 @@ const ChallengeCTF = () => {
         `http://localhost:8082/api/v1/challenge-ctf/${challengeCTFId}`
       );
       await getChallengeCTFData();
-      message.success('Xóa thử thách CTF dùng thành công', 3);
+      message.success('Xóa thử thách CTF thành công', 3);
       return true;
     } catch (error) {
       message.error('Có lỗi xảy ra');

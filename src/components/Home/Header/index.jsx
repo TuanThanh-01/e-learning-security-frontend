@@ -1,10 +1,11 @@
-import { Avatar, Tabs } from 'antd';
+import { Avatar, ConfigProvider, Tabs } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import logoPtit from '../../../assets/logo.png';
 import React, { useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import TabPane from 'antd/es/tabs/TabPane';
 import { Link, useNavigate } from 'react-router-dom';
+import './style.css';
 
 const HeaderHomePage = () => {
   const [currentItem, setCurrentItem] = useState('lesson');
@@ -38,8 +39,9 @@ const HeaderHomePage = () => {
       style={{
         padding: 0,
         display: 'flex',
-        backgroundColor: '#fff',
+        backgroundColor: '#ad171c',
         justifyContent: 'space-between',
+        color: '#fff',
       }}
     >
       <div style={{ display: 'flex' }}>
@@ -47,13 +49,19 @@ const HeaderHomePage = () => {
           <img
             src={logoPtit}
             className='mr-2 mt-2'
-            style={{ height: '2.5rem' }}
+            style={{
+              height: '2.5rem',
+              backgroundColor: '#fff',
+              borderRadius: '50%',
+              padding: '2px',
+            }}
           />
           <b className='text-center' style={{ fontSize: '1.1rem' }}>
             PTIT Learning InfoSec
           </b>
         </div>
       </div>
+      <ConfigProvider></ConfigProvider>
       <Tabs
         items={items}
         mode='horizontal'
@@ -61,8 +69,12 @@ const HeaderHomePage = () => {
         className='mt-2'
         size='large'
         onChange={handleOnChangePage}
+        style={{
+          color: '#fff !important',
+        }}
         tabBarStyle={{
           fontWeight: 600,
+          color: '#fff !important',
         }}
       />
       <div className='mr-4'>

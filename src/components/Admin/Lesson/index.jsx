@@ -5,11 +5,13 @@ import { CalendarOutlined } from '@ant-design/icons';
 import CreateLesson from './createLesson';
 import { convertDateVnCustom } from '../../../utils/ConvertDateVn';
 import axios from 'axios';
+import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
 
 const Lesson = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [lessonData, setLessonData] = useState([]);
   const [item, setItem] = useState({});
+  const [searchResult, setSearchResult] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [categoryLessonData, setCategoryLessonData] = useState();
 
@@ -30,11 +32,14 @@ const Lesson = () => {
   };
 
   const getLessonData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         'http://localhost:8082/api/v1/lesson/all'
       );
       setLessonData(response.data);
+      setSearchResult(response.data);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       message.error('Có lỗi xảy ra');
@@ -48,6 +53,7 @@ const Lesson = () => {
     formData.append('content', values.content);
     formData.append('coverImage', values.coverImage);
     formData.append('lstCategoryLessonName', values.lstCategoryLessonName);
+    setIsLoading(true);
     try {
       const response = await axios.post(
         'http://localhost:8082/api/v1/lesson/create',
@@ -61,7 +67,61 @@ const Lesson = () => {
     }
   };
 
-  const handleSearch = () => {};
+  const sendDataUpdateLesson = async (values, id) => {
+    const formData = new FormData();
+    formData.append('title', values.title);
+    formData.append('description', values.description);
+    formData.append('content', values.content);
+    formData.append('coverImage', values.coverImage);
+    formData.append('lstCategoryLessonName', values.lstCategoryLessonName);
+    setIsLoading(true);
+    try {
+      const response = await axios.put(
+        `http://localhost:8082/api/v1/lesson/update/${id}`,
+        formData
+      );
+      await getLessonData();
+      message.success('Cập nhật bài học thành công');
+    } catch (error) {
+      setIsLoading(false);
+      message.error('Có lỗi xảy ra');
+    }
+  };
+
+  const deleteLessonById = async (lessonId) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.delete(
+        `http://localhost:8082/api/v1/lesson/${lessonId}`
+      );
+      await getLessonData();
+      setIsLoading(false);
+      message.success('Xóa bài học thành công', 3);
+      return true;
+    } catch (error) {
+      setIsLoading(false);
+      message.error('Có lỗi xảy ra');
+      return false;
+    }
+  };
+
+  const handleSearch = (e) => {
+    if (e.target.value !== '') {
+      setSearchResult(
+        lessonData.filter((item) =>
+          removeVietnameseTones(item.title.toLowerCase()).includes(
+            removeVietnameseTones(e.target.value.toLowerCase())
+          )
+        )
+      );
+    } else {
+      setSearchResult(lessonData);
+    }
+  };
+
+  const handleDeleteLesson = (lessonId) => {
+    deleteLessonById(lessonId);
+  };
 
   const handleCreateLesson = () => {
     setItem(null);
@@ -82,12 +142,14 @@ const Lesson = () => {
   }, []);
 
   const onCreate = (values) => {
-    console.log(values.coverImage.file);
-    values.coverImage = values.coverImage.file;
     if (item === null) {
+      values.coverImage = values.coverImage.file;
       sendDataCreateLesson(values);
     } else {
-      // sendDataUpdateLesson(values, item.id);
+      if (values.coverImage !== undefined) {
+        values.coverImage = values.coverImage.file;
+      }
+      sendDataUpdateLesson(values, item.id);
     }
     setOpenModal(false);
   };
@@ -152,7 +214,7 @@ const Lesson = () => {
               itemLayout='vertical'
               size='large'
               pagination={{ pageSize: 4 }}
-              dataSource={lessonData}
+              dataSource={searchResult}
               renderItem={(item) => (
                 <List.Item
                   key={item.id}
@@ -211,7 +273,13 @@ const Lesson = () => {
                       >
                         Chỉnh sửa bài học
                       </Tag>
-                      <Tag color='red-inverse' style={{ cursor: 'pointer' }}>
+                      <Tag
+                        color='red-inverse'
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          handleDeleteLesson(item.id);
+                        }}
+                      >
                         Xóa bài học
                       </Tag>
                     </div>

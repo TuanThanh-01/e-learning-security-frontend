@@ -9,18 +9,18 @@ import './createLessonStyle.css';
 const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState('');
+  const [image, setImage] = useState('');
   const reactQuillRef = useRef < ReactQuill > null;
   useEffect(() => {
     setValue('');
     if (item !== null) {
-      console.log('hadfas');
       form.setFieldValue('title', item.title);
       form.setFieldValue('description', item.description);
       form.setFieldValue('lstCategoryLessonName', item.category_lesson);
-      // setValue(item.content);
-      // form.setFieldValue('content', item.content);
+      setValue(item.content);
+      form.setFieldValue('content', item.content);
+      setImage(`http://localhost:8082${item.cover_image}`);
     } else {
-      console.log('call reset field');
       form.resetFields();
     }
   }, [open]);

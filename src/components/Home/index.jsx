@@ -7,7 +7,7 @@ import './style.css';
 
 const HomePage = () => {
   return (
-    <Layout style={{ backgroundColor: '#fff' }}>
+    <Layout style={{ backgroundColor: '#F5F5F5' }}>
       <HeaderHomePage />
       <div
         className='container-homePage'
