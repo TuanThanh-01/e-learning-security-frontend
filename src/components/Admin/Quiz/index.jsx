@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Card, List, Spin, message } from 'antd';
+import { Avatar, Button, Card, List, Spin, Table, message } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
 import axios from 'axios';
@@ -11,8 +11,8 @@ import CollectionCreateForm from './collectionCreateForm';
 const Quiz = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [quizData, setQuizData] = useState([]);
-  const [searchResult, setSearchResult] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [searchedText, setSearchedText] = useState('');
   const [item, setItem] = useState({});
 
   const getQuizData = async () => {
@@ -28,7 +28,6 @@ const Quiz = () => {
         }
       });
       setQuizData(response.data);
-      setSearchResult(response.data);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -132,20 +131,6 @@ const Quiz = () => {
     setOpenModal(false);
   };
 
-  const handleSearch = (e) => {
-    if (e.target.value !== '') {
-      setSearchResult(
-        quizData.filter((item) =>
-          removeVietnameseTones(item.name.toLowerCase()).includes(
-            removeVietnameseTones(e.target.value.toLowerCase())
-          )
-        )
-      );
-    } else {
-      setSearchResult(quizData);
-    }
-  };
-
   return (
     <div style={{ height: '100vh' }}>
       {isLoading ? (
@@ -169,7 +154,12 @@ const Quiz = () => {
               placeholder='Nhập tên bài trắc nghiệm'
               allowClear
               style={{ width: '20rem' }}
-              onChange={handleSearch}
+              onSearch={(value) => {
+                setSearchedText(value);
+              }}
+              onChange={(e) => {
+                setSearchedText(e.target.value);
+              }}
             />
 
             <div>
@@ -192,51 +182,73 @@ const Quiz = () => {
               setOpenModal(false);
             }}
           ></CollectionCreateForm>
-          <List
-            itemLayout='vertical'
-            size='large'
-            grid={{
-              gutter: 16,
-              xs: 1,
-              sm: 2,
-              md: 2,
-              lg: 3,
-              xl: 3,
-              xxl: 3,
-            }}
-            pagination={{
-              pageSize: 6,
-            }}
-            dataSource={searchResult}
-            renderItem={(item) => (
-              <List.Item itemID={item.id}>
-                <Card
-                  className='border'
-                  cover={
-                    <img
-                      src={`http://localhost:8082${item.image}`}
-                      height={236}
-                    />
-                  }
-                  actions={[
+          <Table
+            rowKey={(record) => record.id}
+            columns={[
+              { title: 'ID', dataIndex: 'id' },
+              {
+                title: 'Ảnh bìa',
+                dataIndex: 'image',
+                render: (image) => (
+                  <Avatar
+                    shape='square'
+                    size='large'
+                    src={`http://localhost:8082${image}`}
+                    icon
+                  />
+                ),
+              },
+              {
+                title: 'Tên bài trắc nghiệm',
+                dataIndex: 'name',
+                filteredValue: [searchedText],
+                onFilter: (value, record) => {
+                  return String(record.name)
+                    .toLocaleLowerCase()
+                    .includes(value.toLocaleLowerCase());
+                },
+              },
+              {
+                title: 'Mô tả',
+                dataIndex: 'description',
+              },
+              {
+                title: 'Thời gian tạo',
+                dataIndex: 'created_at',
+              },
+              {
+                title: 'Thời gian cập nhật',
+                dataIndex: 'updated_at',
+              },
+              {
+                title: '',
+                dataIndex: '',
+                key: 'x',
+                render: (record) => (
+                  <div>
                     <Button
                       type='primary'
-                      icon={<EditOutlined key='edit' />}
-                      onClick={() => handleUpdateQuiz(item)}
-                    />,
-                    <Button
-                      danger
-                      icon={<DeleteOutlined key='delete' />}
+                      size='small'
+                      icon={<EditOutlined />}
+                      className='mr-2'
                       onClick={() => {
-                        handleDeleteQuizById(item.id);
+                        handleUpdateQuiz(record);
                       }}
-                    />,
-                  ]}
-                >
-                  <Meta title={item.name} description={item.description} />
-                </Card>
-              </List.Item>
-            )}
+                    />
+                    <Button
+                      type='primary'
+                      size='small'
+                      danger
+                      icon={<DeleteOutlined />}
+                      onClick={() => {
+                        handleDeleteQuizById(record.id);
+                      }}
+                    />
+                  </div>
+                ),
+              },
+            ]}
+            dataSource={quizData}
           />
         </div>
       )}
