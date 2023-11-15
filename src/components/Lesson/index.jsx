@@ -84,7 +84,7 @@ const Lesson = () => {
                           backgroundColor: '#fff',
                           borderRadius: '10px',
                         }}
-                        className='shadow-sm mb-3 border'
+                        className='shadow-sm mb-3 border border-danger'
                       >
                         <List.Item.Meta
                           title=<div>
@@ -144,7 +144,7 @@ const Lesson = () => {
                           backgroundColor: '#fff',
                           borderRadius: '10px',
                         }}
-                        className='shadow-sm mb-3 border'
+                        className='shadow-sm mb-3 border border-danger'
                       >
                         <List.Item.Meta
                           title=<div>
