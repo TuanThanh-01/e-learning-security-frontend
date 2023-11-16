@@ -6,9 +6,9 @@ import LoginPage from './components/Login';
 import SignUp from './components/SignUp';
 import Lesson from './components/Lesson';
 import ChallengeCTF from './components/ChallengeCTF';
-import Discuss from './components/Discuss';
 import Quiz from './components/Quiz';
 import CreateLesson from './components/Admin/Lesson/createLesson';
+import Ranking from './components/Discuss';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Route path='/lesson' element={<Lesson />} />
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/challenge-ctf' element={<ChallengeCTF />} />
-          <Route path='/discuss' element={<Discuss />} />
+          <Route path='/ranking' element={<Ranking />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -29,8 +29,8 @@ const HeaderHomePage = () => {
       key: 'challenge-ctf',
     },
     {
-      label: 'Thảo luận',
-      key: 'discuss',
+      label: 'Bảng xếp hạng',
+      key: 'ranking',
     },
   ];
   return (

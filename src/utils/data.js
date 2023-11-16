@@ -267,56 +267,56 @@ export const dataCTF = [
 export const dataQuiz = [
   {
     id: 1,
-    name: 'Đây là tiêu đề bài quiz 1',
-    description: 'Đây là mô tả 1',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 1',
+    created_at: '11/12/2023',
+    score: 1400,
   },
   {
     id: 2,
-    name: 'Đây là tiêu đề bài quiz 2',
-    description: 'Đây là mô tả 2',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 2',
+    created_at: '12/12/2023',
+    score: 1500,
   },
   {
     id: 3,
-    name: 'Đây là tiêu đề bài quiz 3',
-    description: 'Đây là mô tả 3',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 3',
+    created_at: '13/12/2023',
+    score: 1600,
   },
   {
     id: 4,
-    name: 'Đây là tiêu đề bài quiz 4',
-    description: 'Đây là mô tả 4',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 4',
+    created_at: '14/12/2023',
+    score: 1700,
   },
   {
     id: 5,
-    name: 'Đây là tiêu đề bài quiz 5',
-    description: 'Đây là mô tả 5',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 5',
+    created_at: '15/12/2023',
+    score: 1800,
   },
   {
     id: 6,
-    name: 'Đây là tiêu đề bài quiz 6',
-    description: 'Đây là mô tả 6',
-    imageCover:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    created_at: '11/15/2023',
-    updated_at: '11/15/2023',
+    quizName: 'Đây là tiêu đề bài quiz 6',
+    created_at: '16/12/2023',
+    score: 1900,
+  },
+  {
+    id: 7,
+    quizName: 'Đây là tiêu đề bài quiz 7',
+    created_at: '17/12/2023',
+    score: 1900,
+  },
+  {
+    id: 8,
+    quizName: 'Đây là tiêu đề bài quiz 8',
+    created_at: '16/12/2023',
+    score: 1900,
+  },
+  {
+    id: 9,
+    quizName: 'Đây là tiêu đề bài quiz 9',
+    created_at: '16/12/2023',
+    score: 1900,
   },
 ];

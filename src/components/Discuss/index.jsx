@@ -1,7 +1,7 @@
 import { Content } from 'antd/es/layout/layout';
 import React from 'react';
 
-const Discuss = () => {
+const Ranking = () => {
   return (
     <Content style={{ overflow: 'initial' }}>
       <div
@@ -11,10 +11,10 @@ const Discuss = () => {
           overflowY: 'auto',
         }}
       >
-        Discuss
+        Ranking
       </div>
     </Content>
   );
 };
 
-export default Discuss;
+export default Ranking;

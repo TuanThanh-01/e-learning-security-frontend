@@ -7,14 +7,19 @@ import React, { useEffect, useState } from 'react';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import { dataQuiz } from '../../utils/data';
+import VirtualList from 'rc-virtual-list';
+import { Avatar, message } from 'antd';
+import { TrophyOutlined } from '@ant-design/icons';
+
+const ContainerHeight = 400;
 
 const Quiz = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quizData, setQuizData] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
+  const [historyResult, setHistoryResult] = useState(dataQuiz);
 
   const getQuizData = async () => {
-    setIsLoading(true);
     try {
       const response = await axios.get(`http://localhost:8082/api/v1/quiz/all`);
       response.data.forEach((quiz) => {
@@ -27,7 +32,6 @@ const Quiz = () => {
       });
       setQuizData(response.data);
       setSearchResult(response.data);
-      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +41,7 @@ const Quiz = () => {
     getQuizData();
     setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 1000);
   }, []);
 
   const handleSearch = (e) => {
@@ -58,6 +62,7 @@ const Quiz = () => {
     <Content style={{ overflow: 'initial' }}>
       {isLoading ? (
         <Spin
+          size='large'
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -136,7 +141,69 @@ const Quiz = () => {
                   Lịch sử làm bài
                 </h4>
               </div>
-              <div></div>
+              <div className='container'>
+                <List
+                  style={{
+                    backgroundColor: '#fff',
+                    width: '100%',
+                    borderRadius: '10px',
+                    transform: 'translateY(-3%)',
+                  }}
+                  className='shadow mt-4'
+                >
+                  <VirtualList
+                    data={historyResult}
+                    height={ContainerHeight}
+                    itemHeight={47}
+                    itemKey='email'
+                  >
+                    {(item) => (
+                      <List.Item key={item.id} className='p-2'>
+                        <div
+                          className='container mt-2 mb-2'
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignContent: 'center',
+                          }}
+                        >
+                          <div>
+                            <p
+                              style={{
+                                display: 'inline',
+                                fontWeight: 'lighter',
+                              }}
+                              className='mr-3'
+                            >
+                              {item.created_at}
+                            </p>
+                            <p
+                              style={{
+                                fontWeight: 700,
+                                display: 'inline',
+                                fontSize: '1.2rem',
+                              }}
+                            >
+                              {item.quizName}
+                            </p>
+                          </div>
+                          <div>
+                            <TrophyOutlined
+                              style={{ color: '#FFC436', fontSize: '1.2rem' }}
+                            />
+                            <p
+                              className='d-inline ml-3'
+                              style={{ fontWeight: 500, fontSize: '1.2rem' }}
+                            >
+                              {item.score}
+                            </p>
+                          </div>
+                        </div>
+                      </List.Item>
+                    )}
+                  </VirtualList>
+                </List>
+              </div>
             </div>
           </div>
         </div>
