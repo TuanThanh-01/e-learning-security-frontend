@@ -10,6 +10,7 @@ import { dataQuiz } from '../../utils/data';
 import VirtualList from 'rc-virtual-list';
 import { Avatar, message } from 'antd';
 import { TrophyOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const ContainerHeight = 400;
 
@@ -115,7 +116,7 @@ const Quiz = () => {
               }}
               dataSource={searchResult}
               renderItem={(item) => (
-                <List.Item itemID={item.id}>
+                <List.Item key={item.id}>
                   <Card
                     className='border'
                     cover={
@@ -127,7 +128,17 @@ const Quiz = () => {
                   >
                     <Meta
                       title=<div>
-                        <h5>{item.name}</h5>
+                        <Link
+                          to={`/viewQuiz/${item.name}`}
+                          style={{
+                            color: '#000',
+                            textTransform: 'capitalize',
+                            fontSize: '1.1rem',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {item.name}
+                        </Link>
                       </div>
                       description={item.description}
                     />
