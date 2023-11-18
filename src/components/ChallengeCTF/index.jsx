@@ -1,13 +1,36 @@
-import { Button, Card, Input, List, Select, Space, Spin, Tag } from 'antd';
+import {
+  Button,
+  Card,
+  Dropdown,
+  Input,
+  Layout,
+  List,
+  Menu,
+  Progress,
+  Row,
+  Select,
+  Space,
+  Spin,
+  Tag,
+  message,
+} from 'antd';
 import Search from 'antd/es/input/Search';
-import { Content } from 'antd/es/layout/layout';
+import { Content, Header } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { dataCTF } from '../../utils/data';
-import { CheckOutlined, SketchOutlined } from '@ant-design/icons';
+import {
+  BarChartOutlined,
+  CheckOutlined,
+  DownOutlined,
+  SettingOutlined,
+  SketchOutlined,
+} from '@ant-design/icons';
+import Sider from 'antd/es/layout/Sider';
+
+const { SubMenu } = Menu;
 
 const ChallengeCTF = () => {
   const [isLoading, setIsLoading] = useState(true);
-
   const handleSearch = () => {};
 
   useEffect(() => {
@@ -18,7 +41,166 @@ const ChallengeCTF = () => {
 
   return (
     <Content style={{ overflow: 'initial' }}>
-      {isLoading ? (
+      <div style={{ height: '100vh' }}>
+        <div className='container'>
+          <div
+            style={{
+              backgroundColor: '#fff',
+              borderRadius: '5px',
+              height: '5rem',
+            }}
+            className='shadow-sm mt-3'
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignContent: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <h3
+                style={{ color: '#dc3545', fontWeight: 700 }}
+                className='mt-4 ml-5'
+              >
+                PTIT CTF Challenge
+              </h3>
+              <h4
+                className='mt-4 mr-5'
+                style={{ color: '#0766AD', fontWeight: 700 }}
+              >
+                Điểm: 1240
+              </h4>
+            </div>
+          </div>
+          <Menu className='mt-3' mode='inline' style={{ borderRadius: '10px' }}>
+            <SubMenu
+              key='SubMenu'
+              icon={<BarChartOutlined style={{ fontSize: '1.7rem' }} />}
+              title=<p
+                className='mt-3'
+                style={{
+                  fontWeight: 700,
+                  fontSize: '1.2rem',
+                  color: '#0766AD',
+                }}
+              >
+                Theo Dõi Tiến Độ Bài Làm
+              </p>
+            >
+              <Menu.Item key='web'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Web Exploitation
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={30} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+              <Menu.Item key='forensics'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Forensics
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={25} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+              <Menu.Item key='binary'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Binary Exploitation
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={40} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+              <Menu.Item key='reverse'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Reverse Engineering
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={60} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+
+              <Menu.Item key='cryptography'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Cryptography
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={70} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+              <Menu.Item key='miscellaneous'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>
+                      Miscellaneous
+                    </p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={50} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+              <hr style={{ width: '91%', marginTop: 0, marginBottom: 0 }} />
+              <Menu.Item key='all'>
+                <div
+                  className='mt-3'
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>
+                    <p style={{ fontSize: '1rem', fontWeight: 600 }}>Tất Cả</p>
+                  </div>
+                  <div className='mr-4' style={{ width: '500px' }}>
+                    <Progress percent={50} status='active' />
+                  </div>
+                </div>
+              </Menu.Item>
+            </SubMenu>
+          </Menu>
+          <Layout hasSider>
+            <Sider style={{ backgroundColor: '#F5F5F5' }}>Sider</Sider>
+            <Content>Content</Content>
+          </Layout>
+        </div>
+      </div>
+      {/* {isLoading ? (
         <Spin
           style={{
             display: 'flex',
@@ -182,7 +364,7 @@ const ChallengeCTF = () => {
             />
           </div>
         </div>
-      )}
+      )} */}
     </Content>
   );
 };
