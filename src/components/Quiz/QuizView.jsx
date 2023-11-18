@@ -16,6 +16,8 @@ const QuizView = () => {
   const [timeFinish, setTimeFinish] = useState('');
   const [score, setScore] = useState(0);
   const [answerChoose, setAnswerChoose] = useState([]);
+  const [totalCorrectAnswer, setTotalCorrectAnswer] = useState(0);
+  const [totalWrongAnswer, setTotalWrongAnswer] = useState(0);
   const [answer, setAnswer] = useState([]);
   const [review, setReview] = useState([]);
   const { quizTitle } = useParams();
@@ -60,9 +62,10 @@ const QuizView = () => {
 
   const calculateScore = (lstAnswerChoose) => {
     let totalScore = 0;
+    let correctAnswer = 0;
+    let wrongAnswer = 0;
     const resultReview = [];
     lstAnswerChoose.forEach((item, index) => {
-      console.log(item);
       if (item === answer[index]) {
         totalScore += 10;
         resultReview.push({
@@ -71,6 +74,7 @@ const QuizView = () => {
           user_choose: questionData[index][`${item}`],
           correct_answer: questionData[index][`${item}`],
         });
+        correctAnswer += 1;
       } else {
         resultReview.push({
           question_title: questionData[index].question_title,
@@ -78,8 +82,11 @@ const QuizView = () => {
           user_choose: questionData[index][`${item}`],
           correct_answer: questionData[index][`${answer[index]}`],
         });
+        wrongAnswer += 1;
       }
     });
+    setTotalCorrectAnswer(correctAnswer);
+    setTotalWrongAnswer(wrongAnswer);
     setScore(totalScore);
     setReview(resultReview);
   };
@@ -185,6 +192,9 @@ const QuizView = () => {
               timeFinish={timeFinish}
               review={review}
               open={openModal}
+              totalCorrectAnswer={totalCorrectAnswer}
+              totalWrongAnswer={totalWrongAnswer}
+              quizTitle={quizTitle}
               onCancel={() => setOpenModal(false)}
             />
           )}
