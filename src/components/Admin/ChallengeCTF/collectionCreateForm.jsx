@@ -101,9 +101,13 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
             ]}
           >
             <Select>
-              <Select.Option value='web'>Web</Select.Option>
+              <Select.Option value='web exploitation'>
+                Web Exploitation
+              </Select.Option>
               <Select.Option value='forensics'>Forensics</Select.Option>
-              <Select.Option value='binary'>Binary</Select.Option>
+              <Select.Option value='binary exploitation'>
+                Binary Exploitation
+              </Select.Option>
               <Select.Option value='reverse engineering'>
                 Reverse Engineering
               </Select.Option>
@@ -112,7 +116,7 @@ const CollectionCreateForm = ({ open, onCreate, onCancel, item }) => {
             </Select>
           </Form.Item>
         </div>
-        <Form.Item name='hint' label='Hint'>
+        <Form.Item name='hint' label='Gợi ý'>
           <TextArea rows={2} />
         </Form.Item>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>

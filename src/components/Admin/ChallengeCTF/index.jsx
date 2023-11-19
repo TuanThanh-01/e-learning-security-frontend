@@ -264,11 +264,38 @@ const ChallengeCTF = () => {
             dataSource={listData}
             renderItem={(item) => (
               <List.Item key={item.title} itemID={item.id} className='mt-3'>
-                <List.Item.Meta title={<a href={item.href}>{item.title}</a>} />
                 <Row>
-                  <Col span={18}>
+                  <Col
+                    span={18}
+                    className='border p-3 shadow-sm'
+                    style={{ borderRadius: '10px' }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <div>
+                        <p
+                          className='d-inline'
+                          style={{ fontSize: '1.1rem', fontWeight: 700 }}
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                      <div className='mt-1'>
+                        <Tag
+                          color='cyan'
+                          style={{ textTransform: 'capitalize' }}
+                        >
+                          {item.tag}
+                        </Tag>
+                      </div>
+                    </div>
+                    <hr />
                     <div>
-                      <p className='d-inline'>
+                      <p className='d-inline' style={{ fontSize: '1.1rem' }}>
                         <span className='d-inline font-weight-bold mr-1'>
                           Nội dung:
                         </span>
@@ -281,7 +308,7 @@ const ChallengeCTF = () => {
                         justifyContent: 'space-between',
                         fontSize: '1rem',
                       }}
-                      className='mt-1 mb-1'
+                      className='mt-2 mb-1'
                     >
                       <div>
                         <p className='d-inline mr-2 font-weight-bold'>
@@ -304,18 +331,11 @@ const ChallengeCTF = () => {
                         )}
                       </div>
                       <div>
-                        <TagOutlined style={{ color: '#F9B572' }} />
-                        <p className='d-inline ml-1 mr-1 font-weight-bold'>
-                          Chủ đề:{' '}
-                        </p>
-                        {item.tag}
-                      </div>
-                      <div>
                         <FlagOutlined style={{ color: '#362FD9' }} />
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
                           Flag:{' '}
                         </p>
-                        {item.flag}
+                        <Tag color='red'>{item.flag}</Tag>
                       </div>
                       <div>
                         <FireOutlined style={{ color: '#C70039' }} />
@@ -337,20 +357,29 @@ const ChallengeCTF = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                       }}
+                      className='mt-2'
                     >
                       <div>
                         <CalendarOutlined style={{ color: '#706233' }} />
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
                           Thời gian tạo:{' '}
                         </p>
-                        {convertISOToCustomFormat(item.created_at)}
+                        <Tag color='geekblue'>
+                          {convertISOToCustomFormat(item.created_at)}
+                        </Tag>
                       </div>
                       <div>
                         <CalendarOutlined style={{ color: '#706233' }} />
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
                           Thời gian cập nhật:{' '}
                         </p>
-                        {item.updated_at}
+                        <Tag color='geekblue'>
+                          {item.updated_at ? (
+                            convertISOToCustomFormat(item.updated_at)
+                          ) : (
+                            <></>
+                          )}
+                        </Tag>
                       </div>
                       <div>
                         <FileOutlined style={{ color: '#1A5D1A' }} />
@@ -380,7 +409,11 @@ const ChallengeCTF = () => {
                   </Col>
                   <Col
                     span={6}
-                    style={{ display: 'flex', justifyContent: 'center' }}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
                   >
                     <Button
                       className='mr-2'

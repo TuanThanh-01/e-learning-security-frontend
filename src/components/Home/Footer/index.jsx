@@ -4,6 +4,7 @@ import React from 'react';
 const FooterHomePage = () => {
   return (
     <Footer
+      className='mt-4'
       style={{
         textAlign: 'center',
         backgroundColor: '#fff',

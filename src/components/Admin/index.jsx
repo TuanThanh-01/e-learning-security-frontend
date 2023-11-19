@@ -105,7 +105,7 @@ const AdminHomePage = () => {
           style={{ gap: 3 }}
           theme='dark'
           onClick={handleClickMenu}
-          defaultSelectedKeys={['category-lesson']}
+          defaultSelectedKeys={[itemSelect]}
         >
           <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
             Danh mục bài học
