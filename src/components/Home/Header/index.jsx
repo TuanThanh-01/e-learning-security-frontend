@@ -4,11 +4,12 @@ import logoPtit from '../../../assets/logo.png';
 import React, { useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import TabPane from 'antd/es/tabs/TabPane';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './style.css';
 
 const HeaderHomePage = () => {
-  const [currentItem, setCurrentItem] = useState('lesson');
+  const location = useLocation();
+  const [currentItem, setCurrentItem] = useState(location.pathname.substring(1));
   const navigate = useNavigate();
 
   const handleOnChangePage = (key) => {
