@@ -34,7 +34,7 @@ const SignUp = () => {
       reset();
       setTimeout(() => {
         navigate('/login');
-      }, 3000);
+      }, 1500);
     } catch (error) {
       console.log(error);
     }

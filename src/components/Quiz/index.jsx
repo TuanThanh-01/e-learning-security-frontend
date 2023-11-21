@@ -1,16 +1,15 @@
+import { TrophyOutlined } from '@ant-design/icons';
 import { Card, List, Spin } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
 import axios from 'axios';
+import VirtualList from 'rc-virtual-list';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import { dataQuiz } from '../../utils/data';
-import VirtualList from 'rc-virtual-list';
-import { Avatar, message } from 'antd';
-import { TrophyOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 
 const ContainerHeight = 400;
 
@@ -19,10 +18,18 @@ const Quiz = () => {
   const [quizData, setQuizData] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [historyResult, setHistoryResult] = useState(dataQuiz);
+  const [token, setToken] = useState('');
 
-  const getQuizData = async () => {
+  const getQuizData = async (access_token) => {
     try {
-      const response = await axios.get(`http://localhost:8082/api/v1/quiz/all`);
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/quiz/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
       response.data.forEach((quiz) => {
         if (quiz.created_at !== null) {
           quiz.created_at = convertISOToCustomFormat(quiz.created_at);
@@ -39,7 +46,9 @@ const Quiz = () => {
   };
 
   useEffect(() => {
-    getQuizData();
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    setToken(user.access_token);
+    getQuizData(user.access_token);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);

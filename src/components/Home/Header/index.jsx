@@ -1,21 +1,36 @@
-import { Avatar, ConfigProvider, Tabs } from 'antd';
-import { Header } from 'antd/es/layout/layout';
-import logoPtit from '../../../assets/logo.png';
-import React, { useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
-import TabPane from 'antd/es/tabs/TabPane';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Avatar, ConfigProvider, Dropdown, Menu, Tabs } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import logoPtit from '../../../assets/logo.png';
 import './style.css';
 
 const HeaderHomePage = () => {
   const location = useLocation();
-  const [currentItem, setCurrentItem] = useState(location.pathname.substring(1));
+  const [currentItem, setCurrentItem] = useState(
+    location.pathname.substring(1)
+  );
   const navigate = useNavigate();
 
   const handleOnChangePage = (key) => {
     setCurrentItem(key);
     navigate(`/${key}`);
   };
+
+  const handleOnClick = () => {
+    localStorage.removeItem('user_data');
+    navigate('/login');
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' onClick={handleOnClick}>
+        Đăng xuất
+      </Menu.Item>
+    </Menu>
+  );
+
   const items = [
     {
       label: 'Bài học',
@@ -78,10 +93,12 @@ const HeaderHomePage = () => {
           color: '#fff !important',
         }}
       />
-      <div className='mr-4'>
-        <b className='mr-3'>Xin chào, Nguyễn Tuấn Thành</b>
-        <Avatar size='large' icon={<UserOutlined />} />
-      </div>
+      <Dropdown overlay={menu}>
+        <div className='mr-4'>
+          <b className='mr-3'>Xin chào, Nguyễn Tuấn Thành</b>
+          <Avatar size='large' icon={<UserOutlined />} />
+        </div>
+      </Dropdown>
     </Header>
   );
 };

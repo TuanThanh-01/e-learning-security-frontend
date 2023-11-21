@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   UserOutlined,
   UnorderedListOutlined,
   CloudOutlined,
 } from '@ant-design/icons';
-import { Avatar, Layout, Menu, theme } from 'antd';
+import { Avatar, Layout, Menu, Spin, theme } from 'antd';
 import logoPtit from '../../assets/logo.png';
 import CategoryLesson from './CategoryLesson';
 import Lesson from './Lesson';
@@ -18,6 +18,7 @@ import User from './User';
 import ChallengeCTF from './ChallengeCTF';
 import getCurrentDateFormatVietnamese from '../../utils/GetCurrentDateFormatVietnamese';
 import './style.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -48,6 +49,19 @@ const AdminHomePage = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    if (user && user.role === 'USER') {
+      navigate('/lesson');
+    }
+    if (!user) {
+      navigate('/login');
+    }
+    setIsLoading(false);
+  }, []);
 
   const handleClickMenu = (e) => {
     if (e.key === 'category-lesson') {
@@ -83,121 +97,136 @@ const AdminHomePage = () => {
   };
 
   return (
-    <Layout>
-      <Sider breakpoint='lg' collapsedWidth='0'>
-        <div className='p-1'>
-          <img
-            src={logoPtit}
-            style={{
-              width: '20%',
-            }}
-            className='mt-2 rounded'
-          />
-          <p
-            className='d-inline ml-2 font-weight-bold'
-            style={{ color: '#fff', lineHeight: '32px' }}
-          >
-            PTIT Learning InfoSec
-          </p>
-        </div>
-        <Menu
-          className='mt-2'
-          style={{ gap: 3 }}
-          theme='dark'
-          onClick={handleClickMenu}
-          defaultSelectedKeys={[itemSelect]}
-        >
-          <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
-            Danh mục bài học
-          </Menu.Item>
-          <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
-            Thử thách CTF
-          </Menu.Item>
-          <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
-            Bài học
-          </Menu.Item>
-          <Menu.Item key='post' icon={<UnorderedListOutlined />}>
-            Bài viết
-          </Menu.Item>{' '}
-          <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
-            Tiến độ bài học
-          </Menu.Item>
-          <Menu.Item key='question' icon={<UnorderedListOutlined />}>
-            Danh mục câu hỏi
-          </Menu.Item>
-          <Menu.Item key='quiz' icon={<UnorderedListOutlined />}>
-            Bài Trắc nghiệm
-          </Menu.Item>
-          <Menu.Item key='score' icon={<UnorderedListOutlined />}>
-            Quản lý điểm
-          </Menu.Item>
-          <Menu.Item key='topic' icon={<UnorderedListOutlined />}>
-            Chủ đề
-          </Menu.Item>
-          <Menu.Item key='user' icon={<UnorderedListOutlined />}>
-            Người dùng
-          </Menu.Item>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Header
+    <div>
+      {isLoading ? (
+        <Spin
           style={{
-            padding: 0,
-            background: colorBgContainer,
             display: 'flex',
-            justifyContent: 'space-between',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
           }}
-        >
-          <div className='ml-4' style={{ display: 'flex' }}>
-            <CloudOutlined
-              style={{ fontSize: '2rem', color: '#AEDEFC' }}
-              className='mr-3'
-            />
-            <p style={{ fontWeight: '700' }}>
-              {getCurrentDateFormatVietnamese()}
-            </p>
-          </div>
+          size='large'
+        ></Spin>
+      ) : (
+        <Layout>
+          <Sider breakpoint='lg' collapsedWidth='0'>
+            <div className='p-1'>
+              <img
+                src={logoPtit}
+                style={{
+                  width: '20%',
+                }}
+                className='mt-2 rounded'
+              />
+              <p
+                className='d-inline ml-2 font-weight-bold'
+                style={{ color: '#fff', lineHeight: '32px' }}
+              >
+                PTIT Learning InfoSec
+              </p>
+            </div>
+            <Menu
+              className='mt-2'
+              style={{ gap: 3 }}
+              theme='dark'
+              onClick={handleClickMenu}
+              defaultSelectedKeys={[itemSelect]}
+            >
+              <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
+                Danh mục bài học
+              </Menu.Item>
+              <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
+                Thử thách CTF
+              </Menu.Item>
+              <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
+                Bài học
+              </Menu.Item>
+              <Menu.Item key='post' icon={<UnorderedListOutlined />}>
+                Bài viết
+              </Menu.Item>{' '}
+              <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
+                Tiến độ bài học
+              </Menu.Item>
+              <Menu.Item key='question' icon={<UnorderedListOutlined />}>
+                Danh mục câu hỏi
+              </Menu.Item>
+              <Menu.Item key='quiz' icon={<UnorderedListOutlined />}>
+                Bài Trắc nghiệm
+              </Menu.Item>
+              <Menu.Item key='score' icon={<UnorderedListOutlined />}>
+                Quản lý điểm
+              </Menu.Item>
+              <Menu.Item key='topic' icon={<UnorderedListOutlined />}>
+                Chủ đề
+              </Menu.Item>
+              <Menu.Item key='user' icon={<UnorderedListOutlined />}>
+                Người dùng
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Layout>
+            <Header
+              style={{
+                padding: 0,
+                background: colorBgContainer,
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div className='ml-4' style={{ display: 'flex' }}>
+                <CloudOutlined
+                  style={{ fontSize: '2rem', color: '#AEDEFC' }}
+                  className='mr-3'
+                />
+                <p style={{ fontWeight: '700' }}>
+                  {getCurrentDateFormatVietnamese()}
+                </p>
+              </div>
 
-          <div className='mr-4'>
-            <b className='mr-3'>Xin chào, Administrator</b>
-            <Avatar size='large' icon={<UserOutlined />} className='' />
-          </div>
-        </Header>
-        <Content
-          style={{
-            margin: '24px 16px 0',
-          }}
-        >
-          <div
-            className='main-container'
-            style={{
-              padding: 24,
-              height: '100%',
-              background: colorBgContainer,
-              overflowY: 'auto',
-            }}
-          >
-            {itemSelect === 'category-lesson' ? <CategoryLesson /> : <></>}
-            {itemSelect === 'challenge-ctf' ? <ChallengeCTF /> : <></>}
-            {itemSelect === 'lesson' ? <Lesson /> : <></>}
-            {itemSelect === 'post' ? <Post /> : <></>}
-            {itemSelect === 'progress' ? <Progress /> : <></>}
-            {itemSelect === 'question' ? <Question /> : <></>}
-            {itemSelect === 'quiz' ? <Quiz /> : <></>}
-            {itemSelect === 'score' ? <Score /> : <></>}
-            {itemSelect === 'topic' ? <Topic /> : <></>}
-            {itemSelect === 'user' ? <User /> : <></>}
-          </div>
-        </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Học Viện Công Nghệ Bưu Chính Viễn Thông &copy; 2023 Produced by PTIT
-        </Footer>
-      </Layout>
-    </Layout>
+              <div className='mr-4'>
+                <b className='mr-3'>Xin chào, Administrator</b>
+                <Avatar size='large' icon={<UserOutlined />} className='' />
+              </div>
+            </Header>
+            <Content
+              style={{
+                margin: '24px 16px 0',
+              }}
+            >
+              <div
+                className='main-container'
+                style={{
+                  padding: 24,
+                  height: '100%',
+                  background: colorBgContainer,
+                  overflowY: 'auto',
+                }}
+              >
+                {itemSelect === 'category-lesson' ? <CategoryLesson /> : <></>}
+                {itemSelect === 'challenge-ctf' ? <ChallengeCTF /> : <></>}
+                {itemSelect === 'lesson' ? <Lesson /> : <></>}
+                {itemSelect === 'post' ? <Post /> : <></>}
+                {itemSelect === 'progress' ? <Progress /> : <></>}
+                {itemSelect === 'question' ? <Question /> : <></>}
+                {itemSelect === 'quiz' ? <Quiz /> : <></>}
+                {itemSelect === 'score' ? <Score /> : <></>}
+                {itemSelect === 'topic' ? <Topic /> : <></>}
+                {itemSelect === 'user' ? <User /> : <></>}
+              </div>
+            </Content>
+            <Footer
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              Học Viện Công Nghệ Bưu Chính Viễn Thông &copy; 2023 Produced by
+              PTIT
+            </Footer>
+          </Layout>
+        </Layout>
+      )}
+    </div>
   );
 };
 

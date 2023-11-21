@@ -15,7 +15,7 @@ const Lesson = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-  });
+  }, []);
 
   const handleSearch = (e) => {
     if (e.target.value !== '') {

@@ -12,6 +12,16 @@ function LoginPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSpin, setIsSpin] = useState(false);
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    if (user && user.role === 'USER') {
+      navigate('/lesson');
+    }
+    if (user && user.role === 'ADMIN') {
+      navigate('/admin');
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -27,11 +37,17 @@ function LoginPage() {
       );
       setIsSpin(false);
       message.success('Đăng nhập thành công', 3);
-      console.log(response.data);
+
+      localStorage.setItem('user_data', JSON.stringify(response.data));
+
       reset();
       setTimeout(() => {
-        navigate('/home');
-      }, 3000);
+        if (response.data.role === 'USER') {
+          navigate('/lesson');
+        } else {
+          navigate('/admin');
+        }
+      }, 1500);
     } catch (error) {
       setIsSpin(false);
       message.error('Sai tài khoản hoặc mật khẩu', 3);
