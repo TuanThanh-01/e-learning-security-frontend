@@ -7,23 +7,31 @@ import { Card, Col, List, Menu, Progress, Row, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import SingleChallengeCTF from './SingleChallengeCTF';
 
 const { SubMenu } = Menu;
 
 const ChallengeCTF = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentCategory, setCurrentCategory] = useState('all');
-  const [currentLevel, setCurrentLevel] = useState('all');
+  const [currentCategory, setCurrentCategory] = useState('');
+  const [currentLevel, setCurrentLevel] = useState('');
   const [dataChallengeCTF, setDataChallengeCTF] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [singleChallengeCTFData, setSingleChallengeCTFData] = useState({});
+  const [token, setToken] = useState('');
+  const [searchText, setSearchedText] = useState('');
+  const [userId, setUserId] = useState('');
 
-  const getChallengeCTFData = async () => {
+  const getChallengeCTFData = async (access_token) => {
     try {
       const response = await axios.get(
-        'http://localhost:8082/api/v1/challenge-ctf/all'
+        'http://localhost:8082/api/v1/challenge-ctf/all',
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
       );
       setDataChallengeCTF(response.data);
     } catch (error) {
@@ -31,7 +39,18 @@ const ChallengeCTF = () => {
     }
   };
 
-  const handleSearch = () => {};
+  const listData = useMemo(() => {
+    return dataChallengeCTF.reduce((prev, cur) => {
+      if (
+        String(cur.title).toLowerCase().includes(searchText.toLowerCase()) &&
+        String(cur.level).toLowerCase().includes(currentLevel.toLowerCase()) &&
+        String(cur.tag).toLowerCase().includes(currentCategory.toLowerCase())
+      ) {
+        prev.push(cur);
+      }
+      return prev;
+    }, []);
+  }, [dataChallengeCTF, currentLevel, currentCategory, searchText]);
 
   const handleCancel = () => {
     setOpenModal(false);
@@ -51,7 +70,10 @@ const ChallengeCTF = () => {
   };
 
   useEffect(() => {
-    getChallengeCTFData();
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    setToken(user.access_token);
+    setUserId(user.user_id);
+    getChallengeCTFData(user.access_token);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -105,6 +127,8 @@ const ChallengeCTF = () => {
               open={openModal}
               onCancel={handleCancel}
               singleChallengeCTFData={singleChallengeCTFData}
+              token={token}
+              userID={userId}
             />
             <Menu
               className='mt-3'
@@ -264,13 +288,9 @@ const ChallengeCTF = () => {
                     <Search
                       placeholder='Nhập tên thử thách ctf'
                       allowClear
-                      // style={{ width: '20rem' }}
-                      // onSearch={(value) => {
-                      //   setSearchedText(value);
-                      // }}
-                      // onChange={(e) => {
-                      //   setSearchedText(e.target.value);
-                      // }}
+                      onChange={(e) => {
+                        setSearchedText(e.target.value);
+                      }}
                     />
                   </div>
                   <div className='mt-3'>
@@ -292,7 +312,7 @@ const ChallengeCTF = () => {
                       items={[
                         {
                           label: 'Tất cả',
-                          key: 'all',
+                          key: '',
                         },
                         {
                           type: 'divider',
@@ -337,7 +357,7 @@ const ChallengeCTF = () => {
                       items={[
                         {
                           label: 'Tất cả',
-                          key: 'all',
+                          key: '',
                         },
                         {
                           type: 'divider',
@@ -401,7 +421,7 @@ const ChallengeCTF = () => {
                     xl: 2,
                     xxl: 2,
                   }}
-                  dataSource={dataChallengeCTF}
+                  dataSource={listData}
                   renderItem={(item) => (
                     <List.Item onClick={() => handleDoChallengeCTF(item)}>
                       <Card

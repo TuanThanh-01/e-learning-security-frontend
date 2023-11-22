@@ -11,9 +11,16 @@ import {
   Tag,
   message,
 } from 'antd';
+import axios from 'axios';
 import React, { useState } from 'react';
 
-const SingleChallengeCTF = ({ open, onCancel, singleChallengeCTFData }) => {
+const SingleChallengeCTF = ({
+  open,
+  onCancel,
+  singleChallengeCTFData,
+  token,
+  userID,
+}) => {
   const [flag, setFlag] = useState('');
   const isTrue = true;
 
@@ -21,16 +28,43 @@ const SingleChallengeCTF = ({ open, onCancel, singleChallengeCTFData }) => {
     setFlag(e.target.value);
   };
 
+  const sendDataHistorySubmitChallengeCTF = async (data) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8082/api/v1/history-submit/create',
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      message.error('Có lỗi xảy ra');
+      return false;
+    }
+  };
+
   const handleSubmitFlag = () => {
     const flagSubmit = `CTF_PTIT_FLAG{${flag}}`;
+    let status;
     if (flagSubmit === singleChallengeCTFData.flag) {
+      status = 'accept';
       message.success(
         `Yayyy! Bạn nhận được ${singleChallengeCTFData.point} điểm`,
         3
       );
     } else {
       message.error(`Cờ nhập chưa chính xác, hãy thử lại`, 3);
+      status = 'wrong answer';
     }
+    const historyData = {
+      flag: flagSubmit,
+      status,
+      userId: userID,
+      challengeCTFId: singleChallengeCTFData.id,
+    };
+    sendDataHistorySubmitChallengeCTF(historyData);
   };
 
   return (
@@ -120,7 +154,7 @@ const SingleChallengeCTF = ({ open, onCancel, singleChallengeCTFData }) => {
       <Space className='mt-5' style={{ width: '100%' }}>
         <Input
           placeholder='Nhập cờ'
-          style={{ width: '500px' }}
+          style={{ width: '560px' }}
           value={flag}
           onChange={handleChangeFlagInput}
         />
