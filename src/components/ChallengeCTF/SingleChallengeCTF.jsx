@@ -1,4 +1,8 @@
-import { CheckCircleTwoTone, FireOutlined } from '@ant-design/icons';
+import {
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
+  FireOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -64,6 +68,7 @@ const SingleChallengeCTF = ({
       userId: userID,
       challengeCTFId: singleChallengeCTFData.id,
     };
+    setFlag('');
     sendDataHistorySubmitChallengeCTF(historyData);
   };
 
@@ -72,13 +77,23 @@ const SingleChallengeCTF = ({
       width={700}
       open={open}
       title=<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <h5>{singleChallengeCTFData.title}</h5>
         <div>
-          <CheckCircleTwoTone
-            className='mr-4'
-            twoToneColor={isTrue ? '#52c41a' : '#D0D4CA'}
-            style={{ fontSize: '1.6rem' }}
-          />
+          <h5 className='d-inline mr-2'>{singleChallengeCTFData.title}</h5>
+          {singleChallengeCTFData.is_complete === true ? (
+            <CheckCircleTwoTone
+              className='mr-4'
+              twoToneColor='#52c41a'
+              style={{ fontSize: '1rem' }}
+            />
+          ) : singleChallengeCTFData.is_complete === false ? (
+            <CloseCircleTwoTone
+              className='mr-4'
+              twoToneColor='#D80032'
+              style={{ fontSize: '1rem' }}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
       onCancel={onCancel}
