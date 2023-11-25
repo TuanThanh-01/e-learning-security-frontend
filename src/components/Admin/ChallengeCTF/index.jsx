@@ -15,7 +15,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import CollectionCreateForm from './collectionCreateForm';
 
-const ChallengeCTF = () => {
+const ChallengeCTF = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [challengeCTFData, setChallengeCTFData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
@@ -28,7 +28,12 @@ const ChallengeCTF = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        'http://localhost:8082/api/v1/challenge-ctf/all'
+        'http://localhost:8082/api/v1/challenge-ctf/all',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setChallengeCTFData(response.data);
       setIsLoading(false);
@@ -54,6 +59,7 @@ const ChallengeCTF = () => {
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -85,6 +91,7 @@ const ChallengeCTF = () => {
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -102,7 +109,12 @@ const ChallengeCTF = () => {
   const deleteChallengeCTFById = async (challengeCTFId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/challenge-ctf/${challengeCTFId}`
+        `http://localhost:8082/api/v1/challenge-ctf/${challengeCTFId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getChallengeCTFData();
       message.success('Xóa thử thách CTF thành công', 3);
@@ -347,7 +359,7 @@ const ChallengeCTF = () => {
                       <div>
                         <CheckOutlined style={{ color: '#1A5D1A' }} />
                         <p className='d-inline ml-1 mr-1 font-weight-bold'>
-                          Đã làm :{' '}
+                          Làm đúng :{' '}
                         </p>
                         {item.total_solve}
                       </div>

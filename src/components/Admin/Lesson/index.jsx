@@ -7,7 +7,7 @@ import { convertDateVnCustom } from '../../../utils/ConvertDateVn';
 import axios from 'axios';
 import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
 
-const Lesson = () => {
+const Lesson = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [lessonData, setLessonData] = useState([]);
   const [item, setItem] = useState({});
@@ -18,7 +18,12 @@ const Lesson = () => {
   const getCategoryLessonData = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:8082/api/v1/category-lesson/get-all-category-lesson-name'
+        'http://localhost:8082/api/v1/category-lesson/get-all-category-lesson-name',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const arr = [];
       response.data.forEach((ele) => {
@@ -35,7 +40,12 @@ const Lesson = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        'http://localhost:8082/api/v1/lesson/all'
+        'http://localhost:8082/api/v1/lesson/all',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLessonData(response.data);
       setSearchResult(response.data);
@@ -57,7 +67,12 @@ const Lesson = () => {
     try {
       const response = await axios.post(
         'http://localhost:8082/api/v1/lesson/create',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getLessonData();
       message.success('Tạo mới bài học thành công');
@@ -78,7 +93,12 @@ const Lesson = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/lesson/update/${id}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getLessonData();
       message.success('Cập nhật bài học thành công');
@@ -92,7 +112,12 @@ const Lesson = () => {
     setIsLoading(true);
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/lesson/${lessonId}`
+        `http://localhost:8082/api/v1/lesson/${lessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getLessonData();
       setIsLoading(false);

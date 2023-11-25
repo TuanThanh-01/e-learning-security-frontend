@@ -6,7 +6,7 @@ import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
-const User = () => {
+const User = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [userData, setUserData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
@@ -16,7 +16,14 @@ const User = () => {
   const getUserData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8082/api/v1/user/all`);
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/user/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       response.data.forEach((user) => {
         if (user.created_at !== null) {
           user.created_at = convertISOToCustomFormat(user.created_at);
@@ -59,6 +66,7 @@ const User = () => {
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -86,7 +94,12 @@ const User = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/user/update/${id}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getUserData();
       message.success('Cập nhật người dùng thành công', 3);
@@ -113,7 +126,12 @@ const User = () => {
   const deleteUserById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/user/${id}`
+        `http://localhost:8082/api/v1/user/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getUserData();
       message.success('Xóa người dùng thành công', 3);

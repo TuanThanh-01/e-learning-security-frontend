@@ -6,7 +6,7 @@ import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
-const CategoryLesson = () => {
+const CategoryLesson = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryLessonData, setCategoryLessonData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
@@ -17,7 +17,12 @@ const CategoryLesson = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/category-lesson/all`
+        `http://localhost:8082/api/v1/category-lesson/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       response.data.forEach((categoryLesson) => {
         if (categoryLesson.created_at !== null) {
@@ -55,7 +60,12 @@ const CategoryLesson = () => {
     try {
       const response = await axios.post(
         `http://localhost:8082/api/v1/category-lesson/create`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getCategoryLessonData();
       message.success('Tạo mới danh mục bài học thành công', 3);
@@ -71,7 +81,12 @@ const CategoryLesson = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/category-lesson/update/${id}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getCategoryLessonData();
       message.success('Cập nhật danh mục bài học thành công', 3);
@@ -95,7 +110,12 @@ const CategoryLesson = () => {
   const deleteCategoryLessonById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/category-lesson/delete/${id}`
+        `http://localhost:8082/api/v1/category-lesson/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getCategoryLessonData();
       message.success('Xóa danh mục bài học thành công', 3);

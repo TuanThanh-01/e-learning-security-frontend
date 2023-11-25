@@ -36,7 +36,7 @@ function LoginPage() {
         data
       );
       setIsSpin(false);
-      message.success('Đăng nhập thành công', 3);
+      message.success('Đăng nhập thành công', 1);
 
       localStorage.setItem('user_data', JSON.stringify(response.data));
 
@@ -47,7 +47,7 @@ function LoginPage() {
         } else {
           navigate('/admin');
         }
-      }, 1500);
+      }, 500);
     } catch (error) {
       setIsSpin(false);
       message.error('Sai tài khoản hoặc mật khẩu', 3);

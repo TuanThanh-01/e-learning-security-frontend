@@ -20,6 +20,8 @@ const QuizView = () => {
   const [totalWrongAnswer, setTotalWrongAnswer] = useState(0);
   const [answer, setAnswer] = useState([]);
   const [review, setReview] = useState([]);
+  const [userId, setUserId] = useState('');
+  const [token, setToken] = useState('');
   const { quizTitle } = useParams();
 
   let timer;
@@ -34,10 +36,15 @@ const QuizView = () => {
     }, [1000]);
   };
 
-  const getQuestionData = async () => {
+  const getQuestionData = async (access_token) => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/question/all-by-quiz-name?quizTitle=${quizTitle}`
+        `http://localhost:8082/api/v1/question/all-by-quiz-name?quizTitle=${quizTitle}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
       );
       const questionDataTmp = [];
       const lstQuestionAnswer = [];
@@ -89,6 +96,33 @@ const QuizView = () => {
     setTotalWrongAnswer(wrongAnswer);
     setScore(totalScore);
     setReview(resultReview);
+    return totalScore + ' ' + correctAnswer + ' ' + wrongAnswer;
+  };
+
+  const sendDataSaveScore = async (dataPass, time) => {
+    const dataResult = dataPass.split(' ');
+    const data = {
+      score: parseInt(dataResult[0]),
+      userId: userId,
+      quizTitle: quizTitle,
+      totalCompletionTime: time,
+      totalCorrectAnswer: parseInt(dataResult[1]),
+      totalWrongAnswer: parseInt(dataResult[2]),
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:8082/api/v1/score/create`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      message.error('Có lỗi xảy ra!!!', 3);
+    }
   };
 
   const updateAnswer = (optionChoose) => {
@@ -100,14 +134,18 @@ const QuizView = () => {
     } else {
       setQuestionIndex(questionIndex + 1);
       setTimeFinish(getFormatedTime(timeTaken));
-      calculateScore(lstAnswerChoose);
+      const data = calculateScore(lstAnswerChoose);
       message.success('Hoàn thành bài trắc nghiệm', 3);
+      sendDataSaveScore(data, getFormatedTime(timeTaken));
       setOpenModal(true);
     }
   };
 
   useEffect(() => {
-    getQuestionData();
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    setToken(user.access_token);
+    setUserId(user.user_id);
+    getQuestionData(user.access_token);
     startTimer();
     setTimeout(() => {
       setIsLoading(false);

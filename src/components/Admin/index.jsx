@@ -4,7 +4,7 @@ import {
   UnorderedListOutlined,
   CloudOutlined,
 } from '@ant-design/icons';
-import { Avatar, Layout, Menu, Spin, theme } from 'antd';
+import { Avatar, Dropdown, Layout, Menu, Spin, theme } from 'antd';
 import logoPtit from '../../assets/logo.png';
 import CategoryLesson from './CategoryLesson';
 import Lesson from './Lesson';
@@ -18,7 +18,9 @@ import User from './User';
 import ChallengeCTF from './ChallengeCTF';
 import getCurrentDateFormatVietnamese from '../../utils/GetCurrentDateFormatVietnamese';
 import './style.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import HistorySubmitChallengeCTF from './HistorySubmitChallengeCTF';
+import axios from 'axios';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -46,20 +48,50 @@ const items = [
 
 const AdminHomePage = () => {
   const [itemSelect, setItemSelect] = useState('category-lesson');
+  const [accessToken, setAccessToken] = useState('');
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
+  const removeToken = async () => {
+    const response = await axios.get(
+      'http://localhost:8082/api/v1/auth/logout',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+  };
+
+  const handleLogout = () => {
+    removeToken();
+    localStorage.removeItem('user_data');
+    navigate('/login');
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key='1' onClick={handleLogout}>
+        Đăng xuất
+      </Menu.Item>
+    </Menu>
+  );
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_data'));
-    if (user && user.role === 'USER') {
-      navigate('/lesson');
-    }
     if (!user) {
       navigate('/login');
     }
+    if (user && user.role === 'ADMIN') {
+      setAccessToken(user.access_token);
+    }
+    if (user && user.role === 'USER') {
+      navigate('/lesson');
+    }
+
     setIsLoading(false);
   }, []);
 
@@ -93,6 +125,9 @@ const AdminHomePage = () => {
     }
     if (e.key === 'challenge-ctf') {
       setItemSelect('challenge-ctf');
+    }
+    if (e.key === 'history-submit-challenge-ctf') {
+      setItemSelect('history-submit-challenge-ctf');
     }
   };
 
@@ -139,6 +174,12 @@ const AdminHomePage = () => {
               <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
                 Thử thách CTF
               </Menu.Item>
+              <Menu.Item
+                key='history-submit-challenge-ctf'
+                icon={<UnorderedListOutlined />}
+              >
+                Lịch sử nộp bài CTF
+              </Menu.Item>
               <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
                 Bài học
               </Menu.Item>
@@ -183,11 +224,12 @@ const AdminHomePage = () => {
                   {getCurrentDateFormatVietnamese()}
                 </p>
               </div>
-
-              <div className='mr-4'>
-                <b className='mr-3'>Xin chào, Administrator</b>
-                <Avatar size='large' icon={<UserOutlined />} className='' />
-              </div>
+              <Dropdown overlay={menu}>
+                <div className='mr-4'>
+                  <b className='mr-3'>Xin chào, Administrator</b>
+                  <Avatar size='large' icon={<UserOutlined />} className='' />
+                </div>
+              </Dropdown>
             </Header>
             <Content
               style={{
@@ -203,16 +245,37 @@ const AdminHomePage = () => {
                   overflowY: 'auto',
                 }}
               >
-                {itemSelect === 'category-lesson' ? <CategoryLesson /> : <></>}
-                {itemSelect === 'challenge-ctf' ? <ChallengeCTF /> : <></>}
-                {itemSelect === 'lesson' ? <Lesson /> : <></>}
+                {itemSelect === 'category-lesson' ? (
+                  <CategoryLesson token={accessToken} />
+                ) : (
+                  <></>
+                )}
+                {itemSelect === 'challenge-ctf' ? (
+                  <ChallengeCTF token={accessToken} />
+                ) : (
+                  <></>
+                )}
+                {itemSelect === 'history-submit-challenge-ctf' ? (
+                  <HistorySubmitChallengeCTF token={accessToken} />
+                ) : (
+                  <></>
+                )}
+                {itemSelect === 'lesson' ? (
+                  <Lesson token={accessToken} />
+                ) : (
+                  <></>
+                )}
                 {itemSelect === 'post' ? <Post /> : <></>}
                 {itemSelect === 'progress' ? <Progress /> : <></>}
-                {itemSelect === 'question' ? <Question /> : <></>}
-                {itemSelect === 'quiz' ? <Quiz /> : <></>}
-                {itemSelect === 'score' ? <Score /> : <></>}
-                {itemSelect === 'topic' ? <Topic /> : <></>}
-                {itemSelect === 'user' ? <User /> : <></>}
+                {itemSelect === 'question' ? (
+                  <Question token={accessToken} />
+                ) : (
+                  <></>
+                )}
+                {itemSelect === 'quiz' ? <Quiz token={accessToken} /> : <></>}
+                {itemSelect === 'score' ? <Score token={accessToken} /> : <></>}
+                {itemSelect === 'topic' ? <Topic token={accessToken} /> : <></>}
+                {itemSelect === 'user' ? <User token={accessToken} /> : <></>}
               </div>
             </Content>
             <Footer

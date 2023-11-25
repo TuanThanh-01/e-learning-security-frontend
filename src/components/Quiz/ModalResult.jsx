@@ -16,11 +16,7 @@ const ModalResult = ({
   review,
   totalCorrectAnswer,
   totalWrongAnswer,
-  quizTitle,
 }) => {
-  useEffect(() => {
-    console.log(review);
-  }, []);
   return (
     <Modal
       width={800}

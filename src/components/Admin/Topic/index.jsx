@@ -6,7 +6,7 @@ import CollectionCreateForm from './collectionCreateForm';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
-const Topic = () => {
+const Topic = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [topicData, setTopicData] = useState([]);
   const [searchedText, setSearchedText] = useState('');
@@ -17,7 +17,12 @@ const Topic = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/topic/all`
+        `http://localhost:8082/api/v1/topic/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       response.data.forEach((topic) => {
         if (topic.created_at !== null) {
@@ -51,7 +56,12 @@ const Topic = () => {
     try {
       const response = await axios.post(
         `http://localhost:8082/api/v1/topic/create`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getTopicData();
       message.success('Tạo chủ đề thành công', 3);
@@ -67,7 +77,12 @@ const Topic = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/topic/update/${id}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getTopicData();
       message.success('Cập nhật chủ đề thành công', 3);
@@ -92,7 +107,12 @@ const Topic = () => {
   const deleteTopicById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/topic/${id}`
+        `http://localhost:8082/api/v1/topic/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getTopicData();
       message.success('Xóa chủ đề thành công', 3);

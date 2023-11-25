@@ -8,7 +8,7 @@ import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
 import CollectionCreateForm from './collectionCreateForm';
 
-const Quiz = () => {
+const Quiz = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [quizData, setQuizData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -18,7 +18,14 @@ const Quiz = () => {
   const getQuizData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8082/api/v1/quiz/all`);
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/quiz/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       response.data.forEach((quiz) => {
         if (quiz.created_at !== null) {
           quiz.created_at = convertISOToCustomFormat(quiz.created_at);
@@ -46,6 +53,7 @@ const Quiz = () => {
         formData,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
         }
@@ -70,7 +78,12 @@ const Quiz = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/quiz/update/${id}`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getQuizData();
       message.success('Cập nhật bài trắc nghiệm thành công', 3);
@@ -85,7 +98,12 @@ const Quiz = () => {
   const deleteQuizById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/quiz/${id}`
+        `http://localhost:8082/api/v1/quiz/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getQuizData();
       message.success('Xóa bài trắc nghiệm thành công', 3);

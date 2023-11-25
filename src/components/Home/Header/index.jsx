@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import logoPtit from '../../../assets/logo.png';
 import './style.css';
+import axios from 'axios';
 
 const HeaderHomePage = () => {
   const location = useLocation();
@@ -18,7 +19,18 @@ const HeaderHomePage = () => {
     navigate(`/${key}`);
   };
 
+  const removeToken = async () => {
+    const user = JSON.parse(localStorage.getItem('user_data'));
+
+    await axios.get('http://localhost:8082/api/v1/auth/logout', {
+      headers: {
+        Authorization: `Bearer ${user.access_token}`,
+      },
+    });
+  };
+
   const handleOnClick = () => {
+    removeToken();
     localStorage.removeItem('user_data');
     navigate('/login');
   };
@@ -37,7 +49,7 @@ const HeaderHomePage = () => {
       key: 'lesson',
     },
     {
-      label: 'Bài Trắc Nghiệm',
+      label: 'Trắc Nghiệm',
       key: 'quiz',
     },
     {
@@ -47,6 +59,10 @@ const HeaderHomePage = () => {
     {
       label: 'Bảng xếp hạng',
       key: 'ranking',
+    },
+    {
+      label: 'Thảo Luận',
+      key: 'discuss',
     },
   ];
   return (

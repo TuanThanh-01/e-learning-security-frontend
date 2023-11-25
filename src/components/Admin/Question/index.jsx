@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import CollectionCreateForm from './CollectionCreateForm';
 import CollectionCreateFormFile from './CollectionCreateFormFile';
 
-const Question = () => {
+const Question = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [questionData, setQuestionData] = useState([]);
   const [quizNameData, setQuizNameData] = useState([]);
@@ -19,7 +19,12 @@ const Question = () => {
   const getQuizData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/quiz/get-all-quiz-title`
+        `http://localhost:8082/api/v1/quiz/get-all-quiz-title`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const arr = [];
       response.data.forEach((ele) => {
@@ -35,7 +40,12 @@ const Question = () => {
   const getAllQuestion = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/question/all`
+        `http://localhost:8082/api/v1/question/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setQuestionData(response.data);
       setIsLoading(false);
@@ -49,7 +59,12 @@ const Question = () => {
     try {
       const response = await axios.post(
         `http://localhost:8082/api/v1/question/create`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getAllQuestion();
       message.success('Tạo mới câu hỏi thành công', 3);
@@ -66,7 +81,12 @@ const Question = () => {
     try {
       const response = await axios.put(
         `http://localhost:8082/api/v1/question/update/${id}`,
-        questionRequest
+        questionRequest,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getAllQuestion();
       message.success('Cập nhật câu hỏi thành công', 3);
@@ -86,7 +106,12 @@ const Question = () => {
     try {
       const response = await axios.post(
         `http://localhost:8082/api/v1/question/upload-question-by-excel`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getAllQuestion();
       message.success('Tạo mới câu hỏi thành công', 3);
@@ -101,7 +126,12 @@ const Question = () => {
   const deleteQuestionById = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8082/api/v1/question/${id}`
+        `http://localhost:8082/api/v1/question/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       await getAllQuestion();
       message.success('Xóa câu hỏi thành công', 3);

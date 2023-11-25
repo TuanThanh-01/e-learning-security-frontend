@@ -1,5 +1,10 @@
-import { TrophyOutlined } from '@ant-design/icons';
-import { Card, List, Spin } from 'antd';
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  TrophyOutlined,
+} from '@ant-design/icons';
+import { Card, List, Spin, message } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
@@ -17,8 +22,30 @@ const Quiz = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quizData, setQuizData] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  const [historyResult, setHistoryResult] = useState(dataQuiz);
+  const [historyResult, setHistoryResult] = useState([]);
   const [token, setToken] = useState('');
+
+  const getHistoryData = async (access_token, userID) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/score/get-all-score-by-user/${userID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+      response.data.forEach((history) => {
+        if (history.created_at !== null) {
+          history.created_at = convertISOToCustomFormat(history.created_at);
+        }
+      });
+      console.log(response.data);
+      setHistoryResult(response.data);
+    } catch (error) {
+      message.error('Có lỗi xảy ra!!!', 3);
+    }
+  };
 
   const getQuizData = async (access_token) => {
     try {
@@ -49,6 +76,7 @@ const Quiz = () => {
     const user = JSON.parse(localStorage.getItem('user_data'));
     setToken(user.access_token);
     getQuizData(user.access_token);
+    getHistoryData(user.access_token, user.user_id);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -199,22 +227,67 @@ const Quiz = () => {
                             </p>
                             <p
                               style={{
-                                fontWeight: 700,
+                                fontWeight: 500,
                                 display: 'inline',
                                 fontSize: '1.2rem',
+                                textTransform: '',
                               }}
                             >
-                              {item.quizName}
+                              {item.quiz.name}
                             </p>
                           </div>
-                          <div>
-                            <TrophyOutlined
-                              style={{ color: '#FFC436', fontSize: '1.2rem' }}
+
+                          <div className='mt-1'>
+                            <ClockCircleOutlined
+                              style={{ color: '#5FBDFF', fontSize: '1rem' }}
                             />
                             <p
-                              className='d-inline ml-3'
-                              style={{ fontWeight: 500, fontSize: '1.2rem' }}
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
                             >
+                              <span
+                                className='mr-1'
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                Thời gian hoàn thành:
+                              </span>
+                              {item.total_completion_time}
+                            </p>
+                          </div>
+
+                          <div className='mt-1'>
+                            <CheckCircleOutlined
+                              style={{ color: '#52c41a', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Số Câu Đúng:</span>
+                              {item.total_correct_answer}
+                            </p>
+                          </div>
+                          <div className='mt-1'>
+                            <CloseCircleOutlined
+                              style={{ color: '#dc3545', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Số Câu Sai:</span>
+                              {item.total_wrong_answer}
+                            </p>
+                          </div>
+                          <div className='mt-1'>
+                            <TrophyOutlined
+                              style={{ color: '#FFC436', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Kết Quả:</span>
                               {item.score}
                             </p>
                           </div>

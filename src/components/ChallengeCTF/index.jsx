@@ -579,7 +579,7 @@ const ChallengeCTF = () => {
                                 className='d-inline ml-2'
                                 style={{ fontWeight: 500 }}
                               >
-                                Số Lượt đã làm: <span>{item.total_solve}</span>
+                                Làm đúng: <span>{item.total_solve}</span>
                               </p>
                             </div>
                           </div>
@@ -678,7 +678,11 @@ const ChallengeCTF = () => {
                               >
                                 Thời gian:
                               </span>
-                              {convertISOToCustomFormat(item.created_at)}
+                              <span
+                                style={{ fontWeight: 500, color: '#219C90' }}
+                              >
+                                {convertISOToCustomFormat(item.created_at)}
+                              </span>
                             </p>
                             <p style={{ marginBottom: 5 }}>
                               <span
