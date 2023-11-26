@@ -120,16 +120,20 @@ const ChallengeCTF = () => {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user_data'));
-    setToken(user.access_token);
-    setUserId(user.user_id);
-    getChallengeCTFData(user.access_token, user.user_id);
-    getStatisticChallengeCTFUser(user.access_token, user.user_id);
-    getHistorySubmitData(user.access_token, user.user_id);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+    if (!openModal) {
+      const user = JSON.parse(localStorage.getItem('user_data'));
+      setToken(user.access_token);
+      setUserId(user.user_id);
+      getChallengeCTFData(user.access_token, user.user_id);
+      getStatisticChallengeCTFUser(user.access_token, user.user_id);
+      getHistorySubmitData(user.access_token, user.user_id);
+      if (isLoading) {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      }
+    }
+  }, [openModal]);
 
   return (
     <Content style={{ overflow: 'initial' }}>
@@ -678,9 +682,7 @@ const ChallengeCTF = () => {
                               >
                                 Thời gian:
                               </span>
-                              <span
-                                style={{ fontWeight: 500, color: '#219C90' }}
-                              >
+                              <span style={{ fontWeight: 500, color: '#000' }}>
                                 {convertISOToCustomFormat(item.created_at)}
                               </span>
                             </p>

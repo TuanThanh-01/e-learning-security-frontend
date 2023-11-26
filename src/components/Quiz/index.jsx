@@ -4,7 +4,7 @@ import {
   CloseCircleOutlined,
   TrophyOutlined,
 } from '@ant-design/icons';
-import { Card, List, Spin, message } from 'antd';
+import { Card, Col, List, Row, Spin, message } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
@@ -207,7 +207,82 @@ const Quiz = () => {
                   >
                     {(item) => (
                       <List.Item key={item.id} className='p-2'>
-                        <div
+                        <Row style={{ width: '100%' }}>
+                          <Col span={4}>
+                            <p
+                              style={{
+                                fontWeight: 'lighter',
+                              }}
+                            >
+                              {item.created_at}
+                            </p>
+                          </Col>
+                          <Col span={4}>
+                            <p
+                              style={{
+                                fontWeight: 500,
+                                fontSize: '1.1rem',
+                                textTransform: 'capitalize',
+                              }}
+                            >
+                              {item.quiz.name}
+                            </p>
+                          </Col>
+                          <Col span={4}>
+                            <ClockCircleOutlined
+                              style={{ color: '#5FBDFF', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span
+                                className='mr-1'
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                Thời gian:
+                              </span>
+                              {item.total_completion_time}
+                            </p>
+                          </Col>
+                          <Col span={4}>
+                            <CheckCircleOutlined
+                              style={{ color: '#52c41a', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Số Câu Đúng:</span>
+                              {item.total_correct_answer}
+                            </p>
+                          </Col>
+                          <Col span={4}>
+                            <CloseCircleOutlined
+                              style={{ color: '#dc3545', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Số Câu Sai:</span>
+                              {item.total_wrong_answer}
+                            </p>
+                          </Col>
+                          <Col span={4}>
+                            <TrophyOutlined
+                              style={{ color: '#FFC436', fontSize: '1rem' }}
+                            />
+                            <p
+                              className='d-inline ml-2'
+                              style={{ fontWeight: 500, fontSize: '1rem' }}
+                            >
+                              <span className='mr-1'>Kết Quả:</span>
+                              {item.score}
+                            </p>
+                          </Col>
+                        </Row>
+                        {/* <div
                           className='container mt-2 mb-2'
                           style={{
                             display: 'flex',
@@ -221,10 +296,11 @@ const Quiz = () => {
                                 display: 'inline',
                                 fontWeight: 'lighter',
                               }}
-                              className='mr-3'
                             >
                               {item.created_at}
                             </p>
+                          </div>
+                          <div>
                             <p
                               style={{
                                 fontWeight: 500,
@@ -249,7 +325,7 @@ const Quiz = () => {
                                 className='mr-1'
                                 style={{ textTransform: 'capitalize' }}
                               >
-                                Thời gian hoàn thành:
+                                Thời gian:
                               </span>
                               {item.total_completion_time}
                             </p>
@@ -291,7 +367,7 @@ const Quiz = () => {
                               {item.score}
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                       </List.Item>
                     )}
                   </VirtualList>

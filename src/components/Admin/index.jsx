@@ -12,7 +12,7 @@ import Post from './Post';
 import Progress from './Progress';
 import Question from './Question';
 import Quiz from './Quiz';
-import Score from './Score';
+import StatisticQuiz from './StatisticQuiz';
 import Topic from './Topic';
 import User from './User';
 import ChallengeCTF from './ChallengeCTF';
@@ -145,7 +145,7 @@ const AdminHomePage = () => {
         ></Spin>
       ) : (
         <Layout>
-          <Sider breakpoint='lg' collapsedWidth='0'>
+          <Sider breakpoint='lg' collapsedWidth='0' width={250}>
             <div className='p-1'>
               <img
                 src={logoPtit}
@@ -171,6 +171,9 @@ const AdminHomePage = () => {
               <Menu.Item key='category-lesson' icon={<UnorderedListOutlined />}>
                 Danh mục bài học
               </Menu.Item>
+              <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
+                Bài học
+              </Menu.Item>
               <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
                 Thử thách CTF
               </Menu.Item>
@@ -180,12 +183,6 @@ const AdminHomePage = () => {
               >
                 Lịch sử nộp bài CTF
               </Menu.Item>
-              <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
-                Bài học
-              </Menu.Item>
-              <Menu.Item key='post' icon={<UnorderedListOutlined />}>
-                Bài viết
-              </Menu.Item>{' '}
               <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
                 Tiến độ bài học
               </Menu.Item>
@@ -196,7 +193,7 @@ const AdminHomePage = () => {
                 Bài Trắc nghiệm
               </Menu.Item>
               <Menu.Item key='score' icon={<UnorderedListOutlined />}>
-                Quản lý điểm
+                Thống kê trắc nghiệm
               </Menu.Item>
               <Menu.Item key='topic' icon={<UnorderedListOutlined />}>
                 Chủ đề
@@ -273,7 +270,11 @@ const AdminHomePage = () => {
                   <></>
                 )}
                 {itemSelect === 'quiz' ? <Quiz token={accessToken} /> : <></>}
-                {itemSelect === 'score' ? <Score token={accessToken} /> : <></>}
+                {itemSelect === 'score' ? (
+                  <StatisticQuiz token={accessToken} />
+                ) : (
+                  <></>
+                )}
                 {itemSelect === 'topic' ? <Topic token={accessToken} /> : <></>}
                 {itemSelect === 'user' ? <User token={accessToken} /> : <></>}
               </div>

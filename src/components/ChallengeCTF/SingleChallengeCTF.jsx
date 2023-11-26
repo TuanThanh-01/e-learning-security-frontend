@@ -26,7 +26,6 @@ const SingleChallengeCTF = ({
   userID,
 }) => {
   const [flag, setFlag] = useState('');
-  const isTrue = true;
 
   const handleChangeFlagInput = (e) => {
     setFlag(e.target.value);
