@@ -15,6 +15,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import QuizScoreChart from './QuizScoreChart';
+import QuizCorrectWrongPercentageChart from './QuizCorrectWrongPercentageChart';
+import QuizTimeCompletionChar from './QuizTimeCompletionChar';
 
 const createDateObject = (dateString) => {
   const parts = dateString.split(' ');
@@ -46,6 +48,10 @@ const StatisticQuiz = ({ token }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [quizScoreAvg, setQuizScoreAvg] = useState([]);
+  const [quizCorrectWrongPercentage, setQuizCorrectWrongPercentage] = useState(
+    []
+  );
+  const [quizTimeCompletion, setQuizTimeCompletion] = useState([]);
   const searchInput = useRef();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -263,6 +269,39 @@ const StatisticQuiz = ({ token }) => {
     }
   };
 
+  const getQuizCorrectWrongPercentage = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8082/api/v1/statistic/quiz-correct-wrong',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setQuizCorrectWrongPercentage(response.data);
+    } catch (error) {
+      message.error('Có lỗi xảy ra', 2);
+    }
+  };
+
+  const getQuizTimeCompletion = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8082/api/v1/statistic/quiz-time-completion-avg',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setQuizTimeCompletion(response.data);
+      console.log(response.data);
+    } catch (error) {
+      message.error('Có lỗi xảy ra', 2);
+    }
+  };
+
   const getQuizScoreAvg = async () => {
     try {
       const response = await axios.get(
@@ -283,6 +322,8 @@ const StatisticQuiz = ({ token }) => {
     getQuizStatisticOverview();
     getHistoryQuizData();
     getQuizScoreAvg();
+    getQuizCorrectWrongPercentage();
+    getQuizTimeCompletion();
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -338,10 +379,16 @@ const StatisticQuiz = ({ token }) => {
             </Col>
           </Row>
           <Row className='mt-5'>
-            <Col span={15}>
-              <QuizScoreChart quizScoreData={quizScoreAvg} />
+            <Col span={20} className=''>
+              {/* <QuizScoreChart quizScoreData={quizScoreAvg} /> */}
+              {/* <QuizCorrectWrongPercentageChart
+                quizPercentageData={quizCorrectWrongPercentage}
+              /> */}
+              <QuizTimeCompletionChar
+                quizTimeCompletionData={quizTimeCompletion}
+              />
             </Col>
-            <Col></Col>
+            <Col span={4}></Col>
           </Row>
           <Row className='mt-5'>
             <Col span={24}>

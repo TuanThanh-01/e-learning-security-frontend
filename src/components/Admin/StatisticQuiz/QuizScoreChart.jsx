@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS } from 'chart.js/auto';
+import { Chart, Title } from 'chart.js/auto';
 
+Chart.register(Title);
 const QuizScoreChart = ({ quizScoreData }) => {
   const [quizScore, setQuizScore] = useState({
     labels: quizScoreData.map((data) => data.quiz_title),
@@ -9,13 +10,27 @@ const QuizScoreChart = ({ quizScoreData }) => {
       {
         label: 'Điểm trung bình',
         data: quizScoreData.map((data) => data.avg_value),
-        backgroundColor: ['#7ED7C1'],
-        borderColor: 'black',
-        borderWidth: 1,
+        backgroundColor: ['#6DB9EF'],
       },
     ],
   });
-  return <Bar data={quizScore} />;
+
+  const options = {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Thống kê điểm trung bình',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+          padding: 15,
+        },
+      },
+    },
+  };
+  return <Bar data={quizScore} options={options} />;
 };
 
 export default QuizScoreChart;
