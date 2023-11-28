@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Space,
+  Menu,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -53,6 +54,8 @@ const StatisticQuiz = ({ token }) => {
   );
   const [quizTimeCompletion, setQuizTimeCompletion] = useState([]);
   const searchInput = useRef();
+  const [currentStatisticMenu, setCurrentStatisticMenu] =
+    useState('timeCompletion');
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -102,7 +105,7 @@ const StatisticQuiz = ({ token }) => {
               width: 90,
             }}
           >
-            Search
+            Tìm kiếm
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
@@ -111,7 +114,7 @@ const StatisticQuiz = ({ token }) => {
               width: 90,
             }}
           >
-            Reset
+            Đặt lại
           </Button>
           <Button
             type='link'
@@ -124,7 +127,7 @@ const StatisticQuiz = ({ token }) => {
               setSearchedColumn(dataIndex);
             }}
           >
-            Filter
+            Lọc
           </Button>
           <Button
             type='link'
@@ -133,7 +136,7 @@ const StatisticQuiz = ({ token }) => {
               close();
             }}
           >
-            Close
+            Đóng
           </Button>
         </Space>
       </div>
@@ -221,6 +224,10 @@ const StatisticQuiz = ({ token }) => {
         createDateObject(a.created_at) - createDateObject(b.created_at),
     },
   ];
+
+  const handleOnClickStatistic = (e) => {
+    setCurrentStatisticMenu(e.key);
+  };
 
   const getHistoryQuizData = async () => {
     try {
@@ -379,16 +386,61 @@ const StatisticQuiz = ({ token }) => {
             </Col>
           </Row>
           <Row className='mt-5'>
-            <Col span={20} className=''>
-              {/* <QuizScoreChart quizScoreData={quizScoreAvg} /> */}
-              {/* <QuizCorrectWrongPercentageChart
-                quizPercentageData={quizCorrectWrongPercentage}
-              /> */}
-              <QuizTimeCompletionChar
-                quizTimeCompletionData={quizTimeCompletion}
-              />
+            <Col span={18} className=''>
+              {currentStatisticMenu === 'timeCompletion' ? (
+                <QuizTimeCompletionChar
+                  quizTimeCompletionData={quizTimeCompletion}
+                />
+              ) : currentStatisticMenu === 'scoreAvg' ? (
+                <QuizScoreChart quizScoreData={quizScoreAvg} />
+              ) : (
+                <QuizCorrectWrongPercentageChart
+                  quizPercentageData={quizCorrectWrongPercentage}
+                />
+              )}
             </Col>
-            <Col span={4}></Col>
+            <Col span={5} className='ml-5'>
+              <div>
+                <p
+                  style={{
+                    fontSize: '1.1rem',
+                    marginBottom: '6px',
+                    fontWeight: 700,
+                    textTransform: 'capitalize',
+                  }}
+                  className='text-center'
+                >
+                  Chọn thống kê theo
+                </p>
+                <Menu
+                  className='border border-info'
+                  selectedKeys={[currentStatisticMenu]}
+                  onClick={handleOnClickStatistic}
+                  style={{ borderRadius: '10px' }}
+                  items={[
+                    {
+                      label: 'Thời Gian Làm Bài Trung Bình',
+                      key: 'timeCompletion',
+                    },
+                    {
+                      type: 'divider',
+                    },
+                    {
+                      label: 'Điểm Trung Bình',
+                      key: 'scoreAvg',
+                    },
+
+                    {
+                      type: 'divider',
+                    },
+                    {
+                      label: 'Tỷ Lệ Câu Đúng/Sai',
+                      key: 'percentageCorrectWrong',
+                    },
+                  ]}
+                />
+              </div>
+            </Col>
           </Row>
           <Row className='mt-5'>
             <Col span={24}>

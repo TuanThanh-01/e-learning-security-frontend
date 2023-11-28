@@ -4,13 +4,13 @@ import { Line } from 'react-chartjs-2';
 function epoch_to_hh_mm_ss(epoch) {
   return new Date(epoch * 1000).toISOString().substr(11, 8);
 }
-const QuizTimeCompletionChar = () => {
+const QuizTimeCompletionChar = ({ quizTimeCompletionData }) => {
   const data = {
-    labels: ['Bài 1', 'Bài 2', 'Bài 3', 'Bài 4'],
+    labels: quizTimeCompletionData.map((data) => data.quiz_title),
     datasets: [
       {
         label: 'Thời gian',
-        data: [22101, 22135, 20047, 20189, 18752],
+        data: quizTimeCompletionData.map((data) => data.time_avg),
         fill: true,
         borderColor: 'rgb(75, 192, 192)',
       },

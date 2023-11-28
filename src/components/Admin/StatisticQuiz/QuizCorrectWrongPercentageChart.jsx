@@ -6,13 +6,6 @@ Chart.register(Title);
 
 const QuizCorrectWrongPercentageChart = ({ quizPercentageData }) => {
   const options = {
-    plugins: {
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart - Stacked',
-      },
-    },
-    responsive: true,
     scales: {
       x: {
         stacked: true,
