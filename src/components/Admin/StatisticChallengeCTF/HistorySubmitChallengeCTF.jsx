@@ -3,7 +3,25 @@ import { Button, Input, Space, Table } from 'antd';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
-const UserQuizStatistic = ({ userQuizStatisticData }) => {
+const createDateObject = (dateString) => {
+  const parts = dateString.split(' ');
+  const datePart = parts[0];
+  const timePart = parts[1];
+
+  const dateParts = datePart.split('/');
+  const day = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const year = parseInt(dateParts[2], 10);
+
+  const timeParts = timePart.split(':');
+  const hour = parseInt(timeParts[0], 10);
+  const minute = parseInt(timeParts[1], 10);
+  const second = parseInt(timeParts[2], 10);
+
+  return new Date(year, month, day, hour, minute, second);
+};
+
+const HistorySubmitChallengeCTF = ({ historySubmitChallengeCTFData }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef();
@@ -12,11 +30,6 @@ const UserQuizStatistic = ({ userQuizStatisticData }) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
-  };
-
-  const convertTimeToLong = (time) => {
-    const parts = time.split(':');
-    return parseInt(parts[0]) * 60 + parseInt(parts[1]);
   };
 
   const handleReset = (clearFilters) => {
@@ -129,63 +142,61 @@ const UserQuizStatistic = ({ userQuizStatisticData }) => {
 
   const columns = [
     {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
       title: 'Mã sinh viên',
-      dataIndex: 'student_identity',
-      key: 'student_identity',
-      ...getColumnSearchProps('student_identity'),
+      dataIndex: 'user_identity',
+      key: 'user_identity',
+      ...getColumnSearchProps('user_identity'),
     },
     {
-      title: 'Họ tên',
-      dataIndex: 'full_name',
-      key: 'full_name',
-      ...getColumnSearchProps('full_name'),
+      title: 'Đáp án',
+      dataIndex: 'flag',
+      key: 'flag',
+      render: (flag) => (
+        <span
+          style={{
+            fontWeight: 600,
+          }}
+        >
+          {flag}
+        </span>
+      ),
     },
     {
-      title: 'Tên bài trắc nghiệm',
-      dataIndex: 'quiz_title',
-      key: 'quiz_title',
-      ...getColumnSearchProps('quiz_title'),
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      render: (statusSubmit) => (
+        <span
+          style={{
+            textTransform: 'capitalize',
+            color: statusSubmit === 'accept' ? '#52c41a' : '#dc3545',
+            fontWeight: 700,
+          }}
+        >
+          {statusSubmit}
+        </span>
+      ),
     },
     {
-      title: 'Điểm trung bình',
-      dataIndex: 'avg_score',
-      key: 'avg_score',
-      sorter: (a, b) => a.avg_score - b.avg_score,
-    },
-    {
-      title: 'Số câu đúng trung bình',
-      dataIndex: 'avg_total_correct_answer',
-      key: 'avg_total_correct_answer',
-      sorter: (a, b) => a.avg_total_correct_answer - b.avg_total_correct_answer,
-    },
-    {
-      title: 'Số câu sai trung bình',
-      dataIndex: 'avg_total_wrong_answer',
-      key: 'avg_total_wrong_answer',
-      sorter: (a, b) => a.avg_total_wrong_answer - b.avg_total_wrong_answer,
-    },
-    {
-      title: 'Số lần làm',
-      dataIndex: 'total_try',
-      key: 'total_try',
-      sorter: (a, b) => a.total_try - b.total_try,
-    },
-    {
-      title: 'Thời gian làm bài',
-      dataIndex: 'time_avg',
-      key: 'time_avg',
+      title: 'Thời gian nộp',
+      dataIndex: 'created_at',
+      key: 'created_at',
       sorter: (a, b) =>
-        convertTimeToLong(a.time_avg) - convertTimeToLong(b.time_avg),
+        createDateObject(a.created_at) - createDateObject(b.created_at),
     },
   ];
-
   return (
     <Table
       pagination={{ pageSize: 5 }}
       columns={columns}
-      dataSource={userQuizStatisticData}
+      dataSource={historySubmitChallengeCTFData}
     />
   );
 };
 
-export default UserQuizStatistic;
+export default HistorySubmitChallengeCTF;

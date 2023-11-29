@@ -19,7 +19,7 @@ import ChallengeCTF from './ChallengeCTF';
 import getCurrentDateFormatVietnamese from '../../utils/GetCurrentDateFormatVietnamese';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
-import HistorySubmitChallengeCTF from './HistorySubmitChallengeCTF';
+import StatisticChallengeCTF from './StatisticChallengeCTF';
 import axios from 'axios';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -126,8 +126,8 @@ const AdminHomePage = () => {
     if (e.key === 'challenge-ctf') {
       setItemSelect('challenge-ctf');
     }
-    if (e.key === 'history-submit-challenge-ctf') {
-      setItemSelect('history-submit-challenge-ctf');
+    if (e.key === 'statistic-challenge-ctf') {
+      setItemSelect('statistic-challenge-ctf');
     }
   };
 
@@ -178,10 +178,10 @@ const AdminHomePage = () => {
                 Thử thách CTF
               </Menu.Item>
               <Menu.Item
-                key='history-submit-challenge-ctf'
+                key='statistic-challenge-ctf'
                 icon={<UnorderedListOutlined />}
               >
-                Lịch sử nộp bài CTF
+                Thống kê thử thách CTF
               </Menu.Item>
               <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
                 Tiến độ bài học
@@ -252,8 +252,8 @@ const AdminHomePage = () => {
                 ) : (
                   <></>
                 )}
-                {itemSelect === 'history-submit-challenge-ctf' ? (
-                  <HistorySubmitChallengeCTF token={accessToken} />
+                {itemSelect === 'statistic-challenge-ctf' ? (
+                  <StatisticChallengeCTF token={accessToken} />
                 ) : (
                   <></>
                 )}
