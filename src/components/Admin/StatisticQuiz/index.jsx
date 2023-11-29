@@ -18,6 +18,7 @@ import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import QuizScoreChart from './QuizScoreChart';
 import QuizCorrectWrongPercentageChart from './QuizCorrectWrongPercentageChart';
 import QuizTimeCompletionChar from './QuizTimeCompletionChar';
+import UserQuizStatistic from './UserQuizStatistic';
 
 const createDateObject = (dateString) => {
   const parts = dateString.split(' ');
@@ -26,7 +27,7 @@ const createDateObject = (dateString) => {
 
   const dateParts = datePart.split('/');
   const day = parseInt(dateParts[0], 10);
-  const month = parseInt(dateParts[1], 10) - 1; // Trừ 1 vì tháng trong đối tượng Date bắt đầu từ 0
+  const month = parseInt(dateParts[1], 10) - 1;
   const year = parseInt(dateParts[2], 10);
 
   const timeParts = timePart.split(':');
@@ -52,6 +53,7 @@ const StatisticQuiz = ({ token }) => {
   const [quizCorrectWrongPercentage, setQuizCorrectWrongPercentage] = useState(
     []
   );
+  const [userQuizData, setUserQuizData] = useState([]);
   const [quizTimeCompletion, setQuizTimeCompletion] = useState([]);
   const searchInput = useRef();
   const [currentStatisticMenu, setCurrentStatisticMenu] =
@@ -229,6 +231,22 @@ const StatisticQuiz = ({ token }) => {
     setCurrentStatisticMenu(e.key);
   };
 
+  const getUserQuizData = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:8082/api/v1/statistic/user-quiz',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUserQuizData(response.data);
+    } catch (error) {
+      message.error('Có lỗi xảy ra', 2);
+    }
+  };
+
   const getHistoryQuizData = async () => {
     try {
       const response = await axios.get(
@@ -326,6 +344,7 @@ const StatisticQuiz = ({ token }) => {
   };
 
   useEffect(() => {
+    getUserQuizData();
     getQuizStatisticOverview();
     getHistoryQuizData();
     getQuizScoreAvg();
@@ -441,6 +460,10 @@ const StatisticQuiz = ({ token }) => {
                 />
               </div>
             </Col>
+          </Row>
+          <Row className='mt-5'>
+            <h5 style={{ fontWeight: 700 }}>Thống kê theo người dùng</h5>
+            <UserQuizStatistic userQuizStatisticData={userQuizData} />
           </Row>
           <Row className='mt-5'>
             <Col span={24}>
