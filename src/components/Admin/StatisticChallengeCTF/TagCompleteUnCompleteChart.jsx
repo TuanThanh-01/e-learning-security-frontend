@@ -4,14 +4,17 @@ import { Chart, Title } from 'chart.js/auto';
 
 Chart.register(Title);
 
-const QuizCorrectWrongPercentageChart = ({ quizPercentageData }) => {
+const TagCompleteUnCompleteChart = ({
+  tagTotalCompleteData,
+  tagTotalUnCompleteData,
+}) => {
   const options = {
     scales: {
       x: {
         stacked: true,
         title: {
           display: true,
-          text: 'Thống kê tỷ lệ câu đúng/sai',
+          text: 'Thống kê số bài làm đúng/sai theo dạng bài',
           font: {
             size: 14,
             weight: 'bold',
@@ -28,17 +31,17 @@ const QuizCorrectWrongPercentageChart = ({ quizPercentageData }) => {
   let data = {
     datasets: [
       {
-        label: '% Câu Đúng',
-        data: quizPercentageData.map((data) => data.total_correct),
+        label: 'Số bài làm đúng',
+        data: tagTotalCompleteData.map((data) => data.totalCompleted),
       },
       {
-        label: '% Câu Sai',
-        data: quizPercentageData.map((data) => data.total_wrong),
+        label: 'Số bài làm sai',
+        data: tagTotalUnCompleteData.map((data) => data.totalUnComplete),
       },
     ],
-    labels: quizPercentageData.map((data) => data.quiz_title),
+    labels: tagTotalCompleteData.map((data) => data.tag),
   };
   return <Bar data={data} options={options} />;
 };
 
-export default QuizCorrectWrongPercentageChart;
+export default TagCompleteUnCompleteChart;

@@ -3,25 +3,7 @@ import { Button, Input, Space, Table } from 'antd';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
-const createDateObject = (dateString) => {
-  const parts = dateString.split(' ');
-  const datePart = parts[0];
-  const timePart = parts[1];
-
-  const dateParts = datePart.split('/');
-  const day = parseInt(dateParts[0], 10);
-  const month = parseInt(dateParts[1], 10) - 1;
-  const year = parseInt(dateParts[2], 10);
-
-  const timeParts = timePart.split(':');
-  const hour = parseInt(timeParts[0], 10);
-  const minute = parseInt(timeParts[1], 10);
-  const second = parseInt(timeParts[2], 10);
-
-  return new Date(year, month, day, hour, minute, second);
-};
-
-const HistorySubmitChallengeCTF = ({ historySubmitChallengeCTFData }) => {
+const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef();
@@ -142,66 +124,45 @@ const HistorySubmitChallengeCTF = ({ historySubmitChallengeCTFData }) => {
 
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
       title: 'Mã sinh viên',
-      dataIndex: 'user_identity',
-      key: 'user_identity',
-      ...getColumnSearchProps('user_identity'),
+      dataIndex: 'student_identity',
+      key: 'student_identity',
+      ...getColumnSearchProps('student_identity'),
     },
     {
-      title: 'Tên thử thách CTF',
-      dataIndex: 'challenge_ctf_title',
-      key: 'challenge_ctf_title',
+      title: 'Họ tên',
+      dataIndex: 'username',
+      key: 'username',
+      ...getColumnSearchProps('username'),
     },
     {
-      title: 'Đáp án',
-      dataIndex: 'flag',
-      key: 'flag',
-      render: (flag) => (
-        <span
-          style={{
-            fontWeight: 600,
-          }}
-        >
-          {flag}
-        </span>
-      ),
+      title: 'Số bài đã thử',
+      dataIndex: 'total_try',
+      key: 'total_try',
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
-      render: (statusSubmit) => (
-        <span
-          style={{
-            textTransform: 'capitalize',
-            color: statusSubmit === 'accept' ? '#52c41a' : '#dc3545',
-            fontWeight: 700,
-          }}
-        >
-          {statusSubmit}
-        </span>
-      ),
+      title: 'Số bài làm đúng',
+      dataIndex: 'total_correct',
+      key: 'total_correct',
     },
     {
-      title: 'Thời gian nộp',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      sorter: (a, b) =>
-        createDateObject(a.created_at) - createDateObject(b.created_at),
+      title: 'Số bài làm sai',
+      dataIndex: 'total_wrong',
+      key: 'total_wrong',
+    },
+    {
+      title: 'Số lần nộp',
+      dataIndex: 'total_submit',
+      key: 'total_submit',
     },
   ];
   return (
     <Table
       pagination={{ pageSize: 5 }}
       columns={columns}
-      dataSource={historySubmitChallengeCTFData}
+      dataSource={statisticUserChallengeCTF}
     />
   );
 };
 
-export default HistorySubmitChallengeCTF;
+export default StatisticUserChallengeCTF;

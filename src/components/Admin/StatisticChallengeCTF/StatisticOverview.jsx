@@ -6,17 +6,17 @@ import { Chart, Title } from 'chart.js/auto';
 Chart.register(Title);
 const StatisticOverview = ({
   statisticChallengeCTFOverview,
-  tagTotalSubmitData,
+  tagTotalChallenge,
 }) => {
   const data = {
-    labels: tagTotalSubmitData.map((data) => data.tag),
+    labels: tagTotalChallenge.map((data) => data.tag),
     datasets: [
       {
-        label: 'Số bài đã nộp',
-        data: tagTotalSubmitData.map((data) => data.totalSubmit),
+        label: 'Tổng số bài',
+        data: tagTotalChallenge.map((data) => data.totalChallengeCTF),
         backgroundColor: ['rgba(75, 192, 192, 0.6)'],
         borderColor: ['rgb(75, 192, 192)'],
-        borderWidth: 3,
+        borderWidth: 2,
       },
     ],
   };
@@ -26,7 +26,7 @@ const StatisticOverview = ({
       x: {
         title: {
           display: true,
-          text: 'Thống kê số lần nộp theo từng dạng bài',
+          text: 'Thống kê tổng số bài theo từng dạng bài',
           font: {
             size: 14,
             weight: 'bold',
