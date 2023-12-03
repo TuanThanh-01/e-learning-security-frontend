@@ -1,13 +1,13 @@
-import { Button, Col, Menu, Row, Spin, Table } from 'antd';
-import Search from 'antd/es/input/Search';
+import { Col, Menu, Row, Spin } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 import HistorySubmitChallengeCTF from './HistorySubmitChallengeCTF';
 import StatisticOverview from './StatisticOverview';
-import TagTotalSubmitChart from './TagTotalSubmitChart';
-import TagCompleteUnCompleteChart from './TagCompleteUnCompleteChart';
 import StatisticUserChallengeCTF from './StatisticUserChallengeCTF';
+import TagCompleteUnCompleteChart from './TagCompleteUnCompleteChart';
+import TagTotalSubmitChart from './TagTotalSubmitChart';
+import StatisticChallengeCTFAll from './StatisticChallengeCTFAll';
 
 const StatisticChallengeCTF = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +23,9 @@ const StatisticChallengeCTF = ({ token }) => {
   const [tagTotalChallengeCTF, setTagTotalChallengeCTF] = useState([]);
   const [statisticUserChallengeCTFData, setStatisticUserChallengeCTFData] =
     useState([]);
+  const [statisticChallengeCTFData, setStatisticChallengeCTFData] = useState(
+    []
+  );
   const [currentMenuStatistic, setCurrentMenuStatistic] =
     useState('totalSubmit');
 
@@ -44,7 +47,6 @@ const StatisticChallengeCTF = ({ token }) => {
         }
       });
       setHistorySubmitChallengeCTFData(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -150,6 +152,22 @@ const StatisticChallengeCTF = ({ token }) => {
     }
   };
 
+  const getStatisticChallengeCTFData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/statistic/challenge-ctf`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setStatisticChallengeCTFData(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getStatisticUserChallengeCTFData();
     getTagTotalChallengeCTF();
@@ -157,6 +175,7 @@ const StatisticChallengeCTF = ({ token }) => {
     getHistorySubmitChallengeCTFData();
     getStatisticChallengeCTFOverviewData();
     getTagTotalCompletedData();
+    getStatisticChallengeCTFData();
     getTagTotalSubmitData();
     setTimeout(() => {
       setIsLoading(false);
@@ -233,6 +252,16 @@ const StatisticChallengeCTF = ({ token }) => {
                   ]}
                 />
               </div>
+            </Col>
+          </Row>
+          <Row className='mt-5'>
+            <Col span={24}>
+              <h5 className='mb-3' style={{ fontWeight: 700 }}>
+                Thống kê theo thử thách CTF
+              </h5>
+              <StatisticChallengeCTFAll
+                statisticChallengeCTFData={statisticChallengeCTFData}
+              />
             </Col>
           </Row>
           <Row className='mt-5'>

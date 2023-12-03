@@ -1,16 +1,16 @@
 import { DashOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table } from 'antd';
+import { Button, Input, Space, Table, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import UserChallengeCTDModal from './UserChallengeCTDModal';
+import ChallengeCTFModal from './ChallengeCTFModal';
 
-const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
+const StatisticChallengeCTFAll = ({ statisticChallengeCTFData }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const [challengeCTFId, setChallengeCTFId] = useState();
+  const [title, setTitle] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [userId, setUserId] = useState();
-  const [usernameData, setUsernameData] = useState('');
-  const [studentIdentityData, setStudentIdentityData] = useState('');
+
   const searchInput = useRef();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -24,14 +24,9 @@ const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
     setSearchText('');
   };
 
-  const handleViewDetailUserChallengeCTF = (
-    userId,
-    username,
-    studentIdentity
-  ) => {
-    setUserId(userId);
-    setUsernameData(username);
-    setStudentIdentityData(studentIdentity);
+  const handleViewDetailChallengeCTF = (challengeCTFID, titleChallenge) => {
+    setChallengeCTFId(challengeCTFID);
+    setTitle(titleChallenge);
     setOpenModal(true);
   };
 
@@ -140,34 +135,43 @@ const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
 
   const columns = [
     {
-      title: 'Mã sinh viên',
-      dataIndex: 'student_identity',
-      key: 'student_identity',
-      ...getColumnSearchProps('student_identity'),
+      title: 'Tên thử thách CTF',
+      dataIndex: 'title',
+      key: 'title',
+      ...getColumnSearchProps('title'),
     },
     {
-      title: 'Họ tên',
-      dataIndex: 'username',
-      key: 'username',
-      ...getColumnSearchProps('username'),
+      title: 'Mức độ',
+      dataIndex: 'level',
+      key: 'level',
+      render: (levelData) =>
+        levelData === 'easy' ? (
+          <Tag color='#87d068'>Dễ</Tag>
+        ) : levelData === 'medium' ? (
+          <Tag color='#F4CE14'>Trung bình</Tag>
+        ) : levelData === 'hard' ? (
+          <Tag color='#f50'>Khó</Tag>
+        ) : (
+          <></>
+        ),
     },
     {
-      title: 'Số bài đã thử',
-      dataIndex: 'total_try',
-      key: 'total_try',
+      title: 'Danh mục',
+      dataIndex: 'tag',
+      key: 'tag',
     },
     {
-      title: 'Số bài làm đúng',
+      title: 'Tổng số bài làm đúng',
       dataIndex: 'total_correct',
       key: 'total_correct',
     },
     {
-      title: 'Số bài làm sai',
+      title: 'Tổng số bài làm sai',
       dataIndex: 'total_wrong',
       key: 'total_wrong',
     },
     {
-      title: 'Số lần nộp',
+      title: 'Tổng số lần nộp',
       dataIndex: 'total_submit',
       key: 'total_submit',
     },
@@ -182,10 +186,9 @@ const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
             size='small'
             icon={<DashOutlined style={{ fontSize: '1rem' }} />}
             onClick={() =>
-              handleViewDetailUserChallengeCTF(
-                record.user_id,
-                record.username,
-                record.student_identity
+              handleViewDetailChallengeCTF(
+                record.challenge_ctf_id,
+                record.title
               )
             }
           />
@@ -195,20 +198,19 @@ const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
   ];
   return (
     <>
-      <UserChallengeCTDModal
+      <ChallengeCTFModal
         open={openModal}
-        studentIdentityData={studentIdentityData}
-        userId={userId}
-        usernameData={usernameData}
+        challengeCTFId={challengeCTFId}
+        title={title}
         onCancel={() => setOpenModal(false)}
       />
       <Table
         pagination={{ pageSize: 5 }}
         columns={columns}
-        dataSource={statisticUserChallengeCTF}
+        dataSource={statisticChallengeCTFData}
       />
     </>
   );
 };
 
-export default StatisticUserChallengeCTF;
+export default StatisticChallengeCTFAll;

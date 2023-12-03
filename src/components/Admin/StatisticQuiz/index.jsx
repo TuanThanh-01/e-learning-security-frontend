@@ -321,7 +321,6 @@ const StatisticQuiz = ({ token }) => {
         }
       );
       setQuizTimeCompletion(response.data);
-      console.log(response.data);
     } catch (error) {
       message.error('Có lỗi xảy ra', 2);
     }
