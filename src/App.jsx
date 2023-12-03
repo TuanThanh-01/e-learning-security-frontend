@@ -7,7 +7,7 @@ import SignUp from './components/SignUp';
 import Lesson from './components/Lesson';
 import ChallengeCTF from './components/ChallengeCTF';
 import Quiz from './components/Quiz';
-import Ranking from './components/Discuss';
+import Ranking from './components/Ranking';
 import QuizView from './components/Quiz/QuizView';
 
 function App() {

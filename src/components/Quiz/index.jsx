@@ -14,7 +14,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
-import { dataQuiz } from '../../utils/data';
 
 const ContainerHeight = 400;
 
@@ -40,7 +39,6 @@ const Quiz = () => {
           history.created_at = convertISOToCustomFormat(history.created_at);
         }
       });
-      console.log(response.data);
       setHistoryResult(response.data);
     } catch (error) {
       message.error('Có lỗi xảy ra!!!', 3);
