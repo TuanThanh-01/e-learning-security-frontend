@@ -2,6 +2,7 @@ import { Spin } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import Top5UserChart from './Top5UserChart';
+import RankingAllUser from './RankingAllUser';
 
 const Ranking = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +36,8 @@ const Ranking = () => {
           className='container'
         >
           <Top5UserChart token={token} />
+          <h4 className='mt-5'>Bảng xếp hạng</h4>
+          <RankingAllUser token={token} />
         </div>
       )}
     </Content>

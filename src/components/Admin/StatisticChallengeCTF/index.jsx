@@ -205,6 +205,7 @@ const StatisticChallengeCTF = ({ token }) => {
               </h5>
               <StatisticUserChallengeCTF
                 statisticUserChallengeCTF={statisticUserChallengeCTFData}
+                token={token}
               />
             </Col>
           </Row>
@@ -261,6 +262,7 @@ const StatisticChallengeCTF = ({ token }) => {
               </h5>
               <StatisticChallengeCTFAll
                 statisticChallengeCTFData={statisticChallengeCTFData}
+                token={token}
               />
             </Col>
           </Row>

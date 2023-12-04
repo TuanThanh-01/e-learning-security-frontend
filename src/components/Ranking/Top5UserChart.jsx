@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   LineElement,
@@ -26,7 +26,6 @@ const Top5UserChart = ({ token }) => {
         }
       );
       setTop5UserData(response.data);
-      console.log(response.data);
     } catch (error) {
       message.error('Có lỗi xảy ra!!!');
     }
@@ -42,8 +41,7 @@ const Top5UserChart = ({ token }) => {
       {
         label: 'Điểm số',
         data: top5UserData.map((item) => item.score),
-        backgroundColor: 'transparent',
-        borderColor: '#f26c6d',
+        backgroundColor: '#f26c6d',
       },
     ],
   };
@@ -56,7 +54,7 @@ const Top5UserChart = ({ token }) => {
         },
         title: {
           display: true,
-          text: 'Xếp hạng 5 người dùng điểm cao nhất',
+          text: 'Xếp hạng 5 người đạt điểm cao nhất',
           font: {
             size: 14,
             weight: 'bold',
@@ -65,18 +63,15 @@ const Top5UserChart = ({ token }) => {
           position: 'top',
         },
       },
-      y: {
-        min: 0,
-        grid: {
-          borderDash: [10],
-        },
-      },
     },
   };
 
   return (
-    <div className='mt-4'>
-      <Line data={data} options={options} />
+    <div
+      className='mt-4 p-3 shadow-sm'
+      style={{ backgroundColor: '#fff', borderRadius: '10px' }}
+    >
+      <Bar data={data} options={options} />
     </div>
   );
 };

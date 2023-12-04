@@ -49,7 +49,7 @@ const HeaderHomePage = () => {
       key: 'lesson',
     },
     {
-      label: 'Trắc Nghiệm',
+      label: 'Bài Trắc Nghiệm',
       key: 'quiz',
     },
     {
@@ -59,10 +59,6 @@ const HeaderHomePage = () => {
     {
       label: 'Bảng xếp hạng',
       key: 'ranking',
-    },
-    {
-      label: 'Thảo Luận',
-      key: 'discuss',
     },
   ];
   return (

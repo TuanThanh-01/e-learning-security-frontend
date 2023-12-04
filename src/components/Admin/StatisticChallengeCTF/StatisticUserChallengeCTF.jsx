@@ -2,9 +2,9 @@ import { DashOutlined, SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table } from 'antd';
 import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import UserChallengeCTDModal from './UserChallengeCTDModal';
+import UserChallengeCTFModal from './UserChallengeCTFModal';
 
-const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
+const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF, token }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [openModal, setOpenModal] = useState(false);
@@ -195,12 +195,13 @@ const StatisticUserChallengeCTF = ({ statisticUserChallengeCTF }) => {
   ];
   return (
     <>
-      <UserChallengeCTDModal
+      <UserChallengeCTFModal
         open={openModal}
         studentIdentityData={studentIdentityData}
         userId={userId}
         usernameData={usernameData}
         onCancel={() => setOpenModal(false)}
+        accessToken={token}
       />
       <Table
         pagination={{ pageSize: 5 }}

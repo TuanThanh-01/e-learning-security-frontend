@@ -4,9 +4,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
-const accessToken = JSON.parse(localStorage.getItem('user_data')).access_token;
-
-const ChallengeCTFModal = ({ open, challengeCTFId, title, onCancel }) => {
+const ChallengeCTFModal = ({
+  open,
+  challengeCTFId,
+  title,
+  onCancel,
+  accessToken,
+}) => {
   const [challengeCTFHistoryDetail, setChallengeCTFHistoryDetail] = useState(
     []
   );

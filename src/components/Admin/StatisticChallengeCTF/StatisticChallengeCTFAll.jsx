@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import ChallengeCTFModal from './ChallengeCTFModal';
 
-const StatisticChallengeCTFAll = ({ statisticChallengeCTFData }) => {
+const StatisticChallengeCTFAll = ({ statisticChallengeCTFData, token }) => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const [challengeCTFId, setChallengeCTFId] = useState();
@@ -203,6 +203,7 @@ const StatisticChallengeCTFAll = ({ statisticChallengeCTFData }) => {
         challengeCTFId={challengeCTFId}
         title={title}
         onCancel={() => setOpenModal(false)}
+        accessToken={token}
       />
       <Table
         pagination={{ pageSize: 5 }}
