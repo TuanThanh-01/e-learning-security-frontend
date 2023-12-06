@@ -9,6 +9,7 @@ import ChallengeCTF from './components/ChallengeCTF';
 import Quiz from './components/Quiz';
 import Ranking from './components/Ranking';
 import QuizView from './components/Quiz/QuizView';
+import ViewLesson from './components/Lesson/ViewLesson';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/' index element={<Navigate to='/login' />} />
         <Route element={<HomePage />}>
           <Route path='/lesson' element={<Lesson />} />
+          <Route path='/viewLesson/:lessonTitle' element={<ViewLesson />} />
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/viewQuiz/:quizTitle' element={<QuizView />} />
           <Route path='/challenge-ctf' element={<ChallengeCTF />} />
