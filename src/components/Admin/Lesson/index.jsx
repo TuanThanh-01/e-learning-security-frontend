@@ -233,6 +233,7 @@ const Lesson = ({ token }) => {
               setItem(null);
               setOpenModal(false);
             }}
+            token={token}
           />
           <div>
             <List

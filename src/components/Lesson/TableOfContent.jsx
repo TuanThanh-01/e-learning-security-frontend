@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './tableOfContent.css';
 import { useHeadsObserver } from '../../hooks/tableOfContentHook';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
+import { Divider } from 'antd';
 
 const TableOfContent = () => {
   const [headings, setHeadings] = useState([]);
@@ -41,8 +42,18 @@ const TableOfContent = () => {
   };
 
   return (
-    <nav>
-      <p style={{ paddingLeft: '25px', fontSize: '1.5rem' }}>Mục Lục</p>
+    <nav style={{ width: '100%' }}>
+      <Divider orientation='left' plain>
+        <p
+          style={{
+            fontSize: '1.4rem',
+            fontWeight: 600,
+          }}
+        >
+          Mục Lục
+        </p>
+      </Divider>
+
       <ul className='nav-ul-li'>
         {headings.map((heading) => (
           <li key={heading.id} className={getClassName(heading.level)}>

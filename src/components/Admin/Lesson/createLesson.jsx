@@ -1,16 +1,88 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Modal, Row, Select, Upload } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './createLessonStyle.css';
 
-const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
+const CreateLesson = ({
+  open,
+  onCreate,
+  onCancel,
+  item,
+  categoryLesson,
+  token,
+}) => {
   const [form] = Form.useForm();
   const [value, setValue] = useState('');
   const [image, setImage] = useState('');
-  const reactQuillRef = useRef < ReactQuill > null;
+
+  const quillRef = useRef();
+
+  const uploadImage = async (imageLesson) => {
+    const formData = new FormData();
+    formData.append('imageLesson', imageLesson);
+    const response = await axios.post(
+      'http://localhost:8082/api/v1/lesson/upload-image',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(`http://localhost:8082${response.data}`);
+    return `http://localhost:8082${response.data}`;
+  };
+
+  const imageHandler = (e) => {
+    const editor = quillRef.current.getEditor();
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+    input.onchange = async () => {
+      if (input !== null && input.files !== null) {
+        const file = input.files[0];
+        const url = await uploadImage(file);
+        editor.insertEmbed(editor.getSelection(), 'image', url);
+      }
+    };
+  };
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ size: [] }],
+          ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          [
+            { list: 'ordered' },
+            { list: 'bullet' },
+            { indent: '-1' },
+            { indent: '+1' },
+          ],
+          [{ align: [] }],
+          [{ color: [] }, { background: [] }],
+          ['link', 'image', 'video'],
+          ['code-block'],
+          ['clean'],
+        ],
+        handlers: {
+          image: imageHandler, // <-
+        },
+      },
+      clipboard: {
+        matchVisual: false,
+      },
+    }),
+    []
+  );
+
   useEffect(() => {
     setValue('');
     if (item !== null) {
@@ -147,32 +219,11 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
               ]}
             >
               <ReactQuill
-                ref={reactQuillRef}
+                ref={quillRef}
                 theme='snow'
                 style={{ height: '40rem' }}
                 className='mb-4'
-                modules={{
-                  toolbar: {
-                    container: [
-                      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                      [{ font: [] }],
-                      [{ size: [] }],
-                      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                      [
-                        { list: 'ordered' },
-                        { list: 'bullet' },
-                        { indent: '-1' },
-                        { indent: '+1' },
-                      ],
-                      ['link', 'image', 'video'],
-                      ['code-block'],
-                      ['clean'],
-                    ],
-                  },
-                  clipboard: {
-                    matchVisual: false,
-                  },
-                }}
+                modules={modules}
                 formats={[
                   'header',
                   'font',
@@ -196,7 +247,14 @@ const CreateLesson = ({ open, onCreate, onCancel, item, categoryLesson }) => {
             </Form.Item>
           </Form>
         </Col>
-        <Col span={12} className='container border-left border-dark'>
+        <Col
+          span={12}
+          className='container border-left border-dark'
+          style={{
+            overflowY: 'auto',
+            height: '100vh',
+          }}
+        >
           <div className='ql-snow'>
             <div
               className='ql-editor'

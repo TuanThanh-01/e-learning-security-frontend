@@ -1,14 +1,19 @@
-import { Col, Row, Spin, Tag, message } from 'antd';
+import { Button, Carousel, Col, Row, Spin, Tag, message } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
 import TableOfContent from './TableOfContent';
+import RecommendLesson from './RecommendLesson';
+import { convertDateVnCustom } from '../../utils/ConvertDateVn';
+import RecommendChallengeCTF from './RecommendChallengeCTF';
+import './viewLessonStyle.css';
 
 const ViewLesson = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [lessonData, setLessonData] = useState({});
+  const [token, setToken] = useState();
 
   const getLessonData = async (access_token) => {
     try {
@@ -22,12 +27,12 @@ const ViewLesson = () => {
       );
 
       if (response.data.created_at !== null) {
-        response.data.created_at = convertISOToCustomFormat(
+        response.data.created_at = convertDateVnCustom(
           response.data.created_at
         );
       }
       if (response.data.updated_at !== null) {
-        response.data.updated_at = convertISOToCustomFormat(
+        response.data.updated_at = convertDateVnCustom(
           response.data.updated_at
         );
       }
@@ -41,6 +46,7 @@ const ViewLesson = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_data'));
+    setToken(user.access_token);
     getLessonData(user.access_token);
     setTimeout(() => {
       setIsLoading(false);
@@ -63,9 +69,10 @@ const ViewLesson = () => {
         <Row
           style={{
             height: '100vh',
+            backgroundColor: '#fff',
           }}
         >
-          <Col span={5}>
+          <Col span={4} className='ml-3 mr-2'>
             <TableOfContent />
           </Col>
           <Col className='mt-3' span={13}>
@@ -75,27 +82,27 @@ const ViewLesson = () => {
               </h1>
               <div>
                 <span
-                  className='mr-2'
+                  className='mr-1'
                   style={{ fontSize: '1rem', fontWeight: 600 }}
                 >
-                  Danh mục:
-                </span>
-                {lessonData.category_lesson.map((item) => (
-                  <Tag color='blue'>{item}</Tag>
-                ))}
-              </div>
-              <div className='mt-2'>
-                <span
-                  className='mr-1'
-                  style={{ fontSize: '0.9rem', fontWeight: 600 }}
-                >
-                  Cập nhật lúc:{' '}
+                  Cập nhật lúc:
                 </span>
                 <span style={{ fontWeight: 100 }}>
                   {lessonData.updated_at
                     ? lessonData.updated_at
                     : lessonData.created_at}
                 </span>
+              </div>
+              <div className='mt-2'>
+                <span
+                  className='mr-2'
+                  style={{ fontSize: '1rem', fontWeight: 600 }}
+                >
+                  Danh mục:
+                </span>
+                {lessonData.category_lesson.map((item) => (
+                  <Tag color='purple'>{item}</Tag>
+                ))}
               </div>
             </div>
             <hr style={{ width: '96%' }} />
@@ -106,7 +113,19 @@ const ViewLesson = () => {
               ></div>
             </div>
           </Col>
-          <Col span={6}></Col>
+          <Col span={6} style={{ marginTop: '98px' }}>
+            <div
+              style={{
+                position: 'sticky',
+                top: '0px',
+              }}
+            >
+              <Carousel autoplay className='pb-3' autoplaySpeed={6000}>
+                <RecommendLesson />
+                <RecommendChallengeCTF token={token} />
+              </Carousel>
+            </div>
+          </Col>
         </Row>
       )}
     </Content>

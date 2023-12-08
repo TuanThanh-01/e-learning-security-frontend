@@ -4,14 +4,14 @@ nav {
   align-self: flex-start;
   position: -webkit-sticky;
   position: sticky;
-  top: 48px;
+  top: 0px;
   max-height: calc(100vh - 70px);
   overflow: auto;
-  margin-top: 150px;
+  margin-top: 95px;
 }
 
 nav ul li {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .head3 {
@@ -21,4 +21,13 @@ nav ul li {
 .head4 {
   margin-left: 20px;
   list-style-type: square;
+}
+
+.ant-divider-horizontal.ant-divider-with-text::after {
+  border: 1px solid #8acdd7;
+  width: 125px;
+}
+
+.ant-divider-horizontal.ant-divider-with-text::before {
+  border: 1px solid #8acdd7;
 }
