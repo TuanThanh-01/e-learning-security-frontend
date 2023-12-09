@@ -13,7 +13,6 @@ import Progress from './Progress';
 import Question from './Question';
 import Quiz from './Quiz';
 import StatisticQuiz from './StatisticQuiz';
-import Topic from './Topic';
 import User from './User';
 import ChallengeCTF from './ChallengeCTF';
 import getCurrentDateFormatVietnamese from '../../utils/GetCurrentDateFormatVietnamese';
@@ -41,7 +40,6 @@ const items = [
   getItem('Question', '5', <UnorderedListOutlined />),
   getItem('Quiz', '6', <UnorderedListOutlined />),
   getItem('Score', '7', <UnorderedListOutlined />),
-  getItem('Topic Post', '8', <UnorderedListOutlined />),
   getItem('User', '9', <UnorderedListOutlined />),
   getItem('ChallengeCTF', 10, <UnorderedListOutlined />),
 ];
@@ -117,9 +115,6 @@ const AdminHomePage = () => {
     if (e.key === 'score') {
       setItemSelect('score');
     }
-    if (e.key === 'topic') {
-      setItemSelect('topic');
-    }
     if (e.key === 'user') {
       setItemSelect('user');
     }
@@ -174,6 +169,9 @@ const AdminHomePage = () => {
               <Menu.Item key='lesson' icon={<UnorderedListOutlined />}>
                 Bài học
               </Menu.Item>
+              <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
+                Tiến độ bài học
+              </Menu.Item>
               <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
                 Thử thách CTF
               </Menu.Item>
@@ -183,9 +181,6 @@ const AdminHomePage = () => {
               >
                 Thống kê thử thách CTF
               </Menu.Item>
-              <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
-                Tiến độ bài học
-              </Menu.Item>
               <Menu.Item key='question' icon={<UnorderedListOutlined />}>
                 Danh mục câu hỏi
               </Menu.Item>
@@ -194,9 +189,6 @@ const AdminHomePage = () => {
               </Menu.Item>
               <Menu.Item key='score' icon={<UnorderedListOutlined />}>
                 Thống kê trắc nghiệm
-              </Menu.Item>
-              <Menu.Item key='topic' icon={<UnorderedListOutlined />}>
-                Chủ đề
               </Menu.Item>
               <Menu.Item key='user' icon={<UnorderedListOutlined />}>
                 Người dùng
@@ -275,7 +267,6 @@ const AdminHomePage = () => {
                 ) : (
                   <></>
                 )}
-                {itemSelect === 'topic' ? <Topic token={accessToken} /> : <></>}
                 {itemSelect === 'user' ? <User token={accessToken} /> : <></>}
               </div>
             </Content>

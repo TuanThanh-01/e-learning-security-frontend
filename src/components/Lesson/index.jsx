@@ -1,17 +1,107 @@
 import { CalendarOutlined } from '@ant-design/icons';
-import { Col, List, Row, Spin, Tag } from 'antd';
+import { Col, List, Row, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
 import { dataLesson } from '../../utils/data';
 import { convertDateVnCustom } from '../../utils/ConvertDateVn';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Lesson = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(dataLesson);
+  const [data, setData] = useState();
+  const [token, setToken] = useState();
+  const [userId, setUserId] = useState(0);
+  const [lessonRecentData, setLessonRecentData] = useState([]);
+  const navigate = useNavigate();
+
+  const getLessonData = async (access_token) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/lesson/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      response.data.forEach((lesson) => {
+        if (lesson.created_at !== null) {
+          lesson.created_at = convertDateVnCustom(lesson.created_at);
+        }
+        if (lesson.updated_at !== null) {
+          lesson.updated_at = convertDateVnCustom(lesson.updated_at);
+        }
+      });
+      setData(response.data);
+    } catch (error) {
+      message.error('Có lỗi xảy ra!!!', 2);
+      console.log(error);
+    }
+  };
+
+  const getLessonRecentData = async (access_token, userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/history-reading-lesson/recent-lesson-by-user?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      const lessonData = response.data.map((value) => value.lesson);
+      lessonData.forEach((lesson) => {
+        if (lesson.created_at !== null) {
+          lesson.created_at = convertDateVnCustom(lesson.created_at);
+        }
+        if (lesson.updated_at !== null) {
+          lesson.updated_at = convertDateVnCustom(lesson.updated_at);
+        }
+      });
+      setLessonRecentData(lessonData);
+    } catch (error) {
+      message.error('Có lỗi xảy ra!!!', 2);
+      console.log(error);
+    }
+  };
+
+  const createHistoryReadingLesson = async (lessonId) => {
+    const data = {
+      userId: userId,
+      lessonId: lessonId,
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:8082/api/v1/history-reading-lesson/create`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      message.error('Có lỗi xảy ra!!!', 2);
+      console.log(error);
+    }
+  };
+
+  const handleViewLesson = (lessonId) => {
+    createHistoryReadingLesson(lessonId);
+    navigate(`/viewLesson/${lessonId}`);
+  };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    setToken(user.access_token);
+    setUserId(user.user_id);
+    getLessonData(user.access_token);
+    getLessonRecentData(user.access_token, user.user_id);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -78,19 +168,32 @@ const Lesson = () => {
                     renderItem={(item) => (
                       <List.Item
                         key={item.id}
-                        extra={<img src={item.conver_image} width={272} />}
+                        onClick={() => handleViewLesson(item.id)}
+                        extra={
+                          <img
+                            src={`http://localhost:8082${item.cover_image}`}
+                            width={272}
+                            height={'85%'}
+                            style={{
+                              objectFit: 'fill',
+                            }}
+                          />
+                        }
                         style={{
                           position: 'relative',
                           backgroundColor: '#fff',
                           borderRadius: '10px',
+                          cursor: 'pointer',
                         }}
-                        className='shadow-sm mb-3 border border-danger'
+                        className='shadow-sm mb-3 border border-info'
                       >
                         <List.Item.Meta
                           title=<div>
                             <h5>{item.title}</h5>
                           </div>
-                          description={item.description}
+                          description=<p style={{ textAlign: 'justify' }}>
+                            {item.description}
+                          </p>
                         />
                         <div className='d-flex'>
                           <div>
@@ -104,12 +207,14 @@ const Lesson = () => {
                             >
                               Đăng vào{' '}
                               <span className='font-weight-bold'>
-                                {item.created_at}
+                                {item.updated_at
+                                  ? item.updated_at
+                                  : item.created_at}
                               </span>
                             </p>
                           </div>
                         </div>
-                        <div style={{ position: 'absolute', bottom: 15 }}>
+                        <div className='mt-3'>
                           {item.category_lesson.map((item) => (
                             <Tag color='cyan'>{item}</Tag>
                           ))}
@@ -134,17 +239,16 @@ const Lesson = () => {
                   <List
                     itemLayout='vertical'
                     size='large'
-                    dataSource={data.slice(0, 4)}
+                    dataSource={lessonRecentData}
                     renderItem={(item) => (
                       <List.Item
                         key={item.id}
-                        extra={<img src={item.conver_image} width={150} />}
                         style={{
                           position: 'relative',
                           backgroundColor: '#fff',
                           borderRadius: '10px',
                         }}
-                        className='shadow-sm mb-3 border border-danger'
+                        className='shadow-sm mb-3 border border-info'
                       >
                         <List.Item.Meta
                           title=<div>
@@ -154,9 +258,11 @@ const Lesson = () => {
                             style={{
                               overflow: 'hidden',
                               display: '-webkit-box',
-                              WebkitLineClamp: 3,
-                              lineClamp: 3,
+                              WebkitLineClamp: 2,
+                              lineClamp: 2,
                               WebkitBoxOrient: 'vertical',
+                              marginBottom: 0,
+                              textAlign: 'justify',
                             }}
                           >
                             {item.description}
@@ -179,7 +285,7 @@ const Lesson = () => {
                             </p>
                           </div>
                         </div>
-                        <div className='mt-2'>
+                        <div className='mt-3' style={{ display: 'flex' }}>
                           {item.category_lesson.map((item) => (
                             <Tag color='cyan'>{item}</Tag>
                           ))}

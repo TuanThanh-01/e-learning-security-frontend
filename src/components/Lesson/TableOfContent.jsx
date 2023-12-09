@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './tableOfContent.css';
-import { useHeadsObserver } from '../../hooks/tableOfContentHook';
+
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import { Divider } from 'antd';
 
 const TableOfContent = () => {
   const [headings, setHeadings] = useState([]);
-  const { activeId } = useHeadsObserver();
 
   const convertHeadingToId = (heading) => {
     return removeVietnameseTones(heading).trim().replaceAll(' ', '-');
@@ -60,12 +59,13 @@ const TableOfContent = () => {
             <a
               href={`#${heading.id}`}
               onClick={(e) => {
+                e.preventDefault();
                 document.querySelector(`#${heading.id}`).scrollIntoView({
                   behavior: 'smooth',
                 });
               }}
               style={{
-                fontWeight: activeId === heading.id ? 'bold' : 'normal',
+                fontWeight: 'bold',
                 color: '#000',
               }}
             >

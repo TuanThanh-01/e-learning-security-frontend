@@ -201,7 +201,7 @@ const Lesson = ({ token }) => {
           <div className='mb-3'>
             <div
               style={{
-                marginBottom: 16,
+                marginBottom: 25,
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
@@ -251,7 +251,7 @@ const Lesson = ({ token }) => {
                     />
                   }
                   style={{ position: 'relative' }}
-                  className='shadow mb-3'
+                  className='shadow mb-4'
                 >
                   <List.Item.Meta
                     title={item.title}
@@ -274,12 +274,10 @@ const Lesson = ({ token }) => {
                     </div>
                   </div>
                   <div
+                    className='mt-4'
                     style={{
-                      position: 'absolute',
-                      bottom: 15,
                       display: 'flex',
                       justifyContent: 'space-between',
-                      width: '65%',
                     }}
                   >
                     <div>

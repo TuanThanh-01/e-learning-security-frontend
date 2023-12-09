@@ -26,7 +26,7 @@ const StatisticOverview = ({
       x: {
         title: {
           display: true,
-          text: 'Thống kê tổng số bài theo từng dạng bài',
+          text: 'Thống kê tổng số thử thách CTF theo từng dạng bài',
           font: {
             size: 14,
             weight: 'bold',

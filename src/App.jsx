@@ -21,7 +21,7 @@ function App() {
         <Route path='/' index element={<Navigate to='/login' />} />
         <Route element={<HomePage />}>
           <Route path='/lesson' element={<Lesson />} />
-          <Route path='/viewLesson/:lessonTitle' element={<ViewLesson />} />
+          <Route path='/viewLesson/:lessonId' element={<ViewLesson />} />
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/viewQuiz/:quizTitle' element={<QuizView />} />
           <Route path='/challenge-ctf' element={<ChallengeCTF />} />

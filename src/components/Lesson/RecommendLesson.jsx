@@ -1,10 +1,70 @@
 import { CalendarOutlined } from '@ant-design/icons';
-import { Card, Divider, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Card, Divider, Tag, message } from 'antd';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { convertDateVnCustom } from '../../utils/ConvertDateVn';
+import { useNavigate } from 'react-router-dom';
 
-const RecommendLesson = () => {
+const RecommendLesson = ({ token, lessonId }) => {
   const [lessonData, setLessonData] = useState([]);
-  const elements = ['one', 'two', 'three'];
+  const navigate = useNavigate();
+
+  const getRandomlessonData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/lesson/random-lesson?lessonId=${lessonId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      response.data.forEach((lesson) => {
+        if (lesson.created_at !== null) {
+          lesson.created_at = convertDateVnCustom(lesson.created_at);
+        }
+        if (lesson.updated_at !== null) {
+          lesson.updated_at = convertDateVnCustom(lesson.updated_at);
+        }
+      });
+      setLessonData(response.data);
+    } catch (error) {
+      console.log(error);
+      message.error('Có lỗi xảy ra!!!', 2);
+    }
+  };
+
+  const createHistoryReadingLesson = async (lessonId) => {
+    const user = JSON.parse(localStorage.getItem('user_data'));
+    const data = {
+      userId: user.user_id,
+      lessonId: lessonId,
+    };
+    try {
+      const response = await axios.post(
+        `http://localhost:8082/api/v1/history-reading-lesson/create`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      message.error('Có lỗi xảy ra!!!', 2);
+      console.log(error);
+    }
+  };
+
+  const handleRedirectLesson = (id) => {
+    createHistoryReadingLesson(id);
+    navigate(`/viewLesson/${id}`);
+    location.reload();
+  };
+
+  useEffect(() => {
+    getRandomlessonData();
+  }, []);
 
   return (
     <div>
@@ -18,12 +78,13 @@ const RecommendLesson = () => {
         </p>
       </Divider>
       <div className=''>
-        {elements.map((value, index) => (
+        {lessonData.map((value, index) => (
           <Card
             size='small'
-            title='Đây là tiêu đề 1'
-            style={{ width: '88%' }}
+            title={value.title}
+            style={{ width: '88%', cursor: 'pointer' }}
             className='ml-3 mb-3 border border-info'
+            onClick={() => handleRedirectLesson(value.id)}
             key={index}
           >
             <p
@@ -35,11 +96,7 @@ const RecommendLesson = () => {
                 WebkitBoxOrient: 'vertical',
               }}
             >
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries
+              {value.description}
             </p>
             <div className='d-flex'>
               <div>
@@ -50,7 +107,7 @@ const RecommendLesson = () => {
                 <p className='d-inline' style={{ fontSize: '13px' }}>
                   Đăng vào{' '}
                   <span className='font-weight-bold'>
-                    Ngày 7 tháng 12 năm 2023
+                    {value.updated_at ? value.updated_at : value.created_at}
                   </span>
                 </p>
               </div>

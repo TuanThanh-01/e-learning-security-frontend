@@ -1,24 +1,25 @@
-import { Button, Carousel, Col, Row, Spin, Tag, message } from 'antd';
+import { Carousel, Col, Row, Spin, Tag, message } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import convertISOToCustomFormat from '../../utils/ConvertDate';
-import TableOfContent from './TableOfContent';
-import RecommendLesson from './RecommendLesson';
+import { useParams } from 'react-router-dom';
 import { convertDateVnCustom } from '../../utils/ConvertDateVn';
 import RecommendChallengeCTF from './RecommendChallengeCTF';
+import RecommendLesson from './RecommendLesson';
+import TableOfContent from './TableOfContent';
 import './viewLessonStyle.css';
 
 const ViewLesson = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [lessonData, setLessonData] = useState({});
   const [token, setToken] = useState();
+  const { lessonId } = useParams();
 
   const getLessonData = async (access_token) => {
     try {
       const response = await axios.get(
-        `http://localhost:8082/api/v1/lesson/1`,
+        `http://localhost:8082/api/v1/lesson/${lessonId}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -121,7 +122,7 @@ const ViewLesson = () => {
               }}
             >
               <Carousel autoplay className='pb-3' autoplaySpeed={6000}>
-                <RecommendLesson />
+                <RecommendLesson token={token} lessonId={lessonId} />
                 <RecommendChallengeCTF token={token} />
               </Carousel>
             </div>
