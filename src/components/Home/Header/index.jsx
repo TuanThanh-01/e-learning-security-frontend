@@ -97,22 +97,31 @@ const HeaderHomePage = () => {
           </b>
         </div>
       </div>
-      <ConfigProvider></ConfigProvider>
-      <Tabs
-        items={items}
-        mode='horizontal'
-        activeKey={currentItem}
-        className='mt-2'
-        size='large'
-        onChange={handleOnChangePage}
-        style={{
-          color: '#fff !important',
+      <ConfigProvider
+        theme={{
+          components: {
+            Tabs: {
+              inkBarColor: '',
+            },
+          },
         }}
-        tabBarStyle={{
-          fontWeight: 600,
-          color: '#fff !important',
-        }}
-      />
+      >
+        <Tabs
+          items={items}
+          mode='horizontal'
+          activeKey={currentItem}
+          className='mt-2'
+          size='large'
+          onChange={handleOnChangePage}
+          style={{
+            color: '#fff !important',
+          }}
+          tabBarStyle={{
+            fontWeight: 600,
+            color: '#fff !important',
+          }}
+        />
+      </ConfigProvider>
       <Dropdown overlay={menu}>
         <div className='mr-4'>
           <b className='mr-3'>Xin chào, Nguyễn Tuấn Thành</b>
