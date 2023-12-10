@@ -5,4 +5,5 @@
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #fff !important;
   font-weight: 500;
+  border-bottom: 0px !important;
 }

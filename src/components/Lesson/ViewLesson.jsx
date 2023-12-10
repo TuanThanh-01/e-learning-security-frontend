@@ -73,7 +73,7 @@ const ViewLesson = () => {
             backgroundColor: '#fff',
           }}
         >
-          <Col span={4} className='ml-3 mr-2'>
+          <Col span={3} className='ml-3' style={{ marginRight: '70px' }}>
             <TableOfContent />
           </Col>
           <Col className='mt-3' span={13}>
@@ -114,7 +114,7 @@ const ViewLesson = () => {
               ></div>
             </div>
           </Col>
-          <Col span={6} style={{ marginTop: '98px' }}>
+          <Col span={6} style={{ marginTop: '98px', marginLeft: '35px' }}>
             <div
               style={{
                 position: 'sticky',

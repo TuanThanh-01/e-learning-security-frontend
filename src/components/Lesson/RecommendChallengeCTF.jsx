@@ -2,9 +2,11 @@ import { CheckSquareOutlined } from '@ant-design/icons';
 import { Card, Divider, Tag, message } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecommendChallengeCTF = ({ token }) => {
   const [challengeCTFData, setChallengeCTFData] = useState([]);
+  const navigate = useNavigate();
 
   const getRandomChallengeCTFData = async () => {
     try {
@@ -20,6 +22,10 @@ const RecommendChallengeCTF = ({ token }) => {
     } catch (error) {
       message.error('Có lỗi xảy ra!!!', 2);
     }
+  };
+
+  const handleOnClickNavigateChallengeCTF = () => {
+    navigate('/challenge-ctf');
   };
 
   useEffect(() => {
@@ -42,7 +48,7 @@ const RecommendChallengeCTF = ({ token }) => {
           <Card
             size='small'
             title={value.title}
-            style={{ width: '88%' }}
+            style={{ width: '88%', cursor: 'pointer' }}
             className='ml-3 mb-3 border border-info'
             extra={
               <div>
@@ -56,6 +62,7 @@ const RecommendChallengeCTF = ({ token }) => {
               </div>
             }
             key={index}
+            onClick={handleOnClickNavigateChallengeCTF}
           >
             <p
               style={{

@@ -1,4 +1,4 @@
-import { CalendarOutlined } from '@ant-design/icons';
+import { CalendarOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { Col, List, Row, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
@@ -54,13 +54,15 @@ const Lesson = () => {
         }
       );
 
-      const lessonData = response.data.map((value) => value.lesson);
-      lessonData.forEach((lesson) => {
-        if (lesson.created_at !== null) {
-          lesson.created_at = convertDateVnCustom(lesson.created_at);
-        }
-        if (lesson.updated_at !== null) {
-          lesson.updated_at = convertDateVnCustom(lesson.updated_at);
+      const lessonData = response.data.map((value) => ({
+        lesson: value.lesson,
+        created_at: value.created_at,
+      }));
+      lessonData.forEach((historyReadingLesson) => {
+        if (historyReadingLesson.created_at !== null) {
+          historyReadingLesson.created_at = convertDateVnCustom(
+            historyReadingLesson.created_at
+          );
         }
       });
       setLessonRecentData(lessonData);
@@ -252,7 +254,7 @@ const Lesson = () => {
                       >
                         <List.Item.Meta
                           title=<div>
-                            <h5>{item.title}</h5>
+                            <h5>{item.lesson.title}</h5>
                           </div>
                           description=<p
                             style={{
@@ -265,20 +267,20 @@ const Lesson = () => {
                               textAlign: 'justify',
                             }}
                           >
-                            {item.description}
+                            {item.lesson.description}
                           </p>
                         />
                         <div className='d-flex'>
                           <div style={{ marginBottom: '6px' }}>
-                            <CalendarOutlined
+                            <FieldTimeOutlined
                               className='mr-2'
-                              style={{ color: '#068FFF', fontSize: '1rem' }}
+                              style={{ color: '#FFB534', fontSize: '1rem' }}
                             />
                             <p
                               className='d-inline'
                               style={{ fontSize: '13px' }}
                             >
-                              Đăng vào{' '}
+                              Đã xem lúc{' '}
                               <span className='font-weight-bold'>
                                 {item.created_at}
                               </span>
@@ -286,7 +288,7 @@ const Lesson = () => {
                           </div>
                         </div>
                         <div className='mt-3' style={{ display: 'flex' }}>
-                          {item.category_lesson.map((item) => (
+                          {item.lesson.category_lesson.map((item) => (
                             <Tag color='cyan'>{item}</Tag>
                           ))}
                         </div>

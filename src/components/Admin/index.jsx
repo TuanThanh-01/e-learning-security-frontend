@@ -170,7 +170,7 @@ const AdminHomePage = () => {
                 Bài học
               </Menu.Item>
               <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
-                Tiến độ bài học
+                Thống kê bài học
               </Menu.Item>
               <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
                 Thử thách CTF

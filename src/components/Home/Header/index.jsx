@@ -29,6 +29,10 @@ const HeaderHomePage = () => {
     });
   };
 
+  const handleOnclickLogo = () => {
+    navigate('/lesson');
+  };
+
   const handleOnClick = () => {
     removeToken();
     localStorage.removeItem('user_data');
@@ -73,7 +77,11 @@ const HeaderHomePage = () => {
       }}
     >
       <div style={{ display: 'flex' }}>
-        <div className='ml-3 d-flex justify-content-center mr-5'>
+        <div
+          className='ml-3 d-flex justify-content-center mr-5'
+          onClick={() => handleOnclickLogo()}
+          style={{ cursor: 'pointer' }}
+        >
           <img
             src={logoPtit}
             className='mr-2 mt-2'
