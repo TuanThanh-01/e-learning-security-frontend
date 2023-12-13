@@ -8,7 +8,6 @@ import { Avatar, Dropdown, Layout, Menu, Spin, theme } from 'antd';
 import logoPtit from '../../assets/logo.png';
 import CategoryLesson from './CategoryLesson';
 import Lesson from './Lesson';
-import Post from './Post';
 import Progress from './Progress';
 import Question from './Question';
 import Quiz from './Quiz';
@@ -20,6 +19,7 @@ import './style.css';
 import { useNavigate } from 'react-router-dom';
 import StatisticChallengeCTF from './StatisticChallengeCTF';
 import axios from 'axios';
+import Lab from './Lab';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -42,6 +42,7 @@ const items = [
   getItem('Score', '7', <UnorderedListOutlined />),
   getItem('User', '9', <UnorderedListOutlined />),
   getItem('ChallengeCTF', 10, <UnorderedListOutlined />),
+  getItem('Lab', 10, <UnorderedListOutlined />),
 ];
 
 const AdminHomePage = () => {
@@ -124,6 +125,9 @@ const AdminHomePage = () => {
     if (e.key === 'statistic-challenge-ctf') {
       setItemSelect('statistic-challenge-ctf');
     }
+    if (e.key === 'lab') {
+      setItemSelect('lab');
+    }
   };
 
   return (
@@ -171,6 +175,9 @@ const AdminHomePage = () => {
               </Menu.Item>
               <Menu.Item key='progress' icon={<UnorderedListOutlined />}>
                 Thống kê bài học
+              </Menu.Item>
+              <Menu.Item key='lab' icon={<UnorderedListOutlined />}>
+                Bài Thực hành
               </Menu.Item>
               <Menu.Item key='challenge-ctf' icon={<UnorderedListOutlined />}>
                 Thử thách CTF
@@ -268,6 +275,7 @@ const AdminHomePage = () => {
                   <></>
                 )}
                 {itemSelect === 'user' ? <User token={accessToken} /> : <></>}
+                {itemSelect === 'lab' ? <Lab token={accessToken} /> : <></>}
               </div>
             </Content>
             <Footer

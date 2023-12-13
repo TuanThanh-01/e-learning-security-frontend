@@ -33,10 +33,12 @@ const TagCompleteUnCompleteChart = ({
       {
         label: 'Số bài làm đúng',
         data: tagTotalCompleteData.map((data) => data.totalCompleted),
+        backgroundColor: ['rgb(34,139,34)'],
       },
       {
         label: 'Số bài làm sai',
         data: tagTotalUnCompleteData.map((data) => data.totalUnComplete),
+        backgroundColor: ['rgb(220,20,60)'],
       },
     ],
     labels: tagTotalCompleteData.map((data) => data.tag),

@@ -250,8 +250,8 @@ const Lesson = ({ token }) => {
                       width={272}
                     />
                   }
-                  style={{ position: 'relative' }}
-                  className='shadow mb-4'
+                  style={{ position: 'relative', borderRadius: '10px' }}
+                  className='shadow-sm mb-4'
                 >
                   <List.Item.Meta
                     title={item.title}

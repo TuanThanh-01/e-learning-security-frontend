@@ -1,6 +1,8 @@
 import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
+  DownloadOutlined,
+  FileOutlined,
   FireOutlined,
 } from '@ant-design/icons';
 import {
@@ -165,6 +167,19 @@ const SingleChallengeCTF = ({
           />
         </Col>
       </Row>
+      <div>
+        {singleChallengeCTFData.url_file ? (
+          <Button
+            size='small'
+            icon={<DownloadOutlined />}
+            href={`http://localhost:8082/files/${singleChallengeCTFData.url_file}`}
+          >
+            Tải file
+          </Button>
+        ) : (
+          <></>
+        )}
+      </div>
       <Space className='mt-5' style={{ width: '100%' }}>
         <Input
           placeholder='Nhập cờ'

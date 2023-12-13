@@ -224,7 +224,12 @@ const ChallengeCTF = () => {
                           percent={
                             statisticChallengeCTFUser.percentage_web_exploitation
                           }
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_web_exploitation ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -247,7 +252,12 @@ const ChallengeCTF = () => {
                           percent={
                             statisticChallengeCTFUser.percentage_forensics
                           }
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_forensics ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -270,7 +280,12 @@ const ChallengeCTF = () => {
                           percent={
                             statisticChallengeCTFUser.percentage_binary_exploitation
                           }
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_binary_exploitation ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -293,7 +308,12 @@ const ChallengeCTF = () => {
                           percent={
                             statisticChallengeCTFUser.percentage_reverse_engineering
                           }
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_reverse_engineering ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -314,8 +334,15 @@ const ChallengeCTF = () => {
                       </div>
                       <div className='mr-4' style={{ width: '500px' }}>
                         <Progress
-                          percent={statisticChallengeCTFUser.cryptography}
-                          status='active'
+                          percent={
+                            statisticChallengeCTFUser.percentage_cryptography
+                          }
+                          status={
+                            statisticChallengeCTFUser.percentage_cryptography ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -338,7 +365,12 @@ const ChallengeCTF = () => {
                           percent={
                             statisticChallengeCTFUser.percentage_miscellaneous
                           }
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_miscellaneous ===
+                            100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
@@ -359,7 +391,11 @@ const ChallengeCTF = () => {
                       <div className='mr-4' style={{ width: '500px' }}>
                         <Progress
                           percent={statisticChallengeCTFUser.percentage_all}
-                          status='active'
+                          status={
+                            statisticChallengeCTFUser.percentage_all === 100
+                              ? 'success'
+                              : 'active'
+                          }
                         />
                       </div>
                     </div>
