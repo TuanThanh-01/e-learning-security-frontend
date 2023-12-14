@@ -3,7 +3,6 @@ import { Col, List, Row, Spin, Tag, message } from 'antd';
 import Search from 'antd/es/input/Search';
 import { Content } from 'antd/es/layout/layout';
 import React, { useEffect, useState } from 'react';
-import { dataLesson } from '../../utils/data';
 import { convertDateVnCustom } from '../../utils/ConvertDateVn';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import axios from 'axios';
@@ -15,6 +14,7 @@ const Lesson = () => {
   const [token, setToken] = useState();
   const [userId, setUserId] = useState(0);
   const [lessonRecentData, setLessonRecentData] = useState([]);
+  const [listLessonData, setListLessonData] = useState([]);
   const navigate = useNavigate();
 
   const getLessonData = async (access_token) => {
@@ -36,6 +36,7 @@ const Lesson = () => {
           lesson.updated_at = convertDateVnCustom(lesson.updated_at);
         }
       });
+      setListLessonData(response.data);
       setData(response.data);
     } catch (error) {
       message.error('Có lỗi xảy ra!!!', 2);
@@ -110,16 +111,17 @@ const Lesson = () => {
   }, []);
 
   const handleSearch = (e) => {
+    console.log(e.target.value);
     if (e.target.value !== '') {
-      setData(
-        dataLesson.filter((item) =>
+      setListLessonData(
+        listLessonData.filter((item) =>
           removeVietnameseTones(item.title.toLowerCase()).includes(
             removeVietnameseTones(e.target.value.toLowerCase())
           )
         )
       );
     } else {
-      setData(dataLesson);
+      setListLessonData(data);
     }
   };
 
@@ -138,7 +140,7 @@ const Lesson = () => {
       ) : (
         <div>
           <div
-            className='mb-3'
+            className='mb-3 mr-2'
             style={{ display: 'flex', justifyContent: 'end' }}
           >
             <div>
@@ -166,7 +168,7 @@ const Lesson = () => {
                     itemLayout='vertical'
                     size='large'
                     pagination={{ pageSize: 4 }}
-                    dataSource={data}
+                    dataSource={listLessonData}
                     renderItem={(item) => (
                       <List.Item
                         key={item.id}

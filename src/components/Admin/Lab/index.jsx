@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { convertDateVnCustom } from '../../../utils/ConvertDateVn';
 import { CalendarOutlined } from '@ant-design/icons';
 import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
+import { Link } from 'react-router-dom';
 
 const Lab = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -261,15 +262,17 @@ const Lab = ({ token }) => {
                           >
                             Đường dẫn bài thực hành:
                           </p>
-                          <a
+                          <Link
+                            to={item.url}
                             className='ml-1'
+                            target='_blank'
                             style={{
                               fontSize: '1rem',
                               fontWeight: '600',
                             }}
                           >
                             {item.url}
-                          </a>
+                          </Link>
                         </div>
                         <div style={{ bottom: 0, left: 0 }}>
                           <Tag color='cyan'>{item.tag}</Tag>

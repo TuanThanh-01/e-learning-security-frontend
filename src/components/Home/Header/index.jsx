@@ -52,8 +52,9 @@ const HeaderHomePage = () => {
       label: 'Bài học',
       key: 'lesson',
     },
+    { label: 'Thực hành', key: 'lab' },
     {
-      label: 'Bài Trắc Nghiệm',
+      label: 'Bài trắc nghiệm',
       key: 'quiz',
     },
     {
@@ -124,7 +125,10 @@ const HeaderHomePage = () => {
       </ConfigProvider>
       <Dropdown overlay={menu}>
         <div className='mr-4'>
-          <b className='mr-3'>Xin chào, Nguyễn Tuấn Thành</b>
+          <b className='mr-3'>
+            Xin chào, {JSON.parse(localStorage.getItem('user_data')).lastname}{' '}
+            {JSON.parse(localStorage.getItem('user_data')).firstname}
+          </b>
           <Avatar size='large' icon={<UserOutlined />} />
         </div>
       </Dropdown>
