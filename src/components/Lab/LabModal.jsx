@@ -35,6 +35,7 @@ const LabModal = ({ open, onCancel, item, token, userId }) => {
           </div>
           <div>
             <Button
+              type='primary'
               icon={<PlayCircleOutlined />}
               style={{ width: '100px' }}
               size='small'

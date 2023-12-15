@@ -8,6 +8,8 @@ import { convertDateVnCustom } from '../../../utils/ConvertDateVn';
 import { CalendarOutlined } from '@ant-design/icons';
 import { removeVietnameseTones } from '../../../utils/RemoveVietnameseTones';
 import { Link } from 'react-router-dom';
+import HistoryLabPractice from './HistoryLabPractice';
+import convertISOToCustomFormat from '../../../utils/ConvertDate';
 
 const Lab = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,6 +18,7 @@ const Lab = ({ token }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [categoryLessonData, setCategoryLessonData] = useState([]);
+  const [historyPracticeData, setHistoryPracticeData] = useState([]);
 
   const getCategoryLessonData = async () => {
     try {
@@ -106,9 +109,40 @@ const Lab = ({ token }) => {
     }
   };
 
+  const getHistoryPracticeLab = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/history-practice-lab/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const tmpArr = [];
+      response.data.forEach((item) => {
+        if (item.created_at !== null) {
+          item.created_at = convertISOToCustomFormat(item.created_at);
+        }
+        tmpArr.push({
+          id: item.id,
+          username: item.user.lastname + ' ' + item.user.firstname,
+          student_identity: item.user.student_identity,
+          title: item.lab.title,
+          tag: item.tag,
+          created_at: item.created_at,
+        });
+      });
+      setHistoryPracticeData(tmpArr);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getCategoryLessonData();
     getLabData();
+    getHistoryPracticeLab();
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -204,7 +238,7 @@ const Lab = ({ token }) => {
             <List
               itemLayout='vertical'
               size='large'
-              pagination={{ pageSize: 5 }}
+              pagination={{ pageSize: 4 }}
               dataSource={searchResult}
               renderItem={(item) => (
                 <Row>
@@ -310,6 +344,15 @@ const Lab = ({ token }) => {
               )}
             />
           </div>
+          <Row className='mt-5'>
+            <h3>Lịch sử làm bài</h3>
+            <Col span={24} className='mt-3'>
+              <HistoryLabPractice
+                token={token}
+                historyPracticeData={historyPracticeData}
+              />
+            </Col>
+          </Row>
         </div>
       )}
     </div>

@@ -1,4 +1,8 @@
-import { CalendarOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  DownOutlined,
+  FieldTimeOutlined,
+} from '@ant-design/icons';
 import {
   Col,
   Dropdown,
@@ -8,6 +12,7 @@ import {
   Space,
   Spin,
   Tag,
+  Timeline,
   Typography,
   message,
 } from 'antd';
@@ -18,6 +23,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import { convertDateVnCustom } from '../../utils/ConvertDateVn';
 import LabModal from './LabModal';
+import convertISOToCustomFormat from '../../utils/ConvertDate';
 
 const Lab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +35,7 @@ const Lab = () => {
   const [itemData, setItemData] = useState({});
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState();
+  const [historyPracticeLab, setHistoryPracticeLab] = useState([]);
 
   const handleChange = (value) => {
     setCurrentTag(value);
@@ -69,6 +76,29 @@ const Lab = () => {
     }
   };
 
+  const getHistoryPracticeLab = async (userId, token) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8082/api/v1/history-practice-lab/all-by-user?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const tmpArr = [];
+      response.data.forEach((item) => {
+        tmpArr.push({
+          title: item.lab.title,
+          created_at: convertISOToCustomFormat(item.created_at),
+        });
+      });
+      setHistoryPracticeLab(tmpArr);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getLabData = async (token) => {
     try {
       const response = await axios.get('http://localhost:8082/api/v1/lab/all', {
@@ -86,6 +116,7 @@ const Lab = () => {
     const user = JSON.parse(localStorage.getItem('user_data'));
     setToken(user.access_token);
     setUserId(user.user_id);
+    getHistoryPracticeLab(user.user_id, user.access_token);
     getCategoryLessonData(user.access_token);
     getLabData(user.access_token);
     setTimeout(() => {
@@ -164,7 +195,11 @@ const Lab = () => {
                     <List.Item
                       key={item.id}
                       className='shadow-sm mb-4 border border-info'
-                      style={{ borderRadius: '10px', backgroundColor: '#fff' }}
+                      style={{
+                        borderRadius: '10px',
+                        backgroundColor: '#fff',
+                        cursor: 'pointer',
+                      }}
                       onClick={() => {
                         setItemData(item);
                         setOpenModal(true);
@@ -222,7 +257,64 @@ const Lab = () => {
                   )}
                 />
               </Col>
-              <Col span={6}></Col>
+              <Col span={5} className='ml-5'>
+                <div
+                  style={{
+                    backgroundColor: '#fff',
+                    borderRadius: '10px',
+                  }}
+                  className='shadow-sm'
+                >
+                  <h3
+                    style={{ color: '#0766AD', fontWeight: 700 }}
+                    className='text-center'
+                  >
+                    Lịch sử làm bài
+                  </h3>
+                  <div
+                    className='mt-4 ml-4'
+                    style={{ height: 600, overflowY: 'auto' }}
+                  >
+                    <Timeline
+                      items={historyPracticeLab.map((item) => {
+                        return {
+                          children: (
+                            <div>
+                              <div>
+                                <p
+                                  style={{
+                                    fontSize: '1rem',
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {item.title}
+                                </p>
+                                <p
+                                  className='d-inline'
+                                  style={{
+                                    fontSize: '1rem',
+                                  }}
+                                >
+                                  <span>
+                                    <FieldTimeOutlined
+                                      style={{
+                                        fontSize: '1rem',
+                                        color: '#4CB9E7',
+                                      }}
+                                      className='mr-2'
+                                    />
+                                  </span>
+                                  {item.created_at}
+                                </p>
+                              </div>
+                            </div>
+                          ),
+                        };
+                      })}
+                    />
+                  </div>
+                </div>
+              </Col>
             </Row>
           </div>
         </div>
