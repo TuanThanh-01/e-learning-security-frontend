@@ -191,7 +191,7 @@ const HistoryLesson = ({ token }) => {
       ),
     },
     {
-      title: 'Thời gian xem',
+      title: 'Thời gian truy cập',
       dataIndex: 'created_at',
       key: 'created_at',
       sorter: (a, b) =>

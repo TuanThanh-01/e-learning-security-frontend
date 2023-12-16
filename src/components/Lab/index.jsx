@@ -140,7 +140,7 @@ const Lab = () => {
           style={{
             height: '100vh',
           }}
-          className=' pl-5 pr-5'
+          className='container'
         >
           <div className='mt-3'>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -185,7 +185,7 @@ const Lab = () => {
           )}
           <div className='mt-4'>
             <Row style={{ display: 'flex' }}>
-              <Col span={18}>
+              <Col span={24}>
                 <List
                   itemLayout='vertical'
                   size='large'
@@ -256,64 +256,6 @@ const Lab = () => {
                     </List.Item>
                   )}
                 />
-              </Col>
-              <Col span={5} className='ml-5'>
-                <div
-                  style={{
-                    backgroundColor: '#fff',
-                    borderRadius: '10px',
-                  }}
-                  className='shadow-sm'
-                >
-                  <h3
-                    style={{ color: '#0766AD', fontWeight: 700 }}
-                    className='text-center'
-                  >
-                    Lịch sử làm bài
-                  </h3>
-                  <div
-                    className='mt-4 ml-4'
-                    style={{ height: 600, overflowY: 'auto' }}
-                  >
-                    <Timeline
-                      items={historyPracticeLab.map((item) => {
-                        return {
-                          children: (
-                            <div>
-                              <div>
-                                <p
-                                  style={{
-                                    fontSize: '1rem',
-                                    fontWeight: 700,
-                                  }}
-                                >
-                                  {item.title}
-                                </p>
-                                <p
-                                  className='d-inline'
-                                  style={{
-                                    fontSize: '1rem',
-                                  }}
-                                >
-                                  <span>
-                                    <FieldTimeOutlined
-                                      style={{
-                                        fontSize: '1rem',
-                                        color: '#4CB9E7',
-                                      }}
-                                      className='mr-2'
-                                    />
-                                  </span>
-                                  {item.created_at}
-                                </p>
-                              </div>
-                            </div>
-                          ),
-                        };
-                      })}
-                    />
-                  </div>
-                </div>
               </Col>
             </Row>
           </div>

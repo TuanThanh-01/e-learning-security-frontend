@@ -39,7 +39,6 @@ const ChallengeCTF = () => {
   const [statisticChallengeCTFUser, setStatisticChallengeCTFUser] = useState(
     {}
   );
-  const [historySubmitData, setHistorySubmitData] = useState([]);
 
   const getChallengeCTFData = async (access_token, user_ID) => {
     try {
@@ -52,22 +51,6 @@ const ChallengeCTF = () => {
         }
       );
       setDataChallengeCTF(response.data);
-    } catch (error) {
-      message.error('Có lỗi xảy ra');
-    }
-  };
-
-  const getHistorySubmitData = async (access_token, user_ID) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8082/api/v1/history-submit/get-all-by-user/${user_ID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      setHistorySubmitData(response.data);
     } catch (error) {
       message.error('Có lỗi xảy ra');
     }
@@ -126,7 +109,6 @@ const ChallengeCTF = () => {
       setUserId(user.user_id);
       getChallengeCTFData(user.access_token, user.user_id);
       getStatisticChallengeCTFUser(user.access_token, user.user_id);
-      getHistorySubmitData(user.access_token, user.user_id);
       if (isLoading) {
         setTimeout(() => {
           setIsLoading(false);
@@ -150,7 +132,7 @@ const ChallengeCTF = () => {
       ) : (
         <div style={{ height: '100vh' }}>
           <Row>
-            <Col span={18} className='ml-4'>
+            <Col span={24} className='container'>
               <div
                 style={{
                   backgroundColor: '#fff',
@@ -671,85 +653,6 @@ const ChallengeCTF = () => {
                   />
                 </Col>
               </Row>
-            </Col>
-            <Col span={5} className='ml-4'>
-              <div
-                style={{
-                  backgroundColor: '#fff',
-                  borderRadius: '5px',
-                }}
-                className='shadow-sm mt-3'
-              >
-                <div>
-                  <h3
-                    style={{ color: '#0766AD', fontWeight: 700 }}
-                    className='text-center pt-3'
-                  >
-                    Lịch Sử Làm Bài
-                  </h3>
-                </div>
-                <div className='ml-4 mt-5'>
-                  <Timeline
-                    items={historySubmitData.map((item) => {
-                      return {
-                        dot: (
-                          <div>
-                            {' '}
-                            {item.status === 'accept' ? (
-                              <CheckCircleOutlined
-                                style={{ fontSize: '1.2rem', color: '#52c41a' }}
-                              />
-                            ) : (
-                              <CloseCircleOutlined
-                                style={{ fontSize: '1.2rem', color: '#dc3545' }}
-                              />
-                            )}
-                          </div>
-                        ),
-                        children: (
-                          <div>
-                            <p style={{ marginBottom: 5, fontWeight: 700 }}>
-                              {item.challenge_ctf_title}
-                            </p>
-                            <p style={{ marginBottom: 5 }}>
-                              <span
-                                style={{ fontWeight: 600 }}
-                                className='mr-1'
-                              >
-                                Thời gian:
-                              </span>
-                              <span style={{ fontWeight: 500, color: '#000' }}>
-                                {convertISOToCustomFormat(item.created_at)}
-                              </span>
-                            </p>
-                            <p style={{ marginBottom: 5 }}>
-                              <span
-                                style={{ fontWeight: 600 }}
-                                className='mr-1'
-                              >
-                                Trạng thái:
-                              </span>
-                              <span
-                                style={{
-                                  color:
-                                    item.status === 'accept'
-                                      ? '#52c41a'
-                                      : '#dc3545',
-                                  fontWeight: 700,
-                                  fontSize: '1rem',
-                                  textTransform: 'capitalize',
-                                }}
-                              >
-                                {item.status}
-                              </span>
-                            </p>
-                          </div>
-                        ),
-                      };
-                    })}
-                  />
-                </div>
-              </div>
             </Col>
           </Row>
         </div>

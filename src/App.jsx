@@ -11,6 +11,7 @@ import Ranking from './components/Ranking';
 import QuizView from './components/Quiz/QuizView';
 import ViewLesson from './components/Lesson/ViewLesson';
 import Lab from './components/Lab';
+import HistoryUser from './components/HistoryUser';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path='/challenge-ctf' element={<ChallengeCTF />} />
           <Route path='/ranking' element={<Ranking />} />
           <Route path='/lab' element={<Lab />} />
+          <Route path='/history' element={<HistoryUser />} />
         </Route>
       </Routes>
     </BrowserRouter>

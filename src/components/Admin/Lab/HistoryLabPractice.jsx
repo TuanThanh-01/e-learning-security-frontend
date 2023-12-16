@@ -177,7 +177,7 @@ const HistoryLabPractice = ({ historyPracticeData }) => {
       ...getColumnSearchProps('tag'),
     },
     {
-      title: 'Thời gian nộp',
+      title: 'Thời gian làm',
       dataIndex: 'created_at',
       key: 'created_at',
       sorter: (a, b) =>

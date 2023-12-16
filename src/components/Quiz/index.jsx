@@ -21,29 +21,7 @@ const Quiz = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [quizData, setQuizData] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
-  const [historyResult, setHistoryResult] = useState([]);
   const [token, setToken] = useState('');
-
-  const getHistoryData = async (access_token, userID) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8082/api/v1/score/get-all-score-by-user/${userID}`,
-        {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        }
-      );
-      response.data.forEach((history) => {
-        if (history.created_at !== null) {
-          history.created_at = convertISOToCustomFormat(history.created_at);
-        }
-      });
-      setHistoryResult(response.data);
-    } catch (error) {
-      message.error('Có lỗi xảy ra!!!', 3);
-    }
-  };
 
   const getQuizData = async (access_token) => {
     try {
@@ -74,7 +52,6 @@ const Quiz = () => {
     const user = JSON.parse(localStorage.getItem('user_data'));
     setToken(user.access_token);
     getQuizData(user.access_token);
-    getHistoryData(user.access_token, user.user_id);
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -114,16 +91,16 @@ const Quiz = () => {
         >
           <div>
             <div
-              className='mb-4 mt-3'
+              className='mb-4 mt-4'
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
               }}
             >
               <div className='ml-4'>
-                <h4 style={{ fontWeight: '700', textTransform: 'capitalize' }}>
+                <h2 style={{ fontWeight: '700', textTransform: 'capitalize' }}>
                   Danh sách bài trắc nghiệm
-                </h4>
+                </h2>
               </div>
               <Search
                 className='mr-4'
@@ -146,12 +123,12 @@ const Quiz = () => {
                 xxl: 4,
               }}
               pagination={{
-                pageSize: 4,
+                pageSize: 8,
                 style: { top: 0 },
               }}
               dataSource={searchResult}
               renderItem={(item) => (
-                <List.Item key={item.id}>
+                <List.Item key={item.id} className='mt-2'>
                   <Card
                     className='border'
                     cover={
@@ -181,111 +158,6 @@ const Quiz = () => {
                 </List.Item>
               )}
             />
-            <div>
-              <div className='ml-4'>
-                <h4 style={{ fontWeight: '700', textTransform: 'capitalize' }}>
-                  Lịch sử làm bài
-                </h4>
-              </div>
-              <div className='container'>
-                <List
-                  style={{
-                    backgroundColor: '#fff',
-                    width: '100%',
-                    borderRadius: '10px',
-                    transform: 'translateY(-3%)',
-                  }}
-                  className='shadow mt-4'
-                >
-                  <VirtualList
-                    data={historyResult}
-                    height={ContainerHeight}
-                    itemHeight={47}
-                    itemKey='email'
-                  >
-                    {(item) => (
-                      <List.Item key={item.id} className='p-2'>
-                        <Row style={{ width: '100%' }}>
-                          <Col span={4}>
-                            <p
-                              style={{
-                                fontWeight: 'lighter',
-                              }}
-                            >
-                              {item.created_at}
-                            </p>
-                          </Col>
-                          <Col span={4}>
-                            <p
-                              style={{
-                                fontWeight: 500,
-                                fontSize: '1.1rem',
-                                textTransform: 'capitalize',
-                              }}
-                            >
-                              {item.quiz.name}
-                            </p>
-                          </Col>
-                          <Col span={4}>
-                            <ClockCircleOutlined
-                              style={{ color: '#5FBDFF', fontSize: '1rem' }}
-                            />
-                            <p
-                              className='d-inline ml-2'
-                              style={{ fontWeight: 500, fontSize: '1rem' }}
-                            >
-                              <span
-                                className='mr-1'
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                Thời gian:
-                              </span>
-                              {item.total_completion_time}
-                            </p>
-                          </Col>
-                          <Col span={4}>
-                            <CheckCircleOutlined
-                              style={{ color: '#52c41a', fontSize: '1rem' }}
-                            />
-                            <p
-                              className='d-inline ml-2'
-                              style={{ fontWeight: 500, fontSize: '1rem' }}
-                            >
-                              <span className='mr-1'>Số Câu Đúng:</span>
-                              {item.total_correct_answer}
-                            </p>
-                          </Col>
-                          <Col span={4}>
-                            <CloseCircleOutlined
-                              style={{ color: '#dc3545', fontSize: '1rem' }}
-                            />
-                            <p
-                              className='d-inline ml-2'
-                              style={{ fontWeight: 500, fontSize: '1rem' }}
-                            >
-                              <span className='mr-1'>Số Câu Sai:</span>
-                              {item.total_wrong_answer}
-                            </p>
-                          </Col>
-                          <Col span={4}>
-                            <TrophyOutlined
-                              style={{ color: '#FFC436', fontSize: '1rem' }}
-                            />
-                            <p
-                              className='d-inline ml-2'
-                              style={{ fontWeight: 500, fontSize: '1rem' }}
-                            >
-                              <span className='mr-1'>Kết Quả:</span>
-                              {item.score}
-                            </p>
-                          </Col>
-                        </Row>
-                      </List.Item>
-                    )}
-                  </VirtualList>
-                </List>
-              </div>
-            </div>
           </div>
         </div>
       )}

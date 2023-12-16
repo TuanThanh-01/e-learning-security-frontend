@@ -62,6 +62,10 @@ const HeaderHomePage = () => {
       key: 'challenge-ctf',
     },
     {
+      label: 'Lịch sử',
+      key: 'history',
+    },
+    {
       label: 'Bảng xếp hạng',
       key: 'ranking',
     },
