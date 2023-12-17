@@ -9,6 +9,7 @@ import RecommendChallengeCTF from './RecommendChallengeCTF';
 import RecommendLesson from './RecommendLesson';
 import TableOfContent from './TableOfContent';
 import './viewLessonStyle.css';
+import RecommendLab from './RecommendLab';
 
 const ViewLesson = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -124,6 +125,10 @@ const ViewLesson = () => {
               <Carousel autoplay className='pb-3' autoplaySpeed={6000}>
                 <RecommendLesson token={token} lessonId={lessonId} />
                 <RecommendChallengeCTF token={token} />
+                <RecommendLab
+                  token={token}
+                  tag={lessonData.category_lesson[0]}
+                />
               </Carousel>
             </div>
           </Col>

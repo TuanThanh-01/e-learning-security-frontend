@@ -99,6 +99,11 @@ const Lesson = () => {
     navigate(`/viewLesson/${lessonId}`);
   };
 
+  const handleViewLessonInRecentView = (item) => {
+    createHistoryReadingLesson(item.lesson.id);
+    navigate(`/viewLesson/${item.lesson.id}`);
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user_data'));
     setToken(user.access_token);
@@ -246,11 +251,13 @@ const Lesson = () => {
                     dataSource={lessonRecentData}
                     renderItem={(item) => (
                       <List.Item
+                        onClick={() => handleViewLessonInRecentView(item)}
                         key={item.id}
                         style={{
                           position: 'relative',
                           backgroundColor: '#fff',
                           borderRadius: '10px',
+                          cursor: 'pointer',
                         }}
                         className='shadow-sm mb-3 border border-info'
                       >

@@ -21,6 +21,12 @@ const CreateLabModal = ({ open, onCreate, onCancel, item, categoryLesson }) => {
           { indent: '-1' },
           { indent: '+1' },
         ],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ align: [] }],
+        [{ color: [] }, { background: [] }],
+        ['link', 'image', 'video'],
+        ['code-block'],
+        ['clean'],
       ],
     },
     clipboard: {

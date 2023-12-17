@@ -23,6 +23,7 @@ import axios from 'axios';
 import React, { useEffect, useMemo, useState } from 'react';
 import SingleChallengeCTF from './SingleChallengeCTF';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 
@@ -39,6 +40,7 @@ const ChallengeCTF = () => {
   const [statisticChallengeCTFUser, setStatisticChallengeCTFUser] = useState(
     {}
   );
+  const [searchParams] = useSearchParams();
 
   const getChallengeCTFData = async (access_token, user_ID) => {
     try {
@@ -109,6 +111,10 @@ const ChallengeCTF = () => {
       setUserId(user.user_id);
       getChallengeCTFData(user.access_token, user.user_id);
       getStatisticChallengeCTFUser(user.access_token, user.user_id);
+      const title = searchParams.get('title');
+      if (title) {
+        setSearchedText(title);
+      }
       if (isLoading) {
         setTimeout(() => {
           setIsLoading(false);
@@ -418,6 +424,7 @@ const ChallengeCTF = () => {
                         onChange={(e) => {
                           setSearchedText(e.target.value);
                         }}
+                        value={searchText}
                       />
                     </div>
                     <div className='mt-3'>

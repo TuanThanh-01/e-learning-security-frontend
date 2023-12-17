@@ -24,8 +24,8 @@ const RecommendChallengeCTF = ({ token }) => {
     }
   };
 
-  const handleOnClickNavigateChallengeCTF = () => {
-    navigate('/challenge-ctf');
+  const handleOnClickNavigateChallengeCTF = (title) => {
+    navigate(`/challenge-ctf?title=${title}`);
   };
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const RecommendChallengeCTF = ({ token }) => {
               </div>
             }
             key={index}
-            onClick={handleOnClickNavigateChallengeCTF}
+            onClick={() => handleOnClickNavigateChallengeCTF(value.title)}
           >
             <p
               style={{
