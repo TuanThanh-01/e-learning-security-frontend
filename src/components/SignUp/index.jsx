@@ -36,7 +36,13 @@ const SignUp = () => {
         navigate('/login');
       }, 1500);
     } catch (error) {
-      console.log(error);
+      if (error.response.data.errorCode === 'ERROR_USER_EXIST') {
+        message.error('Tài khoản email đã được đăng ký!!!', 3);
+      } else {
+        message.error('Đăng ký tài khoản thất bại', 3);
+      }
+      setIsLoading(false);
+      setIsSpin(false);
     }
   };
 
