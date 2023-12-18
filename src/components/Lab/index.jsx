@@ -24,6 +24,7 @@ import { removeVietnameseTones } from '../../utils/RemoveVietnameseTones';
 import { convertDateVnCustom } from '../../utils/ConvertDateVn';
 import LabModal from './LabModal';
 import convertISOToCustomFormat from '../../utils/ConvertDate';
+import { useSearchParams } from 'react-router-dom';
 
 const Lab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +37,7 @@ const Lab = () => {
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState();
   const [historyPracticeLab, setHistoryPracticeLab] = useState([]);
+  const [searchParams] = useSearchParams();
 
   const handleChange = (value) => {
     setCurrentTag(value);
@@ -119,6 +121,10 @@ const Lab = () => {
     getHistoryPracticeLab(user.user_id, user.access_token);
     getCategoryLessonData(user.access_token);
     getLabData(user.access_token);
+    const title = searchParams.get('title');
+    if (title) {
+      setSearchedText(title);
+    }
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -161,6 +167,7 @@ const Lab = () => {
                 <Search
                   placeholder='Nhập tiêu đề thực hành'
                   allowClear
+                  value={searchText}
                   style={{ width: '20rem' }}
                   onChange={(e) => {
                     setSearchedText(e.target.value);
