@@ -211,6 +211,9 @@ const StatisticChallengeCTF = ({ token }) => {
           </Row>
           <Row className='mt-5'>
             <Col span={18} className='mr-5'>
+              <h5 className='mb-3' style={{ fontWeight: 700 }}>
+                Thống kê theo dạng bài
+              </h5>
               {currentMenuStatistic === 'totalSubmit' ? (
                 <TagTotalSubmitChart tagTotalSubmitData={tagTotalSubmitData} />
               ) : (

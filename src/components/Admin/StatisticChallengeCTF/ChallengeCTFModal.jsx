@@ -66,22 +66,6 @@ const ChallengeCTFModal = ({
         columns={[
           { title: 'Mã sinh viên', dataIndex: 'student_identity' },
           { title: 'Họ tên', dataIndex: 'username' },
-          { title: 'Tên thử thách CTF', dataIndex: 'title' },
-          {
-            title: 'Mức độ',
-            dataIndex: 'level',
-            render: (levelData) =>
-              levelData === 'easy' ? (
-                <Tag color='#87d068'>Dễ</Tag>
-              ) : levelData === 'medium' ? (
-                <Tag color='#F4CE14'>Trung bình</Tag>
-              ) : levelData === 'hard' ? (
-                <Tag color='#f50'>Khó</Tag>
-              ) : (
-                <></>
-              ),
-          },
-          { title: 'Danh mục', dataIndex: 'tag' },
           {
             title: 'Trạng thái',
             dataIndex: 'status',

@@ -37,40 +37,45 @@ const StatisticOverview = ({
     },
   };
   return (
-    <Row>
-      <Col span={5} className='mr-5 mt-4'>
-        <Row
-          className='shadow-sm p-4 border border-info'
-          style={{ borderRadius: '10px' }}
-        >
-          <Statistic
-            title='Tổng số thử thách CTF'
-            value={statisticChallengeCTFOverview.total_challenge}
-          />
-        </Row>
-        <Row
-          className='mt-3 shadow-sm p-4 border border-info'
-          style={{ borderRadius: '10px' }}
-        >
-          <Statistic
-            title='Tổng số dạng bài'
-            value={statisticChallengeCTFOverview.total_tag}
-          />
-        </Row>
-        <Row
-          className='mt-3 shadow-sm p-4 border border-info'
-          style={{ borderRadius: '10px' }}
-        >
-          <Statistic
-            title='Tổng số lượt nộp bài'
-            value={statisticChallengeCTFOverview.total_submit}
-          />
-        </Row>
-      </Col>
-      <Col span={18}>
-        <Bar data={data} options={options} />
-      </Col>
-    </Row>
+    <div>
+      <h5 className='mb-3' style={{ fontWeight: 700 }}>
+        Thống kê tổng quan
+      </h5>
+      <Row>
+        <Col span={5} className='mr-5 mt-4'>
+          <Row
+            className='shadow-sm p-4 border border-info'
+            style={{ borderRadius: '10px' }}
+          >
+            <Statistic
+              title='Tổng số thử thách CTF'
+              value={statisticChallengeCTFOverview.total_challenge}
+            />
+          </Row>
+          <Row
+            className='mt-3 shadow-sm p-4 border border-info'
+            style={{ borderRadius: '10px' }}
+          >
+            <Statistic
+              title='Tổng số dạng bài'
+              value={statisticChallengeCTFOverview.total_tag}
+            />
+          </Row>
+          <Row
+            className='mt-3 shadow-sm p-4 border border-info'
+            style={{ borderRadius: '10px' }}
+          >
+            <Statistic
+              title='Tổng số lượt nộp bài'
+              value={statisticChallengeCTFOverview.total_submit}
+            />
+          </Row>
+        </Col>
+        <Col span={18}>
+          <Bar data={data} options={options} />
+        </Col>
+      </Row>
+    </div>
   );
 };
 
