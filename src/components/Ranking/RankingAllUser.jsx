@@ -15,7 +15,19 @@ const RankingAllUser = ({ token }) => {
           },
         }
       );
-      setUserChallengeData(response.data);
+      const tmp = [];
+      response.data.forEach((item, index) => {
+        tmp.push({
+          id: index + 1,
+          username: item.username,
+          student_identity: item.student_identity,
+          score: item.score,
+          total_try: item.total_try,
+          total_correct: item.total_correct,
+          total_submit: item.total_submit,
+        });
+      });
+      setUserChallengeData(tmp);
     } catch (error) {
       message.error('Có lỗi xảy ra!!!');
     }
@@ -26,6 +38,7 @@ const RankingAllUser = ({ token }) => {
   }, []);
 
   const columns = [
+    { title: 'STT', dataIndex: 'id', key: 'id' },
     {
       title: 'Họ tên',
       dataIndex: 'username',
@@ -59,20 +72,17 @@ const RankingAllUser = ({ token }) => {
   ];
 
   return (
-    <div
-      style={{ borderRadius: '10px', backgroundColor: '#fff', height: 400 }}
+    <Table
+      columns={columns}
+      dataSource={userChallengeData}
+      pagination={false}
+      virtual
       className='mt-3 border border-info p-1 shadow'
-    >
-      <Table
-        columns={columns}
-        dataSource={userChallengeData}
-        pagination={false}
-        virtual
-        scroll={{
-          y: 500,
-        }}
-      />
-    </div>
+      style={{ borderRadius: '10px' }}
+      scroll={{
+        y: 400,
+      }}
+    />
   );
 };
 
