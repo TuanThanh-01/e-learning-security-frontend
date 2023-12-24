@@ -461,8 +461,10 @@ const StatisticQuiz = ({ token }) => {
             </Col>
           </Row>
           <Row className='mt-5'>
-            <h5 style={{ fontWeight: 700 }}>Thống kê theo người dùng</h5>
-            <UserQuizStatistic userQuizStatisticData={userQuizData} />
+            <Col span={24}>
+              <h5 style={{ fontWeight: 700 }}>Thống kê theo người dùng</h5>
+              <UserQuizStatistic userQuizStatisticData={userQuizData} />
+            </Col>
           </Row>
           <Row className='mt-5'>
             <Col span={24}>

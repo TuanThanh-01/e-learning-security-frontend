@@ -43,7 +43,7 @@ const HistoryQuiz = ({ access_token, userID }) => {
 
   const colums = [
     {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'id',
       key: 'id',
     },

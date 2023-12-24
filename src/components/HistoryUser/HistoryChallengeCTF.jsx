@@ -36,7 +36,7 @@ const HistoryChallengeCTF = ({ access_token, user_ID }) => {
   };
   const columns = [
     {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'id',
       key: 'id',
     },

@@ -26,44 +26,47 @@ const OverviewLesson = ({ token }) => {
   }, []);
 
   return (
-    <Row
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        textTransform: 'capitalize',
-      }}
-    >
-      <Col
-        span={7}
-        className='shadow-sm p-4 border border-info'
-        style={{ borderRadius: '10px' }}
+    <div>
+      <h4 className='ml-1 mb-4'>Thống kê tổng quan</h4>
+      <Row
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          textTransform: 'capitalize',
+        }}
       >
-        <Statistic
-          title='Tổng số bài học'
-          value={overviewLessonData.total_lesson}
-        />
-      </Col>
-      <Col
-        span={7}
-        className='shadow-sm p-4 border border-info'
-        style={{ borderRadius: '10px' }}
-      >
-        <Statistic
-          title='Tổng số danh mục bài học'
-          value={overviewLessonData.total_category_lesson}
-        />
-      </Col>
-      <Col
-        span={7}
-        className='shadow-sm p-4 border border-info'
-        style={{ borderRadius: '10px' }}
-      >
-        <Statistic
-          title='Tổng số lượt xem'
-          value={overviewLessonData.total_reading}
-        />
-      </Col>
-    </Row>
+        <Col
+          span={7}
+          className='shadow-sm p-4 border border-info'
+          style={{ borderRadius: '10px' }}
+        >
+          <Statistic
+            title='Tổng số bài học'
+            value={overviewLessonData.total_lesson}
+          />
+        </Col>
+        <Col
+          span={7}
+          className='shadow-sm p-4 border border-info'
+          style={{ borderRadius: '10px' }}
+        >
+          <Statistic
+            title='Tổng số danh mục bài học'
+            value={overviewLessonData.total_category_lesson}
+          />
+        </Col>
+        <Col
+          span={7}
+          className='shadow-sm p-4 border border-info'
+          style={{ borderRadius: '10px' }}
+        >
+          <Statistic
+            title='Tổng số lượt xem'
+            value={overviewLessonData.total_reading}
+          />
+        </Col>
+      </Row>
+    </div>
   );
 };
 

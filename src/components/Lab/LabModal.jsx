@@ -44,7 +44,9 @@ const LabModal = ({ open, onCancel, item, token, userId }) => {
                 createHistoryPracticeLab();
                 window.open(`${item.url}`, '_blank');
               }}
-            />
+            >
+              Làm Bài
+            </Button>
           </div>
         </div>
         <hr />

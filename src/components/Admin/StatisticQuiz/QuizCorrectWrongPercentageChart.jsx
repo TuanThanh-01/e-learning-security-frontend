@@ -30,10 +30,12 @@ const QuizCorrectWrongPercentageChart = ({ quizPercentageData }) => {
       {
         label: '% Câu Đúng',
         data: quizPercentageData.map((data) => data.total_correct),
+        backgroundColor: ['rgb(34,139,34)'],
       },
       {
         label: '% Câu Sai',
         data: quizPercentageData.map((data) => data.total_wrong),
+        backgroundColor: ['rgb(220,20,60)'],
       },
     ],
     labels: quizPercentageData.map((data) => data.quiz_title),

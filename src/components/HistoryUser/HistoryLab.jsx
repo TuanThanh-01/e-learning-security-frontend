@@ -32,7 +32,7 @@ const HistoryLab = ({ userId, token }) => {
 
   const columns = [
     {
-      title: 'ID',
+      title: 'STT',
       dataIndex: 'id',
       key: 'id',
     },
