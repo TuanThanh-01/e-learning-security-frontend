@@ -147,10 +147,12 @@ const SingleChallengeCTF = ({
       </div>
       <Divider style={{ backgroundColor: '#D8D9DA' }} />
       <Row>
-        <Col span={16}>
+        <Col span={15} className='mr-2'>
           <div>
             <p style={{ fontSize: '1.2rem', marginBottom: 5 }}>Mô tả</p>
-            <p>{singleChallengeCTFData.content}</p>
+            <p style={{ textAlign: 'justify' }}>
+              {singleChallengeCTFData.content}
+            </p>
             {singleChallengeCTFData.urlFile}
           </div>
         </Col>
@@ -161,7 +163,13 @@ const SingleChallengeCTF = ({
               {
                 key: '1',
                 label: 'Gợi ý',
-                children: <p>{singleChallengeCTFData.hint}</p>,
+                children: (
+                  <p style={{ textAlign: 'justify' }}>
+                    {singleChallengeCTFData.hint !== 'undefined'
+                      ? singleChallengeCTFData.hint
+                      : ''}
+                  </p>
+                ),
               },
             ]}
           />

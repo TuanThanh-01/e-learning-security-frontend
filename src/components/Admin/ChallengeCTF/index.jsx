@@ -271,7 +271,7 @@ const ChallengeCTF = ({ token }) => {
             itemLayout='vertical'
             size='large'
             pagination={{
-              pageSize: 3,
+              pageSize: 5,
             }}
             dataSource={listData}
             renderItem={(item) => (
