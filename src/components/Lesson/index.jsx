@@ -224,8 +224,14 @@ const Lesson = () => {
                           </div>
                         </div>
                         <div className='mt-3'>
-                          {item.category_lesson.map((item) => (
-                            <Tag color='cyan'>{item}</Tag>
+                          {item.category_lesson.map((val, index) => (
+                            <Tag
+                              color='cyan'
+                              key={index}
+                              title={item.category_lesson_description[index]}
+                            >
+                              {val}
+                            </Tag>
                           ))}
                         </div>
                       </List.Item>

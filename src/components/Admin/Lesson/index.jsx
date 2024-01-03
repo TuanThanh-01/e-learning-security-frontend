@@ -281,9 +281,13 @@ const Lesson = ({ token }) => {
                     }}
                   >
                     <div>
-                      {item.category_lesson.map((item, index) => (
-                        <Tag color='cyan' key={index}>
-                          {item}
+                      {item.category_lesson.map((val, index) => (
+                        <Tag
+                          color='cyan'
+                          key={index}
+                          title={item.category_lesson_description[index]}
+                        >
+                          {val}
                         </Tag>
                       ))}
                     </div>
