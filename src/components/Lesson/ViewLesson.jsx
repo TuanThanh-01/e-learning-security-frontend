@@ -102,8 +102,14 @@ const ViewLesson = () => {
                 >
                   Danh mục:
                 </span>
-                {lessonData.category_lesson.map((item) => (
-                  <Tag color='purple'>{item}</Tag>
+                {lessonData.category_lesson.map((val, index) => (
+                  <Tag
+                    color='cyan'
+                    key={index}
+                    title={lessonData.category_lesson_description[index]}
+                  >
+                    {val}
+                  </Tag>
                 ))}
               </div>
             </div>
